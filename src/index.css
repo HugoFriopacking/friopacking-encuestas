@@ -9,7 +9,6 @@
   --teal: #3EC8B4;
   --teal-dark: #2ba898;
   --teal-light: #e6f9f6;
-  --teal-glow: rgba(62,200,180,0.15);
   --gray-50: #f2f5fb;
   --gray-100: #e8ecf5;
   --gray-300: #c8cfe0;
@@ -28,11 +27,24 @@ body {
   background: var(--gray-50);
   color: var(--gray-900);
   min-height: 100vh;
+  /* Prevent iOS text size adjustment */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 a { text-decoration: none; color: inherit; }
 
-/* Scrollbar */
+/* Prevent iOS zoom on input focus */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Remove tap highlight on mobile */
+* { -webkit-tap-highlight-color: transparent; }
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--gray-100); }
 ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
