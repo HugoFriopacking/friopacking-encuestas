@@ -1,18 +1,13 @@
 import { Link } from 'react-router-dom'
-import encuestas from '../encuestas/index.js'
+import { encuestasActivas } from '../encuestas/index.js'
 
 export default function Home() {
   return (
     <div style={styles.page}>
       <header style={styles.header}>
         <div style={styles.headerInner}>
-          <div style={styles.logoArea}>
-            <div style={styles.logoIcon}>❄</div>
-            <div>
-              <div style={styles.logoText}>Grupo Friopacking</div>
-              <div style={styles.logoSub}>Portal de Evaluaciones</div>
-            </div>
-          </div>
+          <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={styles.logo} />
+          <div style={styles.headerSubtitle}>Portal de Evaluaciones</div>
         </div>
       </header>
 
@@ -21,15 +16,19 @@ export default function Home() {
         <p style={styles.subtitle}>Selecciona la evaluación que debes completar</p>
 
         <div style={styles.grid}>
-          {encuestas.map((enc) => (
+          {encuestasActivas.map((enc) => (
             <Link key={enc.id} to={`/encuesta/${enc.id}`} style={styles.card}>
               <div style={styles.cardTag}>
-                {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Clientes' : 'Ambos'}
+                {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Contratistas' : 'Ambos'}
               </div>
               <h2 style={styles.cardTitle}>{enc.titulo}</h2>
               <p style={styles.cardDesc}>{enc.descripcion}</p>
               <div style={styles.cardFooter}>
-                <span style={styles.cardCount}>{enc.preguntas.length} preguntas</span>
+                <span style={styles.cardCount}>
+                  {enc.preguntas.filter(p => p.tipo === 'escala').length > 0
+                    ? `${enc.preguntas.filter(p => p.tipo === 'escala').length} preguntas de evaluación`
+                    : 'Próximamente'}
+                </span>
                 <span style={styles.cardArrow}>Iniciar →</span>
               </div>
             </Link>
@@ -43,30 +42,33 @@ export default function Home() {
 const styles = {
   page: { minHeight: '100vh', background: 'var(--gray-50)' },
   header: { background: 'var(--navy)', padding: '0' },
-  headerInner: { maxWidth: 800, margin: '0 auto', padding: '20px 24px', display: 'flex', alignItems: 'center' },
-  logoArea: { display: 'flex', alignItems: 'center', gap: 14 },
-  logoIcon: { fontSize: 32, color: 'var(--teal)' },
-  logoText: { color: 'white', fontWeight: 700, fontSize: 18, lineHeight: 1.2 },
-  logoSub: { color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 2 },
-  main: { maxWidth: 800, margin: '0 auto', padding: '40px 24px' },
-  title: { fontSize: 26, fontWeight: 700, color: 'var(--navy)', marginBottom: 8 },
-  subtitle: { color: 'var(--gray-500)', fontSize: 15, marginBottom: 32 },
-  grid: { display: 'grid', gap: 16 },
+  headerInner: {
+    maxWidth: 860, margin: '0 auto', padding: '20px 28px',
+    display: 'flex', alignItems: 'center', gap: 20, flexDirection: 'column',
+  },
+  logo: { height: 56, objectFit: 'contain' },
+  headerSubtitle: {
+    color: 'rgba(255,255,255,0.75)', fontSize: 15, fontWeight: 600,
+    letterSpacing: '0.04em', textTransform: 'uppercase',
+  },
+  main: { maxWidth: 860, margin: '0 auto', padding: '44px 28px 60px' },
+  title: { fontSize: 30, fontWeight: 900, color: 'var(--navy)', marginBottom: 8 },
+  subtitle: { color: 'var(--gray-500)', fontSize: 17, marginBottom: 36, fontWeight: 600 },
+  grid: { display: 'grid', gap: 20 },
   card: {
-    background: 'white', borderRadius: 'var(--radius)', padding: '24px',
-    boxShadow: 'var(--shadow)', border: '1.5px solid transparent',
-    display: 'block', transition: 'border-color 0.15s, box-shadow 0.15s',
+    background: 'white', borderRadius: 'var(--radius)', padding: '28px',
+    boxShadow: 'var(--shadow)', border: '2px solid transparent',
+    display: 'block', transition: 'border-color 0.15s',
     cursor: 'pointer',
-    ':hover': { borderColor: 'var(--teal)' },
   },
   cardTag: {
     display: 'inline-block', background: 'var(--teal-light)', color: 'var(--navy)',
-    fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 20,
-    marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em',
+    fontSize: 12, fontWeight: 800, padding: '4px 12px', borderRadius: 20,
+    marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.06em',
   },
-  cardTitle: { fontSize: 17, fontWeight: 700, color: 'var(--navy)', marginBottom: 6 },
-  cardDesc: { color: 'var(--gray-500)', fontSize: 14, lineHeight: 1.5, marginBottom: 16 },
+  cardTitle: { fontSize: 20, fontWeight: 900, color: 'var(--navy)', marginBottom: 8 },
+  cardDesc: { color: 'var(--gray-500)', fontSize: 15, lineHeight: 1.6, marginBottom: 20, fontWeight: 600 },
   cardFooter: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  cardCount: { fontSize: 13, color: 'var(--gray-500)' },
-  cardArrow: { fontSize: 14, fontWeight: 600, color: 'var(--teal)' },
+  cardCount: { fontSize: 14, color: 'var(--gray-500)', fontWeight: 600 },
+  cardArrow: { fontSize: 15, fontWeight: 800, color: 'var(--teal)' },
 }

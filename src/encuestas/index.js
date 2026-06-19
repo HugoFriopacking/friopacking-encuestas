@@ -1,13 +1,16 @@
-import desempenoColaborador from './desempeno-colaborador.js'
-import desempenoJefe from './desempeno-jefe.js'
+import contratistasSsoma from './contratistas-ssoma.js'
+import ssomaContratistas from './ssoma-contratistas.js'
+import contratistaSupervisores from './contratistas-supervisores.js'
+import contratistasFriopacking from './contratistas-friopacking.js'
 
-// Para agregar una nueva encuesta:
-// 1. Crea el archivo en esta carpeta siguiendo la misma estructura
-// 2. Impórtalo aquí y agrégalo al array
+// Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
-  desempenoColaborador,
-  desempenoJefe,
+  contratistasSsoma,
+  ssomaContratistas,
+  contratistaSupervisores,
+  contratistasFriopacking,
 ]
 
+// Solo exporta las activas para mostrar en la home
+export const encuestasActivas = encuestas.filter(e => e.activa)
 export default encuestas
-export { desempenoColaborador, desempenoJefe }
