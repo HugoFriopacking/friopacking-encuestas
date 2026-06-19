@@ -6,7 +6,7 @@ const encuesta = {
   activa: true,
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
-    { id: 'nombre', tipo: 'texto', texto: 'Nombre Completo', requerida: true },
+    { id: 'contratista', tipo: 'texto', texto: 'Contratista a evaluar', requerida: true },
     { id: 'obra', tipo: 'texto', texto: 'Obra', requerida: true },
     { id: 'p1', tipo: 'escala', texto: 'El contratista cumple puntualmente con los horarios y cronograma de trabajo', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p2', tipo: 'escala', texto: 'El contratista usa correctamente los EPPs durante toda la jornada de trabajo', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },

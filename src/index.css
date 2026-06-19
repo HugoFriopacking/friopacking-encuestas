@@ -4,17 +4,23 @@
 
 :root {
   --navy: #1B2D6B;
+  --navy-dark: #132050;
+  --navy-mid: #243a8a;
   --teal: #3EC8B4;
-  --teal-light: #e8faf8;
-  --gray-50: #f4f6fb;
-  --gray-100: #eaecf3;
-  --gray-300: #d1d5db;
-  --gray-500: #6b7280;
-  --gray-700: #374151;
+  --teal-dark: #2ba898;
+  --teal-light: #e6f9f6;
+  --teal-glow: rgba(62,200,180,0.15);
+  --gray-50: #f2f5fb;
+  --gray-100: #e8ecf5;
+  --gray-300: #c8cfe0;
+  --gray-500: #6b7a99;
+  --gray-700: #3a4768;
   --gray-900: #111827;
   --white: #ffffff;
-  --radius: 12px;
-  --shadow: 0 2px 16px rgba(27,45,107,0.10);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 20px rgba(27,45,107,0.10);
+  --shadow-lg: 0 8px 40px rgba(27,45,107,0.16);
 }
 
 body {
@@ -22,7 +28,11 @@ body {
   background: var(--gray-50);
   color: var(--gray-900);
   min-height: 100vh;
-  font-size: 16px;
 }
 
 a { text-decoration: none; color: inherit; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--gray-100); }
+::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
