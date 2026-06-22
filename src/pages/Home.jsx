@@ -35,7 +35,7 @@ export default function Home() {
       <div style={s.page}>
         <div style={s.bg} />
         <div style={s.card}>
-          <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.logo} />
+          <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.logo} />
           <h1 style={s.title}>Portal de Evaluaciones</h1>
           <p style={s.subtitle}>Ingresa el PIN de acceso</p>
 
@@ -65,7 +65,7 @@ export default function Home() {
       <header style={s.header}>
         <div style={s.headerBg} />
         <div style={s.headerInner}>
-          <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.headerLogo} />
+          <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.headerLogo} />
           <div style={s.headerPill}>Portal de Evaluaciones</div>
         </div>
       </header>
@@ -115,7 +115,7 @@ export default function Home() {
       </main>
 
       <footer style={s.footer}>
-        <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.footerLogo} />
+        <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.footerLogo} />
         <p style={s.footerText}>© {new Date().getFullYear()} Grupo Friopacking — Uso interno</p>
       </footer>
     </div>
