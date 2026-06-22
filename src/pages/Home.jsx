@@ -65,7 +65,7 @@ export default function Home() {
       <header style={s.header}>
         <div style={s.headerBg} />
         <div style={s.headerInner}>
-          <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.headerLogo} />
+          <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.headerLogo} />
           <div style={s.headerPill}>Portal de Evaluaciones</div>
         </div>
       </header>
