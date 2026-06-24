@@ -11,6 +11,60 @@ const scaleColor = (val) => {
   return { bg: '#ecfdf5', border: '#6ee7b7', text: '#059669', active: '#059669' }
 }
 
+function parseSecciones(preguntas) {
+  const result = []
+  let current = null
+  for (const p of preguntas) {
+    if (p.tipo === 'seccion') {
+      current = { id: p.id, texto: p.texto, icono: p.icono || '📋', preguntas: [] }
+      result.push(current)
+    } else if (current) {
+      current.preguntas.push(p)
+    }
+  }
+  return result
+}
+
+function PreguntaEscala({ pregunta, num, respuestas, handleChange }) {
+  return (
+    <div style={s.preguntaCard}>
+      <div style={s.preguntaHeader}>
+        <div style={s.preguntaNum}>{num}</div>
+        <div style={s.preguntaLabel}>
+          {pregunta.texto}
+          {pregunta.requerida && <span style={s.requerida}> *</span>}
+        </div>
+      </div>
+      <div>
+        <div style={s.escalaRow}>
+          {Array.from({ length: pregunta.max - pregunta.min + 1 }, (_, i) => i + pregunta.min).map((val) => {
+            const col = scaleColor(val)
+            const isActive = respuestas[pregunta.id] === val
+            return (
+              <button key={val} type="button" onClick={() => handleChange(pregunta.id, val)}
+                style={{
+                  ...s.escalaBtn,
+                  borderColor: isActive ? col.active : col.border,
+                  color: isActive ? 'white' : col.text,
+                  background: isActive ? col.active : col.bg,
+                  transform: isActive ? 'scale(1.12)' : 'scale(1)',
+                  boxShadow: isActive ? `0 4px 12px ${col.active}55` : 'none',
+                }}
+              >
+                {val}
+              </button>
+            )
+          })}
+        </div>
+        <div style={s.escalaEtiquetas}>
+          <span>😞 {pregunta.etiquetas[pregunta.min]}</span>
+          <span>{pregunta.etiquetas[pregunta.max]} 😊</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Encuesta() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -18,6 +72,7 @@ export default function Encuesta() {
   const [respuestas, setRespuestas] = useState({})
   const [enviando, setEnviando] = useState(false)
   const [error, setError] = useState(null)
+  const [modalSeccion, setModalSeccion] = useState(null)
 
   if (!encuesta) {
     return (
@@ -36,7 +91,7 @@ export default function Encuesta() {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
+    if (e && e.preventDefault) e.preventDefault()
     setError(null)
     const faltantes = encuesta.preguntas.filter((p) => p.requerida && !respuestas[p.id])
     if (faltantes.length > 0) {
@@ -62,13 +117,146 @@ export default function Encuesta() {
     }
   }
 
+  // ─── MODO SECCIONES ───────────────────────────────────────────────────────
+  if (encuesta.modo === 'secciones') {
+    const secciones = parseSecciones(encuesta.preguntas)
+
+    function seccionCompleta(sec) {
+      return sec.preguntas.filter(p => p.requerida).every(p => respuestas[p.id])
+    }
+
+    const totalRespondidas = secciones.reduce((acc, sec) =>
+      acc + sec.preguntas.filter(p => p.requerida && respuestas[p.id]).length, 0)
+    const totalPreguntas = secciones.reduce((acc, sec) =>
+      acc + sec.preguntas.filter(p => p.requerida).length, 0)
+    const todasCompletas = secciones.every(sec => seccionCompleta(sec))
+    const progreso = totalPreguntas > 0 ? Math.round((totalRespondidas / totalPreguntas) * 100) : 0
+
+    return (
+      <div style={s.page}>
+        <header style={s.header}>
+          <div style={s.headerInner}>
+            <button onClick={() => navigate('/')} style={s.backBtn}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Inicio
+            </button>
+            <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.logo} />
+          </div>
+          <div style={s.progressWrap}>
+            <div style={s.progressInner}>
+              <div style={{ ...s.progressBar, width: `${progreso}%` }} />
+            </div>
+            <span style={s.progressLabel}>{totalRespondidas}/{totalPreguntas}</span>
+          </div>
+        </header>
+
+        <main style={s.main}>
+          <div style={s.encuestaHeader}>
+            <div style={s.encuestaTag}>🏗 Contratistas</div>
+            <h1 style={s.title}>{encuesta.titulo}</h1>
+            <p style={s.desc}>{encuesta.descripcion}</p>
+            {encuesta.leyenda && (
+              <div style={s.leyenda}>
+                <div style={s.leyendaTitle}>Escala de calificación</div>
+                <div style={s.leyendaItems}>
+                  <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fee2e2', color: '#dc2626' }}>1</span>Muy malo</div>
+                  <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef9c3', color: '#ca8a04' }}>5</span>Regular</div>
+                  <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#d1fae5', color: '#059669' }}>10</span>Muy bueno</div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {error && <div style={s.errorMsg}>⚠️ {error}</div>}
+
+          <div style={s.seccionesGrid}>
+            {secciones.map(sec => {
+              const completa = seccionCompleta(sec)
+              const resp = sec.preguntas.filter(p => p.requerida && respuestas[p.id]).length
+              const total = sec.preguntas.filter(p => p.requerida).length
+              return (
+                <button key={sec.id} type="button" onClick={() => setModalSeccion(sec)} style={{
+                  ...s.seccionCard,
+                  background: completa
+                    ? 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)'
+                    : 'white',
+                  borderColor: completa ? '#34d399' : 'rgba(27,45,107,0.10)',
+                  boxShadow: completa
+                    ? '0 4px 20px rgba(52,211,153,0.25)'
+                    : '0 4px 20px rgba(27,45,107,0.08)',
+                }}>
+                  <div style={s.seccionCardIcono}>{sec.icono}</div>
+                  <div style={{
+                    ...s.seccionCardTitulo,
+                    color: completa ? '#065f46' : '#1B2D6B',
+                  }}>{sec.texto}</div>
+                  <div style={{
+                    ...s.seccionCardBadge,
+                    background: completa ? '#059669' : '#e8edf8',
+                    color: completa ? 'white' : '#6b7a99',
+                  }}>
+                    {completa ? '✓ Completo' : `${resp} / ${total}`}
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={!todasCompletas || enviando}
+            style={{
+              ...s.btnSubmit,
+              opacity: (!todasCompletas || enviando) ? 0.45 : 1,
+              cursor: (!todasCompletas || enviando) ? 'not-allowed' : 'pointer',
+            }}
+          >
+            {enviando ? 'Enviando...' : 'Enviar evaluación →'}
+          </button>
+        </main>
+
+        {/* Modal de sección */}
+        {modalSeccion && (
+          <div style={s.modalOverlay} onClick={() => setModalSeccion(null)}>
+            <div style={s.modalBox} onClick={e => e.stopPropagation()}>
+              <div style={s.modalHeader}>
+                <span style={s.modalIcono}>{modalSeccion.icono}</span>
+                <h2 style={s.modalTitulo}>{modalSeccion.texto}</h2>
+                <button type="button" onClick={() => setModalSeccion(null)} style={s.modalClose}>✕</button>
+              </div>
+              <div style={s.modalBody}>
+                {modalSeccion.preguntas.map((pregunta, idx) => (
+                  <PreguntaEscala
+                    key={pregunta.id}
+                    pregunta={pregunta}
+                    num={idx + 1}
+                    respuestas={respuestas}
+                    handleChange={handleChange}
+                  />
+                ))}
+              </div>
+              <div style={s.modalFooter}>
+                <button type="button" onClick={() => setModalSeccion(null)} style={s.modalBtnCerrar}>
+                  Listo, cerrar sección
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // ─── MODO NORMAL ──────────────────────────────────────────────────────────
   const totalPreguntas = encuesta.preguntas.filter(p => p.tipo === 'escala').length
   const respondidas = encuesta.preguntas.filter(p => p.tipo === 'escala' && respuestas[p.id]).length
   const progreso = totalPreguntas > 0 ? Math.round((respondidas / totalPreguntas) * 100) : 0
 
   return (
     <div style={s.page}>
-      {/* HEADER sticky */}
       <header style={s.header}>
         <div style={s.headerInner}>
           <button onClick={() => navigate('/')} style={s.backBtn}>
@@ -90,7 +278,6 @@ export default function Encuesta() {
       </header>
 
       <main style={s.main}>
-        {/* Encabezado encuesta */}
         <div style={s.encuestaHeader}>
           <div style={s.encuestaTag}>
             {encuesta.respondedor === 'interno' ? '👷 Personal interno' : '🏗 Contratistas'}
@@ -109,9 +296,7 @@ export default function Encuesta() {
           )}
         </div>
 
-        {error && (
-          <div style={s.errorMsg}>⚠️ {error}</div>
-        )}
+        {error && <div style={s.errorMsg}>⚠️ {error}</div>}
 
         <form onSubmit={handleSubmit}>
           {(() => {
@@ -129,99 +314,99 @@ export default function Encuesta() {
               numPregunta++
               const num = numPregunta
               return (
-            <div key={pregunta.id} style={s.preguntaCard}>
-              <div style={s.preguntaHeader}>
-                <div style={s.preguntaNum}>{num}</div>
-                <div style={s.preguntaLabel}>
-                  {pregunta.texto}
-                  {pregunta.requerida && <span style={s.requerida}> *</span>}
-                </div>
-              </div>
-
-              {pregunta.tipo === 'texto' && (
-                <input
-                  type="text"
-                  style={s.input}
-                  value={respuestas[pregunta.id] || ''}
-                  onChange={(e) => handleChange(pregunta.id, e.target.value)}
-                  placeholder="Escribe aquí..."
-                  autoComplete="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              )}
-
-              {pregunta.tipo === 'escala' && (
-                <div>
-                  <div style={s.escalaRow}>
-                    {Array.from({ length: pregunta.max - pregunta.min + 1 }, (_, i) => i + pregunta.min).map((val) => {
-                      const col = scaleColor(val)
-                      const isActive = respuestas[pregunta.id] === val
-                      return (
-                        <button
-                          key={val}
-                          type="button"
-                          onClick={() => handleChange(pregunta.id, val)}
-                          style={{
-                            ...s.escalaBtn,
-                            borderColor: isActive ? col.active : col.border,
-                            color: isActive ? 'white' : col.text,
-                            background: isActive ? col.active : col.bg,
-                            transform: isActive ? 'scale(1.12)' : 'scale(1)',
-                            boxShadow: isActive ? `0 4px 12px ${col.active}55` : 'none',
-                          }}
-                        >
-                          {val}
-                        </button>
-                      )
-                    })}
+                <div key={pregunta.id} style={s.preguntaCard}>
+                  <div style={s.preguntaHeader}>
+                    <div style={s.preguntaNum}>{num}</div>
+                    <div style={s.preguntaLabel}>
+                      {pregunta.texto}
+                      {pregunta.requerida && <span style={s.requerida}> *</span>}
+                    </div>
                   </div>
-                  <div style={s.escalaEtiquetas}>
-                    <span>😞 {pregunta.etiquetas[pregunta.min]}</span>
-                    <span>{pregunta.etiquetas[pregunta.max]} 😊</span>
-                  </div>
-                </div>
-              )}
 
-              {pregunta.tipo === 'opcion_multiple' && (
-                <div style={s.opciones}>
-                  {pregunta.opciones.map((op) => (
-                    <label key={op} style={{
-                      ...s.opcionLabel,
-                      background: respuestas[pregunta.id] === op ? 'var(--teal-light)' : 'var(--gray-50)',
-                      borderColor: respuestas[pregunta.id] === op ? 'var(--teal)' : 'var(--gray-300)',
-                    }}>
-                      <input type="radio" name={pregunta.id} value={op}
-                        checked={respuestas[pregunta.id] === op}
-                        onChange={() => handleChange(pregunta.id, op)}
-                        style={{ accentColor: 'var(--teal)', width: 20, height: 20, flexShrink: 0 }}
-                      />
-                      {op}
-                    </label>
-                  ))}
-                </div>
-              )}
+                  {pregunta.tipo === 'texto' && (
+                    <input
+                      type="text"
+                      style={s.input}
+                      value={respuestas[pregunta.id] || ''}
+                      onChange={(e) => handleChange(pregunta.id, e.target.value)}
+                      placeholder="Escribe aquí..."
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck="false"
+                    />
+                  )}
 
-              {pregunta.tipo === 'si_no' && (
-                <div style={s.siNoWrap}>
-                  {['Sí', 'No'].map((op) => (
-                    <label key={op} style={{
-                      ...s.siNoBtn,
-                      background: respuestas[pregunta.id] === op ? 'var(--navy)' : 'white',
-                      color: respuestas[pregunta.id] === op ? 'white' : 'var(--navy)',
-                      borderColor: respuestas[pregunta.id] === op ? 'var(--navy)' : 'var(--gray-300)',
-                    }}>
-                      <input type="radio" name={pregunta.id} value={op}
-                        checked={respuestas[pregunta.id] === op}
-                        onChange={() => handleChange(pregunta.id, op)}
-                        style={{ display: 'none' }}
-                      />
-                      {op}
-                    </label>
-                  ))}
+                  {pregunta.tipo === 'escala' && (
+                    <div>
+                      <div style={s.escalaRow}>
+                        {Array.from({ length: pregunta.max - pregunta.min + 1 }, (_, i) => i + pregunta.min).map((val) => {
+                          const col = scaleColor(val)
+                          const isActive = respuestas[pregunta.id] === val
+                          return (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => handleChange(pregunta.id, val)}
+                              style={{
+                                ...s.escalaBtn,
+                                borderColor: isActive ? col.active : col.border,
+                                color: isActive ? 'white' : col.text,
+                                background: isActive ? col.active : col.bg,
+                                transform: isActive ? 'scale(1.12)' : 'scale(1)',
+                                boxShadow: isActive ? `0 4px 12px ${col.active}55` : 'none',
+                              }}
+                            >
+                              {val}
+                            </button>
+                          )
+                        })}
+                      </div>
+                      <div style={s.escalaEtiquetas}>
+                        <span>😞 {pregunta.etiquetas[pregunta.min]}</span>
+                        <span>{pregunta.etiquetas[pregunta.max]} 😊</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {pregunta.tipo === 'opcion_multiple' && (
+                    <div style={s.opciones}>
+                      {pregunta.opciones.map((op) => (
+                        <label key={op} style={{
+                          ...s.opcionLabel,
+                          background: respuestas[pregunta.id] === op ? 'var(--teal-light)' : 'var(--gray-50)',
+                          borderColor: respuestas[pregunta.id] === op ? 'var(--teal)' : 'var(--gray-300)',
+                        }}>
+                          <input type="radio" name={pregunta.id} value={op}
+                            checked={respuestas[pregunta.id] === op}
+                            onChange={() => handleChange(pregunta.id, op)}
+                            style={{ accentColor: 'var(--teal)', width: 20, height: 20, flexShrink: 0 }}
+                          />
+                          {op}
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  {pregunta.tipo === 'si_no' && (
+                    <div style={s.siNoWrap}>
+                      {['Sí', 'No'].map((op) => (
+                        <label key={op} style={{
+                          ...s.siNoBtn,
+                          background: respuestas[pregunta.id] === op ? 'var(--navy)' : 'white',
+                          color: respuestas[pregunta.id] === op ? 'white' : 'var(--navy)',
+                          borderColor: respuestas[pregunta.id] === op ? 'var(--navy)' : 'var(--gray-300)',
+                        }}>
+                          <input type="radio" name={pregunta.id} value={op}
+                            checked={respuestas[pregunta.id] === op}
+                            onChange={() => handleChange(pregunta.id, op)}
+                            style={{ display: 'none' }}
+                          />
+                          {op}
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
               )
             })
           })()}
@@ -242,7 +427,6 @@ const s = {
   header: {
     background: 'var(--navy)', position: 'sticky', top: 0, zIndex: 100,
     boxShadow: '0 2px 20px rgba(0,0,0,0.2)',
-    // Safe area for iOS notch
     paddingTop: 'env(safe-area-inset-top)',
   },
   headerInner: {
@@ -253,9 +437,7 @@ const s = {
     background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
     color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 800,
     fontFamily: 'Nunito, sans-serif', padding: '9px 14px', borderRadius: 8,
-    display: 'flex', alignItems: 'center', gap: 6,
-    // Larger touch target
-    minHeight: 44,
+    display: 'flex', alignItems: 'center', gap: 6, minHeight: 44,
   },
   logo: { height: 36, objectFit: 'contain', maxWidth: 160 },
   progressWrap: {
@@ -274,8 +456,7 @@ const s = {
 
   main: {
     maxWidth: 780, margin: '0 auto',
-    padding: '24px 16px 100px',
-    // Safe area for iOS home indicator
+    padding: '24px 16px',
     paddingBottom: 'calc(80px + env(safe-area-inset-bottom))',
   },
 
@@ -309,6 +490,87 @@ const s = {
     width: 26, height: 26, borderRadius: 6, fontWeight: 900, fontSize: 12, flexShrink: 0,
   },
 
+  // Secciones grid (modo tarjetas)
+  seccionesGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+    gap: 14,
+    marginBottom: 24,
+  },
+  seccionCard: {
+    border: '2px solid',
+    borderRadius: 16,
+    padding: '28px 20px 22px',
+    display: 'flex', flexDirection: 'column', alignItems: 'center',
+    gap: 10, cursor: 'pointer',
+    fontFamily: 'Nunito, sans-serif',
+    transition: 'transform 0.15s, box-shadow 0.15s',
+    textAlign: 'center',
+    minHeight: 160,
+  },
+  seccionCardIcono: { fontSize: 36 },
+  seccionCardTitulo: {
+    fontSize: 14, fontWeight: 900, lineHeight: 1.35, flex: 1,
+  },
+  seccionCardBadge: {
+    fontSize: 12, fontWeight: 800,
+    padding: '4px 12px', borderRadius: 20,
+  },
+
+  // Modal
+  modalOverlay: {
+    position: 'fixed', inset: 0, zIndex: 200,
+    background: 'rgba(10,20,50,0.65)',
+    display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+    padding: '0',
+    backdropFilter: 'blur(3px)',
+  },
+  modalBox: {
+    background: 'white',
+    borderRadius: '20px 20px 0 0',
+    width: '100%', maxWidth: 680,
+    maxHeight: '90vh',
+    display: 'flex', flexDirection: 'column',
+    overflow: 'hidden',
+  },
+  modalHeader: {
+    display: 'flex', alignItems: 'center', gap: 12,
+    padding: '18px 20px 14px',
+    borderBottom: '1.5px solid #e8ecf5',
+    flexShrink: 0,
+    background: 'white',
+  },
+  modalIcono: { fontSize: 26 },
+  modalTitulo: { fontSize: 17, fontWeight: 900, color: '#1B2D6B', flex: 1, lineHeight: 1.3 },
+  modalClose: {
+    background: '#f2f5fb', border: 'none', borderRadius: 8,
+    width: 36, height: 36, cursor: 'pointer',
+    fontSize: 16, color: '#6b7a99', fontWeight: 900,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0, fontFamily: 'Nunito, sans-serif',
+  },
+  modalBody: {
+    overflowY: 'auto', flex: 1,
+    padding: '16px 16px 8px',
+    WebkitOverflowScrolling: 'touch',
+  },
+  modalFooter: {
+    padding: '14px 16px',
+    paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
+    borderTop: '1.5px solid #e8ecf5',
+    flexShrink: 0,
+    background: 'white',
+  },
+  modalBtnCerrar: {
+    background: 'linear-gradient(135deg, #1B2D6B 0%, #243a8a 100%)',
+    color: 'white', border: 'none', borderRadius: 12,
+    padding: '16px', fontSize: 16, fontWeight: 900,
+    cursor: 'pointer', width: '100%',
+    fontFamily: 'Nunito, sans-serif',
+    minHeight: 52,
+  },
+
+  // Sección header (modo lineal)
   seccionHeader: {
     display: 'flex', alignItems: 'center', gap: 12,
     margin: '28px 0 12px',
@@ -343,7 +605,6 @@ const s = {
 
   escalaRow: { display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 },
   escalaBtn: {
-    // Minimum 44px touch target for mobile
     width: 44, height: 44, border: '2px solid',
     borderRadius: 10, cursor: 'pointer',
     fontSize: 15, fontWeight: 900, fontFamily: 'Nunito, sans-serif',
@@ -357,7 +618,6 @@ const s = {
   opciones: { display: 'flex', flexDirection: 'column', gap: 10 },
   opcionLabel: {
     display: 'flex', alignItems: 'center', gap: 12,
-    // Minimum 44px touch target
     padding: '14px 16px', borderRadius: 10, border: '2px solid',
     cursor: 'pointer', fontSize: 15, fontWeight: 700, transition: 'all 0.15s',
     minHeight: 44,
@@ -379,10 +639,9 @@ const s = {
     background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%)',
     color: 'white', border: 'none', borderRadius: 14,
     padding: '18px 32px', fontSize: 17, fontWeight: 900,
-    cursor: 'pointer', width: '100%', marginTop: 16,
+    width: '100%', marginTop: 8,
     fontFamily: 'Nunito, sans-serif',
     boxShadow: '0 4px 16px rgba(27,45,107,0.3)',
-    // Large touch target
     minHeight: 56,
   },
   btnSecondary: {
