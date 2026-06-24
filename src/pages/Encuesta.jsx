@@ -114,10 +114,24 @@ export default function Encuesta() {
         )}
 
         <form onSubmit={handleSubmit}>
-          {encuesta.preguntas.map((pregunta, idx) => (
+          {(() => {
+            let numPregunta = 0
+            return encuesta.preguntas.map((pregunta) => {
+              if (pregunta.tipo === 'seccion') {
+                return (
+                  <div key={pregunta.id} style={s.seccionHeader}>
+                    <div style={s.seccionLinea} />
+                    <span style={s.seccionTitulo}>{pregunta.texto}</span>
+                    <div style={s.seccionLinea} />
+                  </div>
+                )
+              }
+              numPregunta++
+              const num = numPregunta
+              return (
             <div key={pregunta.id} style={s.preguntaCard}>
               <div style={s.preguntaHeader}>
-                <div style={s.preguntaNum}>{idx + 1}</div>
+                <div style={s.preguntaNum}>{num}</div>
                 <div style={s.preguntaLabel}>
                   {pregunta.texto}
                   {pregunta.requerida && <span style={s.requerida}> *</span>}
@@ -208,7 +222,9 @@ export default function Encuesta() {
                 </div>
               )}
             </div>
-          ))}
+              )
+            })
+          })()}
 
           <button type="submit" disabled={enviando}
             style={{ ...s.btnSubmit, opacity: enviando ? 0.7 : 1 }}>
@@ -291,6 +307,17 @@ const s = {
   leyendaBadge: {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
     width: 26, height: 26, borderRadius: 6, fontWeight: 900, fontSize: 12, flexShrink: 0,
+  },
+
+  seccionHeader: {
+    display: 'flex', alignItems: 'center', gap: 12,
+    margin: '28px 0 12px',
+  },
+  seccionLinea: { flex: 1, height: 2, background: '#1B2D6B', opacity: 0.15, borderRadius: 2 },
+  seccionTitulo: {
+    fontSize: 13, fontWeight: 900, color: '#1B2D6B',
+    textTransform: 'uppercase', letterSpacing: '0.07em',
+    whiteSpace: 'nowrap', padding: '0 4px',
   },
 
   preguntaCard: {
