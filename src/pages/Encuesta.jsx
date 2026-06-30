@@ -11,12 +11,65 @@ const scaleColor = (val) => {
   return { bg: '#ecfdf5', border: '#6ee7b7', text: '#059669', active: '#059669' }
 }
 
+const ICONOS = {
+  operaciones: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="5" width="4" height="16" rx="1"/><rect x="17" y="8" width="4" height="13" rx="1"/>
+      <line x1="2" y1="21" x2="22" y2="21"/>
+    </svg>
+  ),
+  logistica: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/>
+      <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+    </svg>
+  ),
+  finanzas: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="5" width="20" height="14" rx="2"/>
+      <line x1="2" y1="10" x2="22" y2="10"/>
+      <line x1="6" y1="15" x2="10" y2="15"/>
+    </svg>
+  ),
+  frioteam: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="2" x2="12" y2="22"/>
+      <line x1="2" y1="12" x2="22" y2="12"/>
+      <polyline points="9 5 12 2 15 5"/>
+      <polyline points="9 19 12 22 15 19"/>
+      <polyline points="5 9 2 12 5 15"/>
+      <polyline points="19 9 22 12 19 15"/>
+    </svg>
+  ),
+  hermetica: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="11" width="14" height="11" rx="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      <circle cx="12" cy="16" r="1.5"/>
+    </svg>
+  ),
+  ingenieria: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="8" y1="13" x2="16" y2="13"/>
+      <line x1="8" y1="17" x2="16" y2="17"/>
+    </svg>
+  ),
+}
+
+const ICONO_CHECK = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+)
+
 function parseSecciones(preguntas) {
   const result = []
   let current = null
   for (const p of preguntas) {
     if (p.tipo === 'seccion') {
-      current = { id: p.id, texto: p.texto, icono: p.icono || '📋', preguntas: [] }
+      current = { id: p.id, texto: p.texto, icono: p.icono || 'operaciones', preguntas: [] }
       result.push(current)
     } else if (current) {
       current.preguntas.push(p)
@@ -35,31 +88,29 @@ function PreguntaEscala({ pregunta, num, respuestas, handleChange }) {
           {pregunta.requerida && <span style={s.requerida}> *</span>}
         </div>
       </div>
-      <div>
-        <div style={s.escalaRow}>
-          {Array.from({ length: pregunta.max - pregunta.min + 1 }, (_, i) => i + pregunta.min).map((val) => {
-            const col = scaleColor(val)
-            const isActive = respuestas[pregunta.id] === val
-            return (
-              <button key={val} type="button" onClick={() => handleChange(pregunta.id, val)}
-                style={{
-                  ...s.escalaBtn,
-                  borderColor: isActive ? col.active : col.border,
-                  color: isActive ? 'white' : col.text,
-                  background: isActive ? col.active : col.bg,
-                  transform: isActive ? 'scale(1.12)' : 'scale(1)',
-                  boxShadow: isActive ? `0 4px 12px ${col.active}55` : 'none',
-                }}
-              >
-                {val}
-              </button>
-            )
-          })}
-        </div>
-        <div style={s.escalaEtiquetas}>
-          <span>😞 {pregunta.etiquetas[pregunta.min]}</span>
-          <span>{pregunta.etiquetas[pregunta.max]} 😊</span>
-        </div>
+      <div style={s.escalaRow}>
+        {Array.from({ length: pregunta.max - pregunta.min + 1 }, (_, i) => i + pregunta.min).map((val) => {
+          const col = scaleColor(val)
+          const isActive = respuestas[pregunta.id] === val
+          return (
+            <button key={val} type="button" onClick={() => handleChange(pregunta.id, val)}
+              style={{
+                ...s.escalaBtn,
+                borderColor: isActive ? col.active : col.border,
+                color: isActive ? 'white' : col.text,
+                background: isActive ? col.active : col.bg,
+                transform: isActive ? 'scale(1.12)' : 'scale(1)',
+                boxShadow: isActive ? `0 4px 12px ${col.active}55` : 'none',
+              }}
+            >
+              {val}
+            </button>
+          )
+        })}
+      </div>
+      <div style={s.escalaEtiquetas}>
+        <span>{pregunta.etiquetas[pregunta.min]}</span>
+        <span>{pregunta.etiquetas[pregunta.max]}</span>
       </div>
     </div>
   )
@@ -78,8 +129,12 @@ export default function Encuesta() {
     return (
       <div style={s.page}>
         <div style={s.notFound}>
-          <div style={s.notFoundIcon}>🔍</div>
-          <h2 style={{ fontSize: 20, color: 'var(--navy)', marginBottom: 12, fontWeight: 900 }}>Evaluación no encontrada</h2>
+          <div style={s.notFoundIcon}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c8cfe0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <h2 style={{ fontSize: 20, color: '#1B2D6B', marginBottom: 12, fontWeight: 900 }}>Evaluación no encontrada</h2>
           <button onClick={() => navigate('/')} style={s.btnSecondary}>← Volver al inicio</button>
         </div>
       </div>
@@ -137,7 +192,7 @@ export default function Encuesta() {
         <header style={s.header}>
           <div style={s.headerInner}>
             <button onClick={() => navigate('/')} style={s.backBtn}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
               </svg>
               Inicio
@@ -154,22 +209,20 @@ export default function Encuesta() {
 
         <main style={s.main}>
           <div style={s.encuestaHeader}>
-            <div style={s.encuestaTag}>🏗 Contratistas</div>
+            <span style={s.encuestaTag}>Contratistas</span>
             <h1 style={s.title}>{encuesta.titulo}</h1>
             <p style={s.desc}>{encuesta.descripcion}</p>
-            {encuesta.leyenda && (
-              <div style={s.leyenda}>
-                <div style={s.leyendaTitle}>Escala de calificación</div>
-                <div style={s.leyendaItems}>
-                  <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fee2e2', color: '#dc2626' }}>1</span>Muy malo</div>
-                  <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef9c3', color: '#ca8a04' }}>5</span>Regular</div>
-                  <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#d1fae5', color: '#059669' }}>10</span>Muy bueno</div>
-                </div>
+            <div style={s.leyenda}>
+              <div style={s.leyendaTitle}>Escala de calificación</div>
+              <div style={s.leyendaItems}>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fee2e2', color: '#dc2626' }}>1</span>Muy malo</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef9c3', color: '#ca8a04' }}>5</span>Regular</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#d1fae5', color: '#059669' }}>10</span>Muy bueno</div>
               </div>
-            )}
+            </div>
           </div>
 
-          {error && <div style={s.errorMsg}>⚠️ {error}</div>}
+          {error && <div style={s.errorMsg}>{error}</div>}
 
           <div style={s.seccionesGrid}>
             {secciones.map(sec => {
@@ -179,25 +232,31 @@ export default function Encuesta() {
               return (
                 <button key={sec.id} type="button" onClick={() => setModalSeccion(sec)} style={{
                   ...s.seccionCard,
-                  background: completa
-                    ? 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)'
-                    : 'white',
-                  borderColor: completa ? '#34d399' : 'rgba(27,45,107,0.10)',
-                  boxShadow: completa
-                    ? '0 4px 20px rgba(52,211,153,0.25)'
-                    : '0 4px 20px rgba(27,45,107,0.08)',
+                  background: completa ? '#f0fdf9' : 'white',
+                  borderColor: completa ? '#34d399' : '#e2e8f0',
+                  borderLeftColor: completa ? '#059669' : '#1B2D6B',
                 }}>
-                  <div style={s.seccionCardIcono}>{sec.icono}</div>
+                  <div style={{
+                    ...s.seccionCardIconBox,
+                    background: completa ? '#d1fae5' : '#eef1f9',
+                    color: completa ? '#059669' : '#1B2D6B',
+                  }}>
+                    {ICONOS[sec.icono] || ICONOS.operaciones}
+                  </div>
                   <div style={{
                     ...s.seccionCardTitulo,
                     color: completa ? '#065f46' : '#1B2D6B',
-                  }}>{sec.texto}</div>
-                  <div style={{
-                    ...s.seccionCardBadge,
-                    background: completa ? '#059669' : '#e8edf8',
-                    color: completa ? 'white' : '#6b7a99',
                   }}>
-                    {completa ? '✓ Completo' : `${resp} / ${total}`}
+                    {sec.texto}
+                  </div>
+                  <div style={s.seccionCardFooter}>
+                    <span style={{
+                      fontSize: 12, fontWeight: 700,
+                      color: completa ? '#059669' : '#94a3b8',
+                    }}>
+                      {completa ? 'Completado' : `${resp} de ${total} preguntas`}
+                    </span>
+                    {completa && ICONO_CHECK}
                   </div>
                 </button>
               )
@@ -210,11 +269,11 @@ export default function Encuesta() {
             disabled={!todasCompletas || enviando}
             style={{
               ...s.btnSubmit,
-              opacity: (!todasCompletas || enviando) ? 0.45 : 1,
+              opacity: (!todasCompletas || enviando) ? 0.4 : 1,
               cursor: (!todasCompletas || enviando) ? 'not-allowed' : 'pointer',
             }}
           >
-            {enviando ? 'Enviando...' : 'Enviar evaluación →'}
+            {enviando ? 'Enviando...' : 'Enviar evaluación'}
           </button>
         </main>
 
@@ -223,9 +282,15 @@ export default function Encuesta() {
           <div style={s.modalOverlay} onClick={() => setModalSeccion(null)}>
             <div style={s.modalBox} onClick={e => e.stopPropagation()}>
               <div style={s.modalHeader}>
-                <span style={s.modalIcono}>{modalSeccion.icono}</span>
+                <div style={{ ...s.seccionCardIconBox, background: '#eef1f9', color: '#1B2D6B', flexShrink: 0 }}>
+                  {ICONOS[modalSeccion.icono] || ICONOS.operaciones}
+                </div>
                 <h2 style={s.modalTitulo}>{modalSeccion.texto}</h2>
-                <button type="button" onClick={() => setModalSeccion(null)} style={s.modalClose}>✕</button>
+                <button type="button" onClick={() => setModalSeccion(null)} style={s.modalClose}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
               </div>
               <div style={s.modalBody}>
                 {modalSeccion.preguntas.map((pregunta, idx) => (
@@ -240,7 +305,7 @@ export default function Encuesta() {
               </div>
               <div style={s.modalFooter}>
                 <button type="button" onClick={() => setModalSeccion(null)} style={s.modalBtnCerrar}>
-                  Listo, cerrar sección
+                  Cerrar sección
                 </button>
               </div>
             </div>
@@ -260,7 +325,7 @@ export default function Encuesta() {
       <header style={s.header}>
         <div style={s.headerInner}>
           <button onClick={() => navigate('/')} style={s.backBtn}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             Inicio
@@ -279,9 +344,9 @@ export default function Encuesta() {
 
       <main style={s.main}>
         <div style={s.encuestaHeader}>
-          <div style={s.encuestaTag}>
-            {encuesta.respondedor === 'interno' ? '👷 Personal interno' : '🏗 Contratistas'}
-          </div>
+          <span style={s.encuestaTag}>
+            {encuesta.respondedor === 'interno' ? 'Personal interno' : 'Contratistas'}
+          </span>
           <h1 style={s.title}>{encuesta.titulo}</h1>
           <p style={s.desc}>{encuesta.descripcion}</p>
           {encuesta.leyenda && (
@@ -296,7 +361,7 @@ export default function Encuesta() {
           )}
         </div>
 
-        {error && <div style={s.errorMsg}>⚠️ {error}</div>}
+        {error && <div style={s.errorMsg}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
           {(() => {
@@ -324,15 +389,11 @@ export default function Encuesta() {
                   </div>
 
                   {pregunta.tipo === 'texto' && (
-                    <input
-                      type="text"
-                      style={s.input}
+                    <input type="text" style={s.input}
                       value={respuestas[pregunta.id] || ''}
                       onChange={(e) => handleChange(pregunta.id, e.target.value)}
                       placeholder="Escribe aquí..."
-                      autoComplete="off"
-                      autoCorrect="off"
-                      spellCheck="false"
+                      autoComplete="off" autoCorrect="off" spellCheck="false"
                     />
                   )}
 
@@ -343,10 +404,7 @@ export default function Encuesta() {
                           const col = scaleColor(val)
                           const isActive = respuestas[pregunta.id] === val
                           return (
-                            <button
-                              key={val}
-                              type="button"
-                              onClick={() => handleChange(pregunta.id, val)}
+                            <button key={val} type="button" onClick={() => handleChange(pregunta.id, val)}
                               style={{
                                 ...s.escalaBtn,
                                 borderColor: isActive ? col.active : col.border,
@@ -362,8 +420,8 @@ export default function Encuesta() {
                         })}
                       </div>
                       <div style={s.escalaEtiquetas}>
-                        <span>😞 {pregunta.etiquetas[pregunta.min]}</span>
-                        <span>{pregunta.etiquetas[pregunta.max]} 😊</span>
+                        <span>{pregunta.etiquetas[pregunta.min]}</span>
+                        <span>{pregunta.etiquetas[pregunta.max]}</span>
                       </div>
                     </div>
                   )}
@@ -373,13 +431,13 @@ export default function Encuesta() {
                       {pregunta.opciones.map((op) => (
                         <label key={op} style={{
                           ...s.opcionLabel,
-                          background: respuestas[pregunta.id] === op ? 'var(--teal-light)' : 'var(--gray-50)',
-                          borderColor: respuestas[pregunta.id] === op ? 'var(--teal)' : 'var(--gray-300)',
+                          background: respuestas[pregunta.id] === op ? '#e8edf8' : '#f8fafc',
+                          borderColor: respuestas[pregunta.id] === op ? '#1B2D6B' : '#e2e8f0',
                         }}>
                           <input type="radio" name={pregunta.id} value={op}
                             checked={respuestas[pregunta.id] === op}
                             onChange={() => handleChange(pregunta.id, op)}
-                            style={{ accentColor: 'var(--teal)', width: 20, height: 20, flexShrink: 0 }}
+                            style={{ accentColor: '#1B2D6B', width: 18, height: 18, flexShrink: 0 }}
                           />
                           {op}
                         </label>
@@ -392,9 +450,9 @@ export default function Encuesta() {
                       {['Sí', 'No'].map((op) => (
                         <label key={op} style={{
                           ...s.siNoBtn,
-                          background: respuestas[pregunta.id] === op ? 'var(--navy)' : 'white',
-                          color: respuestas[pregunta.id] === op ? 'white' : 'var(--navy)',
-                          borderColor: respuestas[pregunta.id] === op ? 'var(--navy)' : 'var(--gray-300)',
+                          background: respuestas[pregunta.id] === op ? '#1B2D6B' : 'white',
+                          color: respuestas[pregunta.id] === op ? 'white' : '#1B2D6B',
+                          borderColor: respuestas[pregunta.id] === op ? '#1B2D6B' : '#e2e8f0',
                         }}>
                           <input type="radio" name={pregunta.id} value={op}
                             checked={respuestas[pregunta.id] === op}
@@ -413,7 +471,7 @@ export default function Encuesta() {
 
           <button type="submit" disabled={enviando}
             style={{ ...s.btnSubmit, opacity: enviando ? 0.7 : 1 }}>
-            {enviando ? 'Enviando...' : 'Enviar evaluación →'}
+            {enviando ? 'Enviando...' : 'Enviar evaluación'}
           </button>
         </form>
       </main>
@@ -422,234 +480,240 @@ export default function Encuesta() {
 }
 
 const s = {
-  page: { minHeight: '100vh', minHeight: '100dvh', background: 'var(--gray-50)' },
+  page: { minHeight: '100vh', minHeight: '100dvh', background: '#f4f6fb' },
 
   header: {
-    background: 'var(--navy)', position: 'sticky', top: 0, zIndex: 100,
-    boxShadow: '0 2px 20px rgba(0,0,0,0.2)',
+    background: '#1B2D6B', position: 'sticky', top: 0, zIndex: 100,
+    boxShadow: '0 2px 16px rgba(0,0,0,0.18)',
     paddingTop: 'env(safe-area-inset-top)',
   },
   headerInner: {
-    maxWidth: 780, margin: '0 auto', padding: '14px 20px',
+    maxWidth: 820, margin: '0 auto', padding: '13px 20px',
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
   },
   backBtn: {
-    background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
-    color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 800,
-    fontFamily: 'Nunito, sans-serif', padding: '9px 14px', borderRadius: 8,
-    display: 'flex', alignItems: 'center', gap: 6, minHeight: 44,
+    background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.16)',
+    color: 'white', cursor: 'pointer', fontSize: 13, fontWeight: 700,
+    fontFamily: 'Nunito, sans-serif', padding: '8px 14px', borderRadius: 8,
+    display: 'flex', alignItems: 'center', gap: 6, minHeight: 40,
+    letterSpacing: '0.01em',
   },
-  logo: { height: 36, objectFit: 'contain', maxWidth: 160 },
+  logo: { height: 34, objectFit: 'contain', maxWidth: 160 },
   progressWrap: {
-    maxWidth: 780, margin: '0 auto', padding: '0 20px 10px',
+    maxWidth: 820, margin: '0 auto', padding: '0 20px 10px',
     display: 'flex', alignItems: 'center', gap: 10,
   },
   progressInner: {
-    flex: 1, height: 5, background: 'rgba(255,255,255,0.15)',
-    borderRadius: 3, overflow: 'hidden',
+    flex: 1, height: 4, background: 'rgba(255,255,255,0.12)',
+    borderRadius: 2, overflow: 'hidden',
   },
   progressBar: {
-    height: '100%', background: 'var(--teal)',
-    borderRadius: 3, transition: 'width 0.3s ease',
+    height: '100%', background: '#3EC8B4',
+    borderRadius: 2, transition: 'width 0.35s ease',
   },
-  progressLabel: { fontSize: 12, color: 'rgba(255,255,255,0.6)', fontWeight: 700, whiteSpace: 'nowrap' },
+  progressLabel: { fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 700, whiteSpace: 'nowrap' },
 
   main: {
-    maxWidth: 780, margin: '0 auto',
+    maxWidth: 820, margin: '0 auto',
     padding: '24px 16px',
     paddingBottom: 'calc(80px + env(safe-area-inset-bottom))',
   },
 
   encuestaHeader: {
-    background: 'white', borderRadius: 'var(--radius)', padding: '22px 20px',
-    marginBottom: 16, boxShadow: 'var(--shadow)',
-    border: '1.5px solid var(--gray-100)',
-    borderLeft: '5px solid var(--teal)',
+    background: 'white', borderRadius: 12, padding: '22px 20px',
+    marginBottom: 20, boxShadow: '0 1px 8px rgba(27,45,107,0.07)',
+    border: '1px solid #e8edf5',
+    borderLeft: '4px solid #3EC8B4',
   },
   encuestaTag: {
-    display: 'inline-block', background: 'var(--teal-light)', color: 'var(--teal-dark)',
-    fontSize: 12, fontWeight: 800, padding: '4px 12px', borderRadius: 20, marginBottom: 10,
+    display: 'inline-block',
+    background: '#1B2D6B', color: 'white',
+    fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4,
+    letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 12,
   },
-  title: { fontSize: 22, fontWeight: 900, color: 'var(--navy)', marginBottom: 6, lineHeight: 1.25 },
-  desc: { color: 'var(--gray-500)', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
+  title: { fontSize: 20, fontWeight: 900, color: '#1B2D6B', marginBottom: 6, lineHeight: 1.25 },
+  desc: { color: '#64748b', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
   leyenda: {
-    background: 'var(--gray-50)', borderRadius: 10, padding: '14px 16px',
-    border: '1.5px solid var(--gray-100)',
+    background: '#f8fafc', borderRadius: 8, padding: '12px 14px',
+    border: '1px solid #e8edf5',
   },
   leyendaTitle: {
-    fontSize: 11, fontWeight: 800, color: 'var(--gray-500)',
-    textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10,
+    fontSize: 10, fontWeight: 800, color: '#94a3b8',
+    textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10,
   },
   leyendaItems: { display: 'flex', gap: 16, flexWrap: 'wrap' },
   leyendaItem: {
     display: 'flex', alignItems: 'center', gap: 7,
-    fontSize: 13, fontWeight: 700, color: 'var(--gray-700)',
+    fontSize: 13, fontWeight: 700, color: '#475569',
   },
   leyendaBadge: {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-    width: 26, height: 26, borderRadius: 6, fontWeight: 900, fontSize: 12, flexShrink: 0,
+    width: 24, height: 24, borderRadius: 5, fontWeight: 900, fontSize: 11, flexShrink: 0,
   },
 
-  // Secciones grid (modo tarjetas)
+  // ── Sección cards ──
   seccionesGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-    gap: 14,
-    marginBottom: 24,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+    gap: 12, marginBottom: 24,
   },
   seccionCard: {
-    border: '2px solid',
-    borderRadius: 16,
-    padding: '28px 20px 22px',
-    display: 'flex', flexDirection: 'column', alignItems: 'center',
+    border: '1.5px solid',
+    borderLeft: '4px solid',
+    borderRadius: 12,
+    padding: '18px 16px',
+    display: 'flex', flexDirection: 'column',
     gap: 10, cursor: 'pointer',
     fontFamily: 'Nunito, sans-serif',
-    transition: 'transform 0.15s, box-shadow 0.15s',
-    textAlign: 'center',
-    minHeight: 160,
+    textAlign: 'left',
+    boxShadow: '0 2px 8px rgba(27,45,107,0.06)',
+    transition: 'box-shadow 0.15s, transform 0.1s',
   },
-  seccionCardIcono: { fontSize: 36 },
+  seccionCardIconBox: {
+    width: 42, height: 42, borderRadius: 10,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0,
+  },
   seccionCardTitulo: {
-    fontSize: 14, fontWeight: 900, lineHeight: 1.35, flex: 1,
+    fontSize: 13, fontWeight: 900, lineHeight: 1.4, flex: 1,
   },
-  seccionCardBadge: {
-    fontSize: 12, fontWeight: 800,
-    padding: '4px 12px', borderRadius: 20,
+  seccionCardFooter: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    marginTop: 2,
   },
 
-  // Modal
+  // ── Modal ──
   modalOverlay: {
     position: 'fixed', inset: 0, zIndex: 200,
-    background: 'rgba(10,20,50,0.65)',
+    background: 'rgba(10,18,40,0.6)',
     display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-    padding: '0',
-    backdropFilter: 'blur(3px)',
+    backdropFilter: 'blur(4px)',
   },
   modalBox: {
     background: 'white',
-    borderRadius: '20px 20px 0 0',
+    borderRadius: '18px 18px 0 0',
     width: '100%', maxWidth: 680,
-    maxHeight: '90vh',
+    maxHeight: '92vh',
     display: 'flex', flexDirection: 'column',
     overflow: 'hidden',
+    boxShadow: '0 -8px 40px rgba(10,18,40,0.25)',
   },
   modalHeader: {
     display: 'flex', alignItems: 'center', gap: 12,
-    padding: '18px 20px 14px',
-    borderBottom: '1.5px solid #e8ecf5',
+    padding: '16px 18px',
+    borderBottom: '1px solid #e8edf5',
     flexShrink: 0,
-    background: 'white',
   },
-  modalIcono: { fontSize: 26 },
-  modalTitulo: { fontSize: 17, fontWeight: 900, color: '#1B2D6B', flex: 1, lineHeight: 1.3 },
+  modalTitulo: {
+    fontSize: 15, fontWeight: 900, color: '#1B2D6B',
+    flex: 1, lineHeight: 1.3,
+  },
   modalClose: {
-    background: '#f2f5fb', border: 'none', borderRadius: 8,
-    width: 36, height: 36, cursor: 'pointer',
-    fontSize: 16, color: '#6b7a99', fontWeight: 900,
+    background: '#f1f5f9', border: 'none', borderRadius: 7,
+    width: 34, height: 34, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    flexShrink: 0, fontFamily: 'Nunito, sans-serif',
+    flexShrink: 0, color: '#64748b', fontFamily: 'Nunito, sans-serif',
   },
   modalBody: {
     overflowY: 'auto', flex: 1,
-    padding: '16px 16px 8px',
+    padding: '14px 14px 4px',
     WebkitOverflowScrolling: 'touch',
   },
   modalFooter: {
     padding: '14px 16px',
     paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
-    borderTop: '1.5px solid #e8ecf5',
+    borderTop: '1px solid #e8edf5',
     flexShrink: 0,
-    background: 'white',
   },
   modalBtnCerrar: {
-    background: 'linear-gradient(135deg, #1B2D6B 0%, #243a8a 100%)',
-    color: 'white', border: 'none', borderRadius: 12,
-    padding: '16px', fontSize: 16, fontWeight: 900,
+    background: '#1B2D6B',
+    color: 'white', border: 'none', borderRadius: 10,
+    padding: '15px', fontSize: 15, fontWeight: 800,
     cursor: 'pointer', width: '100%',
-    fontFamily: 'Nunito, sans-serif',
-    minHeight: 52,
+    fontFamily: 'Nunito, sans-serif', minHeight: 50,
+    letterSpacing: '0.01em',
   },
 
-  // Sección header (modo lineal)
+  // ── Sección header (modo lineal) ──
   seccionHeader: {
     display: 'flex', alignItems: 'center', gap: 12,
     margin: '28px 0 12px',
   },
-  seccionLinea: { flex: 1, height: 2, background: '#1B2D6B', opacity: 0.15, borderRadius: 2 },
+  seccionLinea: { flex: 1, height: 1, background: '#cbd5e1', borderRadius: 1 },
   seccionTitulo: {
-    fontSize: 13, fontWeight: 900, color: '#1B2D6B',
-    textTransform: 'uppercase', letterSpacing: '0.07em',
+    fontSize: 11, fontWeight: 900, color: '#1B2D6B',
+    textTransform: 'uppercase', letterSpacing: '0.08em',
     whiteSpace: 'nowrap', padding: '0 4px',
   },
 
   preguntaCard: {
-    background: 'white', borderRadius: 'var(--radius)', padding: '20px 18px',
-    marginBottom: 12, boxShadow: 'var(--shadow)',
-    border: '1.5px solid var(--gray-100)',
+    background: 'white', borderRadius: 10, padding: '18px 16px',
+    marginBottom: 10, boxShadow: '0 1px 6px rgba(27,45,107,0.06)',
+    border: '1px solid #e8edf5',
   },
-  preguntaHeader: { display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16 },
+  preguntaHeader: { display: 'flex', gap: 11, alignItems: 'flex-start', marginBottom: 14 },
   preguntaNum: {
-    minWidth: 28, height: 28, background: 'var(--navy)', color: 'white',
-    borderRadius: 7, fontSize: 13, fontWeight: 900,
+    minWidth: 26, height: 26, background: '#1B2D6B', color: 'white',
+    borderRadius: 6, fontSize: 12, fontWeight: 900,
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
   },
-  preguntaLabel: { fontWeight: 800, color: 'var(--gray-700)', fontSize: 15, lineHeight: 1.5, flex: 1 },
-  requerida: { color: 'var(--teal-dark)', fontWeight: 900 },
+  preguntaLabel: { fontWeight: 700, color: '#334155', fontSize: 14, lineHeight: 1.55, flex: 1 },
+  requerida: { color: '#3EC8B4', fontWeight: 900 },
 
   input: {
-    width: '100%', border: '2px solid var(--gray-300)', borderRadius: 10,
-    padding: '14px 16px', fontSize: 16, fontFamily: 'Nunito, sans-serif',
-    outline: 'none', color: 'var(--gray-900)', fontWeight: 600,
-    background: 'var(--gray-50)', WebkitAppearance: 'none',
+    width: '100%', border: '1.5px solid #e2e8f0', borderRadius: 8,
+    padding: '13px 14px', fontSize: 15, fontFamily: 'Nunito, sans-serif',
+    outline: 'none', color: '#1e293b', fontWeight: 600,
+    background: '#f8fafc', WebkitAppearance: 'none',
   },
 
-  escalaRow: { display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 },
+  escalaRow: { display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 7 },
   escalaBtn: {
-    width: 44, height: 44, border: '2px solid',
-    borderRadius: 10, cursor: 'pointer',
-    fontSize: 15, fontWeight: 900, fontFamily: 'Nunito, sans-serif',
-    transition: 'all 0.15s', flexShrink: 0,
+    width: 42, height: 42, border: '2px solid',
+    borderRadius: 8, cursor: 'pointer',
+    fontSize: 14, fontWeight: 900, fontFamily: 'Nunito, sans-serif',
+    transition: 'all 0.12s', flexShrink: 0,
   },
   escalaEtiquetas: {
     display: 'flex', justifyContent: 'space-between',
-    fontSize: 12, color: 'var(--gray-500)', fontWeight: 700,
+    fontSize: 11, color: '#94a3b8', fontWeight: 700,
   },
 
-  opciones: { display: 'flex', flexDirection: 'column', gap: 10 },
+  opciones: { display: 'flex', flexDirection: 'column', gap: 8 },
   opcionLabel: {
-    display: 'flex', alignItems: 'center', gap: 12,
-    padding: '14px 16px', borderRadius: 10, border: '2px solid',
-    cursor: 'pointer', fontSize: 15, fontWeight: 700, transition: 'all 0.15s',
+    display: 'flex', alignItems: 'center', gap: 10,
+    padding: '12px 14px', borderRadius: 8, border: '1.5px solid',
+    cursor: 'pointer', fontSize: 14, fontWeight: 700, transition: 'all 0.12s',
     minHeight: 44,
   },
 
-  siNoWrap: { display: 'flex', gap: 12 },
+  siNoWrap: { display: 'flex', gap: 10 },
   siNoBtn: {
-    flex: 1, padding: '14px', border: '2px solid', borderRadius: 10,
-    cursor: 'pointer', fontSize: 16, fontWeight: 900,
+    flex: 1, padding: '13px', border: '1.5px solid', borderRadius: 8,
+    cursor: 'pointer', fontSize: 15, fontWeight: 800,
     fontFamily: 'Nunito, sans-serif', textAlign: 'center',
-    transition: 'all 0.15s', minHeight: 50,
+    transition: 'all 0.12s', minHeight: 48,
   },
 
   errorMsg: {
-    background: '#fef2f2', color: '#dc2626', border: '2px solid #fecaca',
-    borderRadius: 10, padding: '14px 16px', fontSize: 15, marginBottom: 16, fontWeight: 700,
+    background: '#fef2f2', color: '#dc2626', border: '1.5px solid #fecaca',
+    borderRadius: 8, padding: '13px 14px', fontSize: 14, marginBottom: 16, fontWeight: 700,
   },
   btnSubmit: {
-    background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%)',
-    color: 'white', border: 'none', borderRadius: 14,
-    padding: '18px 32px', fontSize: 17, fontWeight: 900,
+    background: 'linear-gradient(135deg, #1B2D6B 0%, #2d4499 100%)',
+    color: 'white', border: 'none', borderRadius: 11,
+    padding: '17px 32px', fontSize: 16, fontWeight: 900,
     width: '100%', marginTop: 8,
     fontFamily: 'Nunito, sans-serif',
-    boxShadow: '0 4px 16px rgba(27,45,107,0.3)',
-    minHeight: 56,
+    boxShadow: '0 4px 14px rgba(27,45,107,0.28)',
+    minHeight: 54, letterSpacing: '0.01em',
   },
   btnSecondary: {
-    background: 'none', border: '2px solid var(--gray-300)',
-    borderRadius: 10, padding: '12px 24px', cursor: 'pointer',
-    fontSize: 15, color: 'var(--gray-700)', fontWeight: 800,
-    fontFamily: 'Nunito, sans-serif', minHeight: 44,
+    background: 'none', border: '1.5px solid #e2e8f0',
+    borderRadius: 8, padding: '11px 22px', cursor: 'pointer',
+    fontSize: 14, color: '#475569', fontWeight: 700,
+    fontFamily: 'Nunito, sans-serif', minHeight: 42,
   },
   notFound: { textAlign: 'center', padding: '60px 20px' },
-  notFoundIcon: { fontSize: 48, marginBottom: 16 },
+  notFoundIcon: { marginBottom: 16, display: 'flex', justifyContent: 'center' },
 }

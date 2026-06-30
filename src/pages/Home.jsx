@@ -90,7 +90,7 @@ export default function Home() {
               <Link key={enc.id} to={`/encuesta/${enc.id}`} style={s.cardLink}>
                 <div style={s.cardTop}>
                   <span style={{ ...s.cardTag, background: tag.bg, color: tag.color }}>
-                    {enc.respondedor === 'interno' ? '👷 Personal interno' : enc.respondedor === 'externo' ? '🏗 Contratistas' : '👥 Ambos'}
+                    {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Contratistas' : 'Ambos'}
                   </span>
                   <span style={s.cardNum}>#{String(i+1).padStart(2,'0')}</span>
                 </div>
@@ -99,7 +99,7 @@ export default function Home() {
                 <div style={s.cardDivider} />
                 <div style={s.cardFooter}>
                   <span style={s.cardMeta}>
-                    📋 {escalaCount > 0 ? `${escalaCount} preguntas` : 'Próximamente'}
+                    {escalaCount > 0 ? `${escalaCount} preguntas` : 'Próximamente'}
                   </span>
                   <div style={s.cardCta}>
                     Iniciar
