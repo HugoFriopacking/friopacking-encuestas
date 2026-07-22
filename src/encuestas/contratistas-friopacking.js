@@ -1,6 +1,6 @@
 const encuesta = {
   id: 'contratistas-friopacking',
-  titulo: 'Contratistas — Grupo Friopacking',
+  titulo: 'Contratistas — Grupo Friopacking — Junio',
   descripcion: 'Evaluación de los contratistas hacia las áreas de Grupo Friopacking',
   respondedor: 'externo',
   activa: true,

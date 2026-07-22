@@ -1,6 +1,6 @@
 const encuesta = {
   id: 'contratistas-ssoma',
-  titulo: 'Contratistas — SSOMA',
+  titulo: 'Contratistas — SSOMA — Junio',
   descripcion: 'Evaluación de los contratistas hacia los supervisores SSOMA',
   respondedor: 'externo',
   activa: true,

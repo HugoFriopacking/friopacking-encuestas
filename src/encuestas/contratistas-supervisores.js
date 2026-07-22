@@ -1,6 +1,6 @@
 const encuesta = {
   id: 'contratistas-supervisores',
-  titulo: 'Contratistas — Supervisores',
+  titulo: 'Contratistas — Supervisores — Junio',
   descripcion: 'Evaluación de los contratistas hacia los supervisores de obra',
   respondedor: 'externo',
   activa: true,
