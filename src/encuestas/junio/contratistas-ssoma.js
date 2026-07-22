@@ -3,7 +3,7 @@ const encuesta = {
   titulo: 'Contratistas — SSOMA — Junio',
   descripcion: 'Evaluación de los contratistas hacia los supervisores SSOMA',
   respondedor: 'externo',
-  activa: true,
+  activa: false,
   mes: 'Junio',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [

@@ -141,6 +141,25 @@ export default function Encuesta() {
     )
   }
 
+  if (!encuesta.activa) {
+    return (
+      <div style={s.page}>
+        <div style={s.notFound}>
+          <div style={s.notFoundIcon}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#BFC5CC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: '#376B9E', marginBottom: 12, fontWeight: 700 }}>Esta evaluación ya no está disponible</h2>
+          <p style={{ color: '#5C7C93', fontSize: 14, fontWeight: 600, marginBottom: 20, maxWidth: 320 }}>
+            El período para responder "{encuesta.titulo}" ha finalizado.
+          </p>
+          <button onClick={() => navigate('/')} style={s.btnSecondary}>← Volver al inicio</button>
+        </div>
+      </div>
+    )
+  }
+
   function handleChange(preguntaId, valor) {
     setRespuestas((prev) => ({ ...prev, [preguntaId]: valor }))
   }
