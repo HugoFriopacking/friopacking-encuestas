@@ -116,7 +116,7 @@ export default function Home() {
 
       <footer style={s.footer}>
         <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.footerLogo} />
-        <p style={s.footerText}>© {new Date().getFullYear()} Grupo Friopacking — Uso interno</p>
+        <p style={s.footerText}>© {new Date().getFullYear()} Grupo Friopacking — H. M. P.</p>
       </footer>
     </div>
   )

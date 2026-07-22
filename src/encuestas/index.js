@@ -1,8 +1,8 @@
-import contratistasSsoma from './contratistas-ssoma.js'
-import ssomaContratistas from './ssoma-contratistas.js'
-import contratistaSupervisores from './contratistas-supervisores.js'
-import contratistasFriopacking from './contratistas-friopacking.js'
-import contratistaSupervisoresJulio from './contratistas-supervisores-julio.js'
+import contratistasSsoma from './junio/contratistas-ssoma.js'
+import ssomaContratistas from './junio/ssoma-contratistas.js'
+import contratistaSupervisores from './junio/contratistas-supervisores.js'
+import contratistasFriopacking from './junio/contratistas-friopacking.js'
+import contratistaSupervisoresJulio from './julio/contratistas-supervisores-julio.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
