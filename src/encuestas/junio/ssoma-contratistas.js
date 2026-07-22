@@ -4,6 +4,7 @@ const encuesta = {
   descripcion: 'Evaluación de los supervisores SSOMA hacia los contratistas',
   respondedor: 'interno',
   activa: true,
+  mes: 'Junio',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 'contratista', tipo: 'texto', texto: 'Contratista a evaluar', requerida: true },

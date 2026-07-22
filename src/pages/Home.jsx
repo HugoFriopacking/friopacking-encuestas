@@ -11,6 +11,23 @@ const tagColors = {
   ambos:   { bg: '#EEF0F2', color: '#5F8FBF' },
 }
 
+// Orden de aparición de los grupos por mes (más reciente primero)
+const MES_ORDEN = ['Julio', 'Junio']
+
+function agruparPorMes(encuestas) {
+  const grupos = {}
+  encuestas.forEach((enc) => {
+    const mes = enc.mes || 'Otras'
+    if (!grupos[mes]) grupos[mes] = []
+    grupos[mes].push(enc)
+  })
+  const ordenadas = [
+    ...MES_ORDEN.filter((m) => grupos[m]),
+    ...Object.keys(grupos).filter((m) => !MES_ORDEN.includes(m)),
+  ]
+  return ordenadas.map((mes) => ({ mes, encuestas: grupos[mes] }))
+}
+
 export default function Home() {
   const [pin, setPin] = useState('')
   const [error, setError] = useState(false)
@@ -82,36 +99,51 @@ export default function Home() {
       </div>
 
       <main style={s.main}>
-        <div style={s.grid}>
-          {encuestasActivas.map((enc, i) => {
-            const tag = tagColors[enc.respondedor] || tagColors.ambos
-            const escalaCount = enc.preguntas.filter(p => p.tipo === 'escala').length
-            return (
-              <Link key={enc.id} to={`/encuesta/${enc.id}`} style={s.cardLink}>
-                <div style={s.cardTop}>
-                  <span style={{ ...s.cardTag, background: tag.bg, color: tag.color }}>
-                    {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Contratistas' : 'Ambos'}
-                  </span>
-                  <span style={s.cardNum}>#{String(i+1).padStart(2,'0')}</span>
-                </div>
-                <h2 style={s.cardTitle}>{enc.titulo}</h2>
-                <p style={s.cardDesc}>{enc.descripcion}</p>
-                <div style={s.cardDivider} />
-                <div style={s.cardFooter}>
-                  <span style={s.cardMeta}>
-                    {escalaCount > 0 ? `${escalaCount} preguntas` : 'Próximamente'}
-                  </span>
-                  <div style={s.cardCta}>
-                    Iniciar
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+        {(() => {
+          const grupos = agruparPorMes(encuestasActivas)
+          let contador = 0
+          return grupos.map(({ mes, encuestas }) => (
+            <section key={mes} style={s.mesSection}>
+              <div style={s.mesHeading}>
+                <span style={s.mesLinea} />
+                <h2 style={s.mesTitulo}>{mes}</h2>
+                <span style={s.mesLinea} />
+              </div>
+              <div style={s.grid}>
+                {encuestas.map((enc) => {
+                  contador++
+                  const num = contador
+                  const tag = tagColors[enc.respondedor] || tagColors.ambos
+                  const escalaCount = enc.preguntas.filter(p => p.tipo === 'escala').length
+                  return (
+                    <Link key={enc.id} to={`/encuesta/${enc.id}`} style={s.cardLink}>
+                      <div style={s.cardTop}>
+                        <span style={{ ...s.cardTag, background: tag.bg, color: tag.color }}>
+                          {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Contratistas' : 'Ambos'}
+                        </span>
+                        <span style={s.cardNum}>#{String(num).padStart(2,'0')}</span>
+                      </div>
+                      <h2 style={s.cardTitle}>{enc.titulo}</h2>
+                      <p style={s.cardDesc}>{enc.descripcion}</p>
+                      <div style={s.cardDivider} />
+                      <div style={s.cardFooter}>
+                        <span style={s.cardMeta}>
+                          {escalaCount > 0 ? `${escalaCount} preguntas` : 'Próximamente'}
+                        </span>
+                        <div style={s.cardCta}>
+                          Iniciar
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </section>
+          ))
+        })()}
       </main>
 
       <footer style={s.footer}>
@@ -200,6 +232,13 @@ const s = {
     display: 'inline-block', boxShadow: '0 0 8px #B9DED8',
   },
   main: { maxWidth: 900, margin: '-24px auto 0', padding: '0 16px 60px', flex: 1, position: 'relative', zIndex: 1 },
+  mesSection: { marginBottom: 28 },
+  mesHeading: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 },
+  mesLinea: { flex: 1, height: 1, background: '#BFC5CC', borderRadius: 1 },
+  mesTitulo: {
+    fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 700, color: '#376B9E',
+    textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap',
+  },
   grid: { display: 'grid', gap: 14, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' },
   cardLink: {
     background: 'white', borderRadius: 14, padding: '22px 20px',
