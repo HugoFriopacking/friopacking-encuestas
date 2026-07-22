@@ -6,9 +6,9 @@ import { encuestasActivas } from '../encuestas/index.js'
 const PIN_ACCESO = '2025'
 
 const tagColors = {
-  interno: { bg: '#e8f0fe', color: '#1B2D6B' },
-  externo: { bg: '#e6f9f6', color: '#1a7a6e' },
-  ambos:   { bg: '#fef3e2', color: '#92400e' },
+  interno: { bg: '#E7F1FA', color: '#376B9E' },
+  externo: { bg: '#E9F5F3', color: '#3F7A70' },
+  ambos:   { bg: '#EEF0F2', color: '#5F8FBF' },
 }
 
 export default function Home() {
@@ -126,7 +126,7 @@ const s = {
   // LOGIN
   page: {
     minHeight: '100vh', minHeight: '100dvh',
-    background: 'linear-gradient(135deg, #132050 0%, #1B2D6B 60%, #243a8a 100%)',
+    background: 'linear-gradient(135deg, #25496B 0%, #376B9E 60%, #5F8FBF 100%)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     padding: '24px 20px', position: 'relative', overflow: 'hidden',
     paddingTop: 'calc(24px + env(safe-area-inset-top))',
@@ -134,7 +134,7 @@ const s = {
   },
   bg: {
     position: 'absolute', inset: 0,
-    background: 'radial-gradient(ellipse at 30% 70%, rgba(62,200,180,0.12) 0%, transparent 60%)',
+    background: 'radial-gradient(ellipse at 30% 70%, rgba(185,222,216,0.12) 0%, transparent 60%)',
     pointerEvents: 'none',
   },
   card: {
@@ -143,32 +143,32 @@ const s = {
     boxShadow: '0 24px 80px rgba(0,0,0,0.3)', position: 'relative',
   },
   logo: { height: 40, objectFit: 'contain', marginBottom: 24, opacity: 0.85, maxWidth: '100%' },
-  title: { fontSize: 22, fontWeight: 900, color: '#1B2D6B', marginBottom: 6 },
-  subtitle: { color: '#6b7a99', fontSize: 15, fontWeight: 600, marginBottom: 28 },
+  title: { fontFamily: 'Inter, sans-serif', fontSize: 22, fontWeight: 700, color: '#376B9E', marginBottom: 6 },
+  subtitle: { color: '#5C7C93', fontSize: 15, fontWeight: 600, marginBottom: 28 },
   form: { display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 },
   pinInput: {
     width: '100%', border: '2px solid', borderRadius: 12,
-    padding: '16px', fontSize: 24, fontFamily: 'Nunito, sans-serif',
+    padding: '16px', fontSize: 24, fontFamily: 'Manrope, sans-serif',
     fontWeight: 900, textAlign: 'center', outline: 'none',
-    letterSpacing: '0.3em', color: '#1B2D6B', background: '#f2f5fb',
+    letterSpacing: '0.3em', color: '#376B9E', background: '#EEF1F3',
     minHeight: 56,
   },
   errorMsg: { color: '#dc2626', fontSize: 14, fontWeight: 700, margin: '0' },
   btn: {
-    background: 'linear-gradient(135deg, #1B2D6B 0%, #243a8a 100%)',
+    background: 'linear-gradient(135deg, #376B9E 0%, #5F8FBF 100%)',
     color: 'white', border: 'none', borderRadius: 12,
     padding: '16px', fontSize: 16, fontWeight: 900,
-    cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
-    boxShadow: '0 4px 16px rgba(27,45,107,0.3)', minHeight: 52,
+    cursor: 'pointer', fontFamily: 'Manrope, sans-serif',
+    boxShadow: '0 4px 16px rgba(55,107,158,0.3)', minHeight: 52,
   },
-  hint: { color: '#c8cfe0', fontSize: 13, fontWeight: 600 },
+  hint: { color: '#BFC5CC', fontSize: 13, fontWeight: 600 },
 
   // HOME
-  pageLight: { minHeight: '100vh', minHeight: '100dvh', background: '#f2f5fb', display: 'flex', flexDirection: 'column' },
-  header: { background: '#1B2D6B', position: 'relative', overflow: 'hidden' },
+  pageLight: { minHeight: '100vh', minHeight: '100dvh', background: '#EEF1F3', display: 'flex', flexDirection: 'column' },
+  header: { background: '#376B9E', position: 'relative', overflow: 'hidden' },
   headerBg: {
     position: 'absolute', inset: 0,
-    background: 'radial-gradient(ellipse at 80% 50%, rgba(62,200,180,0.12) 0%, transparent 70%)',
+    background: 'radial-gradient(ellipse at 80% 50%, rgba(185,222,216,0.12) 0%, transparent 70%)',
     pointerEvents: 'none',
   },
   headerInner: {
@@ -177,17 +177,17 @@ const s = {
   },
   headerLogo: { height: 40, objectFit: 'contain', maxWidth: 160 },
   headerPill: {
-    background: 'rgba(62,200,180,0.18)', color: '#3EC8B4',
+    background: 'rgba(185,222,216,0.22)', color: '#B9DED8',
     fontSize: 11, fontWeight: 800, padding: '5px 12px',
     borderRadius: 20, letterSpacing: '0.08em', textTransform: 'uppercase',
-    border: '1px solid rgba(62,200,180,0.3)',
+    border: '1px solid rgba(185,222,216,0.35)',
   },
   hero: {
-    background: 'linear-gradient(135deg, #132050 0%, #1B2D6B 50%, #243a8a 100%)',
+    background: 'linear-gradient(135deg, #25496B 0%, #376B9E 50%, #5F8FBF 100%)',
     paddingBottom: 44,
   },
   heroInner: { maxWidth: 900, margin: '0 auto', padding: '36px 20px 0' },
-  heroTitle: { fontSize: 28, fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 10 },
+  heroTitle: { fontFamily: 'Inter, sans-serif', fontSize: 28, fontWeight: 700, color: 'white', lineHeight: 1.15, marginBottom: 10 },
   heroSub: { fontSize: 15, color: 'rgba(255,255,255,0.72)', fontWeight: 600, maxWidth: 520, lineHeight: 1.6, marginBottom: 20 },
   heroBadge: {
     display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -196,31 +196,31 @@ const s = {
     border: '1px solid rgba(255,255,255,0.15)',
   },
   heroDot: {
-    width: 8, height: 8, borderRadius: '50%', background: '#3EC8B4',
-    display: 'inline-block', boxShadow: '0 0 8px #3EC8B4',
+    width: 8, height: 8, borderRadius: '50%', background: '#B9DED8',
+    display: 'inline-block', boxShadow: '0 0 8px #B9DED8',
   },
   main: { maxWidth: 900, margin: '-24px auto 0', padding: '0 16px 60px', flex: 1, position: 'relative', zIndex: 1 },
   grid: { display: 'grid', gap: 14, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' },
   cardLink: {
     background: 'white', borderRadius: 14, padding: '22px 20px',
-    boxShadow: '0 4px 20px rgba(27,45,107,0.10)', border: '1.5px solid rgba(27,45,107,0.07)',
+    boxShadow: '0 4px 20px rgba(55,107,158,0.10)', border: '1.5px solid rgba(55,107,158,0.07)',
     display: 'flex', flexDirection: 'column', cursor: 'pointer',
   },
   cardTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
   cardTag: { fontSize: 11, fontWeight: 800, padding: '4px 10px', borderRadius: 20 },
-  cardNum: { fontSize: 11, fontWeight: 800, color: '#c8cfe0' },
-  cardTitle: { fontSize: 18, fontWeight: 900, color: '#1B2D6B', marginBottom: 6, lineHeight: 1.3 },
-  cardDesc: { fontSize: 13, color: '#6b7a99', fontWeight: 600, lineHeight: 1.6, marginBottom: 16, flex: 1 },
-  cardDivider: { height: 1, background: '#e8ecf5', marginBottom: 14 },
+  cardNum: { fontSize: 11, fontWeight: 800, color: '#BFC5CC' },
+  cardTitle: { fontFamily: 'Inter, sans-serif', fontSize: 18, fontWeight: 700, color: '#376B9E', marginBottom: 6, lineHeight: 1.3 },
+  cardDesc: { fontSize: 13, color: '#5C7C93', fontWeight: 600, lineHeight: 1.6, marginBottom: 16, flex: 1 },
+  cardDivider: { height: 1, background: '#D4DADF', marginBottom: 14 },
   cardFooter: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  cardMeta: { fontSize: 12, color: '#6b7a99', fontWeight: 700 },
+  cardMeta: { fontSize: 12, color: '#5C7C93', fontWeight: 700 },
   cardCta: {
     display: 'flex', alignItems: 'center', gap: 6,
-    background: '#1B2D6B', color: 'white',
+    background: '#376B9E', color: 'white',
     fontSize: 12, fontWeight: 800, padding: '7px 14px', borderRadius: 8,
   },
   footer: {
-    background: '#1B2D6B', padding: '24px 20px',
+    background: '#376B9E', padding: '24px 20px',
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
     paddingBottom: 'calc(24px + env(safe-area-inset-bottom))',
   },

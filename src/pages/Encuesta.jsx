@@ -130,11 +130,11 @@ export default function Encuesta() {
       <div style={s.page}>
         <div style={s.notFound}>
           <div style={s.notFoundIcon}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c8cfe0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#BFC5CC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: 20, color: '#1B2D6B', marginBottom: 12, fontWeight: 900 }}>Evaluación no encontrada</h2>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: '#376B9E', marginBottom: 12, fontWeight: 700 }}>Evaluación no encontrada</h2>
           <button onClick={() => navigate('/')} style={s.btnSecondary}>← Volver al inicio</button>
         </div>
       </div>
@@ -233,26 +233,26 @@ export default function Encuesta() {
                 <button key={sec.id} type="button" onClick={() => setModalSeccion(sec)} style={{
                   ...s.seccionCard,
                   background: completa ? '#f0fdf9' : 'white',
-                  borderColor: completa ? '#34d399' : '#e2e8f0',
-                  borderLeftColor: completa ? '#059669' : '#1B2D6B',
+                  borderColor: completa ? '#34d399' : '#D4DADF',
+                  borderLeftColor: completa ? '#059669' : '#376B9E',
                 }}>
                   <div style={{
                     ...s.seccionCardIconBox,
-                    background: completa ? '#d1fae5' : '#eef1f9',
-                    color: completa ? '#059669' : '#1B2D6B',
+                    background: completa ? '#d1fae5' : '#E7F1FA',
+                    color: completa ? '#059669' : '#376B9E',
                   }}>
                     {ICONOS[sec.icono] || ICONOS.operaciones}
                   </div>
                   <div style={{
                     ...s.seccionCardTitulo,
-                    color: completa ? '#065f46' : '#1B2D6B',
+                    color: completa ? '#065f46' : '#376B9E',
                   }}>
                     {sec.texto}
                   </div>
                   <div style={s.seccionCardFooter}>
                     <span style={{
                       fontSize: 12, fontWeight: 700,
-                      color: completa ? '#059669' : '#94a3b8',
+                      color: completa ? '#059669' : '#5C7C93',
                     }}>
                       {completa ? 'Completado' : `${resp} de ${total} preguntas`}
                     </span>
@@ -282,7 +282,7 @@ export default function Encuesta() {
           <div style={s.modalOverlay} onClick={() => setModalSeccion(null)}>
             <div style={s.modalBox} onClick={e => e.stopPropagation()}>
               <div style={s.modalHeader}>
-                <div style={{ ...s.seccionCardIconBox, background: '#eef1f9', color: '#1B2D6B', flexShrink: 0 }}>
+                <div style={{ ...s.seccionCardIconBox, background: '#E7F1FA', color: '#376B9E', flexShrink: 0 }}>
                   {ICONOS[modalSeccion.icono] || ICONOS.operaciones}
                 </div>
                 <h2 style={s.modalTitulo}>{modalSeccion.texto}</h2>
@@ -431,13 +431,13 @@ export default function Encuesta() {
                       {pregunta.opciones.map((op) => (
                         <label key={op} style={{
                           ...s.opcionLabel,
-                          background: respuestas[pregunta.id] === op ? '#e8edf8' : '#f8fafc',
-                          borderColor: respuestas[pregunta.id] === op ? '#1B2D6B' : '#e2e8f0',
+                          background: respuestas[pregunta.id] === op ? '#E7F1FA' : '#F5F7F8',
+                          borderColor: respuestas[pregunta.id] === op ? '#376B9E' : '#D4DADF',
                         }}>
                           <input type="radio" name={pregunta.id} value={op}
                             checked={respuestas[pregunta.id] === op}
                             onChange={() => handleChange(pregunta.id, op)}
-                            style={{ accentColor: '#1B2D6B', width: 18, height: 18, flexShrink: 0 }}
+                            style={{ accentColor: '#376B9E', width: 18, height: 18, flexShrink: 0 }}
                           />
                           {op}
                         </label>
@@ -450,9 +450,9 @@ export default function Encuesta() {
                       {['Sí', 'No'].map((op) => (
                         <label key={op} style={{
                           ...s.siNoBtn,
-                          background: respuestas[pregunta.id] === op ? '#1B2D6B' : 'white',
-                          color: respuestas[pregunta.id] === op ? 'white' : '#1B2D6B',
-                          borderColor: respuestas[pregunta.id] === op ? '#1B2D6B' : '#e2e8f0',
+                          background: respuestas[pregunta.id] === op ? '#376B9E' : 'white',
+                          color: respuestas[pregunta.id] === op ? 'white' : '#376B9E',
+                          borderColor: respuestas[pregunta.id] === op ? '#376B9E' : '#D4DADF',
                         }}>
                           <input type="radio" name={pregunta.id} value={op}
                             checked={respuestas[pregunta.id] === op}
@@ -480,10 +480,10 @@ export default function Encuesta() {
 }
 
 const s = {
-  page: { minHeight: '100vh', minHeight: '100dvh', background: '#f4f6fb' },
+  page: { minHeight: '100vh', minHeight: '100dvh', background: '#EEF1F3' },
 
   header: {
-    background: '#1B2D6B', position: 'sticky', top: 0, zIndex: 100,
+    background: '#376B9E', position: 'sticky', top: 0, zIndex: 100,
     boxShadow: '0 2px 16px rgba(0,0,0,0.18)',
     paddingTop: 'env(safe-area-inset-top)',
   },
@@ -494,7 +494,7 @@ const s = {
   backBtn: {
     background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.16)',
     color: 'white', cursor: 'pointer', fontSize: 13, fontWeight: 700,
-    fontFamily: 'Nunito, sans-serif', padding: '8px 14px', borderRadius: 8,
+    fontFamily: 'Manrope, sans-serif', padding: '8px 14px', borderRadius: 8,
     display: 'flex', alignItems: 'center', gap: 6, minHeight: 40,
     letterSpacing: '0.01em',
   },
@@ -508,7 +508,7 @@ const s = {
     borderRadius: 2, overflow: 'hidden',
   },
   progressBar: {
-    height: '100%', background: '#3EC8B4',
+    height: '100%', background: '#B9DED8',
     borderRadius: 2, transition: 'width 0.35s ease',
   },
   progressLabel: { fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 700, whiteSpace: 'nowrap' },
@@ -521,24 +521,24 @@ const s = {
 
   encuestaHeader: {
     background: 'white', borderRadius: 12, padding: '22px 20px',
-    marginBottom: 20, boxShadow: '0 1px 8px rgba(27,45,107,0.07)',
-    border: '1px solid #e8edf5',
-    borderLeft: '4px solid #3EC8B4',
+    marginBottom: 20, boxShadow: '0 1px 8px rgba(55,107,158,0.07)',
+    border: '1px solid #D4DADF',
+    borderLeft: '4px solid #B9DED8',
   },
   encuestaTag: {
     display: 'inline-block',
-    background: '#1B2D6B', color: 'white',
+    background: '#376B9E', color: 'white',
     fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4,
     letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 12,
   },
-  title: { fontSize: 20, fontWeight: 900, color: '#1B2D6B', marginBottom: 6, lineHeight: 1.25 },
-  desc: { color: '#64748b', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
+  title: { fontFamily: 'Inter, sans-serif', fontSize: 20, fontWeight: 700, color: '#376B9E', marginBottom: 6, lineHeight: 1.25 },
+  desc: { color: '#5C7C93', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
   leyenda: {
-    background: '#f8fafc', borderRadius: 8, padding: '12px 14px',
-    border: '1px solid #e8edf5',
+    background: '#F5F7F8', borderRadius: 8, padding: '12px 14px',
+    border: '1px solid #D4DADF',
   },
   leyendaTitle: {
-    fontSize: 10, fontWeight: 800, color: '#94a3b8',
+    fontSize: 10, fontWeight: 800, color: '#5C7C93',
     textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10,
   },
   leyendaItems: { display: 'flex', gap: 16, flexWrap: 'wrap' },
@@ -564,9 +564,9 @@ const s = {
     padding: '18px 16px',
     display: 'flex', flexDirection: 'column',
     gap: 10, cursor: 'pointer',
-    fontFamily: 'Nunito, sans-serif',
+    fontFamily: 'Manrope, sans-serif',
     textAlign: 'left',
-    boxShadow: '0 2px 8px rgba(27,45,107,0.06)',
+    boxShadow: '0 2px 8px rgba(55,107,158,0.06)',
     transition: 'box-shadow 0.15s, transform 0.1s',
   },
   seccionCardIconBox: {
@@ -601,18 +601,18 @@ const s = {
   modalHeader: {
     display: 'flex', alignItems: 'center', gap: 12,
     padding: '16px 18px',
-    borderBottom: '1px solid #e8edf5',
+    borderBottom: '1px solid #D4DADF',
     flexShrink: 0,
   },
   modalTitulo: {
-    fontSize: 15, fontWeight: 900, color: '#1B2D6B',
+    fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: 700, color: '#376B9E',
     flex: 1, lineHeight: 1.3,
   },
   modalClose: {
     background: '#f1f5f9', border: 'none', borderRadius: 7,
     width: 34, height: 34, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    flexShrink: 0, color: '#64748b', fontFamily: 'Nunito, sans-serif',
+    flexShrink: 0, color: '#5C7C93', fontFamily: 'Manrope, sans-serif',
   },
   modalBody: {
     overflowY: 'auto', flex: 1,
@@ -622,15 +622,15 @@ const s = {
   modalFooter: {
     padding: '14px 16px',
     paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
-    borderTop: '1px solid #e8edf5',
+    borderTop: '1px solid #D4DADF',
     flexShrink: 0,
   },
   modalBtnCerrar: {
-    background: '#1B2D6B',
+    background: '#376B9E',
     color: 'white', border: 'none', borderRadius: 10,
     padding: '15px', fontSize: 15, fontWeight: 800,
     cursor: 'pointer', width: '100%',
-    fontFamily: 'Nunito, sans-serif', minHeight: 50,
+    fontFamily: 'Manrope, sans-serif', minHeight: 50,
     letterSpacing: '0.01em',
   },
 
@@ -641,42 +641,42 @@ const s = {
   },
   seccionLinea: { flex: 1, height: 1, background: '#cbd5e1', borderRadius: 1 },
   seccionTitulo: {
-    fontSize: 11, fontWeight: 900, color: '#1B2D6B',
+    fontSize: 11, fontWeight: 900, color: '#376B9E',
     textTransform: 'uppercase', letterSpacing: '0.08em',
     whiteSpace: 'nowrap', padding: '0 4px',
   },
 
   preguntaCard: {
     background: 'white', borderRadius: 10, padding: '18px 16px',
-    marginBottom: 10, boxShadow: '0 1px 6px rgba(27,45,107,0.06)',
-    border: '1px solid #e8edf5',
+    marginBottom: 10, boxShadow: '0 1px 6px rgba(55,107,158,0.06)',
+    border: '1px solid #D4DADF',
   },
   preguntaHeader: { display: 'flex', gap: 11, alignItems: 'flex-start', marginBottom: 14 },
   preguntaNum: {
-    minWidth: 26, height: 26, background: '#1B2D6B', color: 'white',
+    minWidth: 26, height: 26, background: '#376B9E', color: 'white',
     borderRadius: 6, fontSize: 12, fontWeight: 900,
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
   },
   preguntaLabel: { fontWeight: 700, color: '#334155', fontSize: 14, lineHeight: 1.55, flex: 1 },
-  requerida: { color: '#3EC8B4', fontWeight: 900 },
+  requerida: { color: '#B9DED8', fontWeight: 900 },
 
   input: {
-    width: '100%', border: '1.5px solid #e2e8f0', borderRadius: 8,
-    padding: '13px 14px', fontSize: 15, fontFamily: 'Nunito, sans-serif',
+    width: '100%', border: '1.5px solid #D4DADF', borderRadius: 8,
+    padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
     outline: 'none', color: '#1e293b', fontWeight: 600,
-    background: '#f8fafc', WebkitAppearance: 'none',
+    background: '#F5F7F8', WebkitAppearance: 'none',
   },
 
   escalaRow: { display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 7 },
   escalaBtn: {
     width: 42, height: 42, border: '2px solid',
     borderRadius: 8, cursor: 'pointer',
-    fontSize: 14, fontWeight: 900, fontFamily: 'Nunito, sans-serif',
+    fontSize: 14, fontWeight: 900, fontFamily: 'Manrope, sans-serif',
     transition: 'all 0.12s', flexShrink: 0,
   },
   escalaEtiquetas: {
     display: 'flex', justifyContent: 'space-between',
-    fontSize: 11, color: '#94a3b8', fontWeight: 700,
+    fontSize: 11, color: '#5C7C93', fontWeight: 700,
   },
 
   opciones: { display: 'flex', flexDirection: 'column', gap: 8 },
@@ -691,7 +691,7 @@ const s = {
   siNoBtn: {
     flex: 1, padding: '13px', border: '1.5px solid', borderRadius: 8,
     cursor: 'pointer', fontSize: 15, fontWeight: 800,
-    fontFamily: 'Nunito, sans-serif', textAlign: 'center',
+    fontFamily: 'Manrope, sans-serif', textAlign: 'center',
     transition: 'all 0.12s', minHeight: 48,
   },
 
@@ -700,19 +700,19 @@ const s = {
     borderRadius: 8, padding: '13px 14px', fontSize: 14, marginBottom: 16, fontWeight: 700,
   },
   btnSubmit: {
-    background: 'linear-gradient(135deg, #1B2D6B 0%, #2d4499 100%)',
+    background: 'linear-gradient(135deg, #376B9E 0%, #5F8FBF 100%)',
     color: 'white', border: 'none', borderRadius: 11,
     padding: '17px 32px', fontSize: 16, fontWeight: 900,
     width: '100%', marginTop: 8,
-    fontFamily: 'Nunito, sans-serif',
-    boxShadow: '0 4px 14px rgba(27,45,107,0.28)',
+    fontFamily: 'Manrope, sans-serif',
+    boxShadow: '0 4px 14px rgba(55,107,158,0.28)',
     minHeight: 54, letterSpacing: '0.01em',
   },
   btnSecondary: {
-    background: 'none', border: '1.5px solid #e2e8f0',
+    background: 'none', border: '1.5px solid #D4DADF',
     borderRadius: 8, padding: '11px 22px', cursor: 'pointer',
     fontSize: 14, color: '#475569', fontWeight: 700,
-    fontFamily: 'Nunito, sans-serif', minHeight: 42,
+    fontFamily: 'Manrope, sans-serif', minHeight: 42,
   },
   notFound: { textAlign: 'center', padding: '60px 20px' },
   notFoundIcon: { marginBottom: 16, display: 'flex', justifyContent: 'center' },

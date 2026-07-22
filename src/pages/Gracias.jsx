@@ -28,7 +28,7 @@ export default function Gracias() {
 const s = {
   page: {
     minHeight: '100vh', minHeight: '100dvh',
-    background: 'linear-gradient(135deg, #132050 0%, #1B2D6B 60%, #243a8a 100%)',
+    background: 'linear-gradient(135deg, #25496B 0%, #376B9E 60%, #5F8FBF 100%)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     padding: '24px 20px',
     position: 'relative', overflow: 'hidden',
@@ -37,7 +37,7 @@ const s = {
   },
   bg: {
     position: 'absolute', inset: 0,
-    background: 'radial-gradient(ellipse at 30% 70%, rgba(62,200,180,0.15) 0%, transparent 60%)',
+    background: 'radial-gradient(ellipse at 30% 70%, rgba(185,222,216,0.25) 0%, transparent 60%)',
     pointerEvents: 'none',
   },
   card: {
@@ -53,12 +53,12 @@ const s = {
   },
   icon: {
     width: 72, height: 72,
-    background: 'linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%)',
+    background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%)',
     color: 'white', borderRadius: '50%', fontSize: 30, fontWeight: 900,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    boxShadow: '0 8px 24px rgba(62,200,180,0.4)',
+    boxShadow: '0 8px 24px rgba(55,107,158,0.4)',
   },
-  title: { fontSize: 24, fontWeight: 900, color: 'var(--navy)', marginBottom: 10, lineHeight: 1.2 },
+  title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: 'var(--navy)', marginBottom: 10, lineHeight: 1.2 },
   msg: { color: 'var(--gray-500)', fontSize: 15, lineHeight: 1.7, marginBottom: 24, fontWeight: 600 },
   divider: { height: 1, background: 'var(--gray-100)', marginBottom: 22 },
   logo: { height: 36, objectFit: 'contain', marginBottom: 22, opacity: 0.85, maxWidth: '100%' },
@@ -66,7 +66,7 @@ const s = {
     background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%)',
     color: 'white', border: 'none', borderRadius: 12,
     padding: '16px 32px', fontSize: 16, fontWeight: 900,
-    cursor: 'pointer', fontFamily: 'Nunito, sans-serif', width: '100%',
-    boxShadow: '0 4px 16px rgba(27,45,107,0.3)', minHeight: 52,
+    cursor: 'pointer', fontFamily: 'Manrope, sans-serif', width: '100%',
+    boxShadow: '0 4px 16px rgba(55,107,158,0.3)', minHeight: 52,
   },
 }
