@@ -83,7 +83,10 @@ export default function Home() {
         <div style={s.headerBg} />
         <div style={s.headerInner}>
           <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.headerLogo} />
-          <div style={s.headerPill}>Portal de Evaluaciones</div>
+          <div style={s.headerRight}>
+            <div style={s.headerPill}>Portal de Evaluaciones</div>
+            <span style={s.headerIniciales}>H. M. P.</span>
+          </div>
         </div>
       </header>
 
@@ -208,11 +211,16 @@ const s = {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative',
   },
   headerLogo: { height: 40, objectFit: 'contain', maxWidth: 160 },
+  headerRight: { display: 'flex', alignItems: 'center', gap: 10 },
   headerPill: {
     background: 'rgba(185,222,216,0.22)', color: '#B9DED8',
     fontSize: 11, fontWeight: 800, padding: '5px 12px',
     borderRadius: 20, letterSpacing: '0.08em', textTransform: 'uppercase',
     border: '1px solid rgba(185,222,216,0.35)',
+  },
+  headerIniciales: {
+    color: 'rgba(255,255,255,0.75)', fontSize: 12, fontWeight: 700,
+    letterSpacing: '0.04em',
   },
   hero: {
     background: 'linear-gradient(135deg, #25496B 0%, #376B9E 50%, #5F8FBF 100%)',
@@ -231,7 +239,11 @@ const s = {
     width: 8, height: 8, borderRadius: '50%', background: '#B9DED8',
     display: 'inline-block', boxShadow: '0 0 8px #B9DED8',
   },
-  main: { maxWidth: 900, margin: '-24px auto 0', padding: '0 16px 60px', flex: 1, position: 'relative', zIndex: 1 },
+  main: {
+    maxWidth: 900, margin: '-24px auto 0', padding: '20px 16px 60px',
+    flex: 1, position: 'relative', zIndex: 1,
+    background: '#EEF1F3', borderRadius: '20px 20px 0 0',
+  },
   mesSection: { marginBottom: 28 },
   mesHeading: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 },
   mesLinea: { flex: 1, height: 1, background: '#BFC5CC', borderRadius: 1 },
