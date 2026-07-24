@@ -114,7 +114,10 @@ function PreguntaEscala({ pregunta, num, respuestas, handleChange }) {
         })}
       </div>
       <div style={s.escalaEtiquetas}>
-        <span>{pregunta.etiquetas[pregunta.min]}</span>
+        <span style={s.etiquetaMin}>
+          {pregunta.etiquetas[pregunta.min]}
+          {pregunta.etiquetas[pregunta.min] === 'Muy malo' && <span style={s.calavera}>💀</span>}
+        </span>
         <span>{pregunta.etiquetas[pregunta.max]}</span>
       </div>
     </div>
@@ -444,7 +447,10 @@ export default function Encuesta() {
                         })}
                       </div>
                       <div style={s.escalaEtiquetas}>
-                        <span>{pregunta.etiquetas[pregunta.min]}</span>
+                        <span style={s.etiquetaMin}>
+                          {pregunta.etiquetas[pregunta.min]}
+                          {pregunta.etiquetas[pregunta.min] === 'Muy malo' && <span style={s.calavera}>💀</span>}
+                        </span>
                         <span>{pregunta.etiquetas[pregunta.max]}</span>
                       </div>
                     </div>
@@ -702,6 +708,10 @@ const s = {
     display: 'flex', justifyContent: 'space-between',
     fontSize: 11, color: '#5C7C93', fontWeight: 700,
   },
+  etiquetaMin: {
+    display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2,
+  },
+  calavera: { fontSize: 14, lineHeight: 1 },
 
   opciones: { display: 'flex', flexDirection: 'column', gap: 8 },
   opcionLabel: {
