@@ -34,11 +34,11 @@ const encuesta = {
     { id: 's4', tipo: 'seccion', texto: 'Control documental', icono: 'finanzas' },
     { id: 'p16', tipo: 'escala', texto: '¿Qué tan oportuno es en la revisión y aprobación de documentos SSOMA del contratista?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p17', tipo: 'escala', texto: '¿Qué tan ordenada y completa es la trazabilidad de observaciones, no conformidades y acciones correctivas?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
-    { id: 'p18', tipo: 'escala', texto: '¿Qué tan claro es al registrar y dar seguimiento a los hallazgos detectados en obra?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
 
     { id: 's5', tipo: 'seccion', texto: 'Cultura preventiva y evaluación global', icono: 'hermetica' },
-    { id: 'p19', tipo: 'escala', texto: '¿Qué tan bien promueve una cultura preventiva más que una cultura de sanción?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
-    { id: 'p20', tipo: 'escala', texto: '¿Qué evaluación global le daría al desempeño del supervisor SSOMA en esta obra?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p18', tipo: 'escala', texto: '¿Qué tan bien promueve una cultura preventiva más que una cultura de sanción?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p19', tipo: 'escala', texto: '¿Qué evaluación global le daría al desempeño del supervisor SSOMA en esta obra?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p20', tipo: 'texto', texto: '¿Qué debería mejorar el supervisor SSOMA para facilitar el cumplimiento de seguridad en obra?', requerida: false },
   ],
 }
 export default encuesta

@@ -10,7 +10,7 @@ const scaleColor = (val) => {
   if (val === 4) return { bg: '#fff7ed', border: '#fdba74', text: '#ea580c', active: '#ea580c' }
   if (val === 5) return { bg: '#fffbeb', border: '#fcd34d', text: '#d97706', active: '#d97706' }
   if (val === 6) return { bg: '#fefce8', border: '#fde047', text: '#ca8a04', active: '#ca8a04' }
-  if (val === 7) return { bg: '#f7fee7', border: '#d9f99d', text: '#65a30d', active: '#65a30d' }
+  if (val === 7) return { bg: '#fef9c3', border: '#fbbf24', text: '#b45309', active: '#b45309' }
   if (val === 8) return { bg: '#f0fdf4', border: '#86efac', text: '#16a34a', active: '#16a34a' }
   if (val === 9) return { bg: '#ecfdf5', border: '#6ee7b7', text: '#059669', active: '#059669' }
   return { bg: '#ecfdf5', border: '#34d399', text: '#047857', active: '#047857' }
