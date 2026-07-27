@@ -8,7 +8,7 @@ const encuesta = {
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     {
-      id: 'lider', tipo: 'opcion_multiple', texto: 'Líder directo a evaluar', requerida: true,
+      id: 'lider', tipo: 'lista_desplegable', texto: 'Líder directo a evaluar', requerida: true,
       opciones: [
         'Andrés Pareja-Lecaros',
         'Misael',

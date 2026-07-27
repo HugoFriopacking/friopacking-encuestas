@@ -10,7 +10,7 @@ const scaleColor = (val) => {
   if (val === 4) return { bg: '#fffbeb', border: '#fcd34d', text: '#d97706', active: '#d97706' }
   if (val === 5) return { bg: '#fefce8', border: '#fde047', text: '#eab308', active: '#eab308' }
   if (val === 6) return { bg: '#fefce8', border: '#fde047', text: '#ca8a04', active: '#ca8a04' }
-  if (val === 7) return { bg: '#fef9c3', border: '#fde047', text: '#a16207', active: '#a16207' }
+  if (val === 7) return { bg: '#fdf6e3', border: '#e8d48b', text: '#92700a', active: '#92700a' }
   if (val === 8) return { bg: '#f0fdf4', border: '#86efac', text: '#22c55e', active: '#22c55e' }
   if (val === 9) return { bg: '#ecfdf5', border: '#6ee7b7', text: '#16a34a', active: '#16a34a' }
   return { bg: '#ecfdf5', border: '#34d399', text: '#15803d', active: '#15803d' }
@@ -456,6 +456,19 @@ export default function Encuesta() {
                     </div>
                   )}
 
+                  {pregunta.tipo === 'lista_desplegable' && (
+                    <select
+                      style={s.select}
+                      value={respuestas[pregunta.id] || ''}
+                      onChange={(e) => handleChange(pregunta.id, e.target.value)}
+                    >
+                      <option value="" disabled>Selecciona una opción...</option>
+                      {pregunta.opciones.map((op) => (
+                        <option key={op} value={op}>{op}</option>
+                      ))}
+                    </select>
+                  )}
+
                   {pregunta.tipo === 'opcion_multiple' && (
                     <div style={s.opciones}>
                       {pregunta.opciones.map((op) => (
@@ -695,6 +708,12 @@ const s = {
     padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
     outline: 'none', color: '#1e293b', fontWeight: 600,
     background: '#F5F7F8', WebkitAppearance: 'none',
+  },
+  select: {
+    width: '100%', border: '1.5px solid #D4DADF', borderRadius: 8,
+    padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
+    outline: 'none', color: '#1e293b', fontWeight: 600,
+    background: '#F5F7F8', minHeight: 48, cursor: 'pointer',
   },
 
   escalaRow: { display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 7 },
