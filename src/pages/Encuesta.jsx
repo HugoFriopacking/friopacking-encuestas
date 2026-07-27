@@ -4,16 +4,16 @@ import encuestas from '../encuestas/index.js'
 import { supabase } from '../lib/supabase.js'
 
 const scaleColor = (val) => {
-  if (val === 1) return { bg: '#f3f4f6', border: '#9ca3af', text: '#111827', active: '#111827' }
-  if (val === 2) return { bg: '#f3f4f6', border: '#9ca3af', text: '#4b5563', active: '#4b5563' }
-  if (val === 3) return { bg: '#fef2f2', border: '#fca5a5', text: '#dc2626', active: '#dc2626' }
-  if (val === 4) return { bg: '#fff7ed', border: '#fdba74', text: '#ea580c', active: '#ea580c' }
-  if (val === 5) return { bg: '#fffbeb', border: '#fcd34d', text: '#d97706', active: '#d97706' }
+  if (val === 1) return { bg: '#fef2f2', border: '#fca5a5', text: '#991b1b', active: '#991b1b' }
+  if (val === 2) return { bg: '#fef2f2', border: '#fca5a5', text: '#dc2626', active: '#dc2626' }
+  if (val === 3) return { bg: '#fff7ed', border: '#fdba74', text: '#ea580c', active: '#ea580c' }
+  if (val === 4) return { bg: '#fffbeb', border: '#fcd34d', text: '#d97706', active: '#d97706' }
+  if (val === 5) return { bg: '#fefce8', border: '#fde047', text: '#eab308', active: '#eab308' }
   if (val === 6) return { bg: '#fefce8', border: '#fde047', text: '#ca8a04', active: '#ca8a04' }
-  if (val === 7) return { bg: '#fef9c3', border: '#fbbf24', text: '#b45309', active: '#b45309' }
-  if (val === 8) return { bg: '#f0fdf4', border: '#86efac', text: '#16a34a', active: '#16a34a' }
-  if (val === 9) return { bg: '#ecfdf5', border: '#6ee7b7', text: '#059669', active: '#059669' }
-  return { bg: '#ecfdf5', border: '#34d399', text: '#047857', active: '#047857' }
+  if (val === 7) return { bg: '#fef9c3', border: '#fde047', text: '#a16207', active: '#a16207' }
+  if (val === 8) return { bg: '#f0fdf4', border: '#86efac', text: '#22c55e', active: '#22c55e' }
+  if (val === 9) return { bg: '#ecfdf5', border: '#6ee7b7', text: '#16a34a', active: '#16a34a' }
+  return { bg: '#ecfdf5', border: '#34d399', text: '#15803d', active: '#15803d' }
 }
 
 const ICONOS = {
@@ -242,9 +242,9 @@ export default function Encuesta() {
             <div style={s.leyenda}>
               <div style={s.leyendaTitle}>Escala de calificación</div>
               <div style={s.leyendaItems}>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#f3f4f6', color: '#111827' }}>1</span>Muy malo</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fffbeb', color: '#d97706' }}>5</span>Regular</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#ecfdf5', color: '#047857' }}>10</span>Muy bueno</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef2f2', color: '#991b1b' }}>1</span>Muy malo</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fefce8', color: '#eab308' }}>5</span>Regular</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#ecfdf5', color: '#15803d' }}>10</span>Muy bueno</div>
               </div>
             </div>
           </div>
@@ -380,9 +380,9 @@ export default function Encuesta() {
             <div style={s.leyenda}>
               <div style={s.leyendaTitle}>Escala de calificación</div>
               <div style={s.leyendaItems}>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#f3f4f6', color: '#111827' }}>1</span>Muy malo</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fffbeb', color: '#d97706' }}>5</span>Regular</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#ecfdf5', color: '#047857' }}>10</span>Muy bueno</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef2f2', color: '#991b1b' }}>1</span>Muy malo</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fefce8', color: '#eab308' }}>5</span>Regular</div>
+                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#ecfdf5', color: '#15803d' }}>10</span>Muy bueno</div>
               </div>
             </div>
           )}

@@ -1,0 +1,65 @@
+const encuesta = {
+  id: 'lideres-grupo-empresarial',
+  titulo: 'Líderes del Grupo Empresarial',
+  descripcion: 'Encuesta anónima de satisfacción hacia los líderes de área',
+  respondedor: 'interno',
+  activa: true,
+  mes: 'Julio',
+  leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
+  preguntas: [
+    {
+      id: 'lider', tipo: 'opcion_multiple', texto: 'Líder directo a evaluar', requerida: true,
+      opciones: [
+        'Andrés Pareja-Lecaros',
+        'Misael',
+        'Pablo',
+        'Claudio',
+        'Daniel',
+        'Alvaro',
+        'Ana Lucía',
+        'Manuel Luján',
+        'Jose Rojas',
+        'Eduardo Narro',
+        'Jesús Chavez',
+        'Daniela',
+        'Paolo',
+        'Dennis',
+        'Smith',
+        'Jesus Ascama',
+      ],
+    },
+
+    { id: 's1', tipo: 'seccion', texto: 'Liderazgo y dirección', icono: 'operaciones' },
+    { id: 'p1', tipo: 'escala', texto: '¿Tu líder directo comunica claramente los objetivos y las prioridades del área?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p2', tipo: 'escala', texto: '¿Tu líder directo explica cómo el trabajo del equipo contribuye a los objetivos del Grupo Friopacking?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p3', tipo: 'escala', texto: '¿Tu líder directo toma decisiones basándose en información relevante, no solo en intuición?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p4', tipo: 'escala', texto: '¿Tu líder directo actúa con coherencia entre lo que dice y lo que hace?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+
+    { id: 's2', tipo: 'seccion', texto: 'Comunicación y relación', icono: 'logistica' },
+    { id: 'p5', tipo: 'escala', texto: '¿Tu líder directo escucha y considera las ideas y preocupaciones del equipo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p6', tipo: 'escala', texto: '¿Tu líder directo comunica la información necesaria de manera clara y oportuna?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p7', tipo: 'escala', texto: 'Me siento seguro/a expresando una opinión diferente a la de mi líder directo.', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Totalmente en desacuerdo', 10: 'Totalmente de acuerdo' } },
+    { id: 'p8', tipo: 'escala', texto: 'Mi líder directo cambia de trato o de humor de forma que genera incertidumbre en el equipo. (pregunta invertida: puntaje bajo = mejor liderazgo)', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Totalmente en desacuerdo', 10: 'Totalmente de acuerdo' } },
+
+    { id: 's3', tipo: 'seccion', texto: 'Gestión y organización', icono: 'ingenieria' },
+    { id: 'p9', tipo: 'escala', texto: '¿Tu líder directo organiza adecuadamente el trabajo del área?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p10', tipo: 'escala', texto: '¿Tu líder directo define claramente las responsabilidades de cada integrante del equipo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p11', tipo: 'escala', texto: '¿Tu líder directo realiza un seguimiento adecuado de las tareas y los compromisos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p12', tipo: 'escala', texto: '¿Tu líder directo mantiene un trato respetuoso incluso en situaciones de presión?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+
+    { id: 's4', tipo: 'seccion', texto: 'Desarrollo y reconocimiento', icono: 'finanzas' },
+    { id: 'p13', tipo: 'escala', texto: '¿Tu líder directo apoya tu desarrollo profesional?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p14', tipo: 'escala', texto: '¿La retroalimentación que recibes de tu líder directo te ayuda a mejorar tu desempeño?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p15', tipo: 'escala', texto: '¿Tu líder directo reconoce oportunamente el buen desempeño del equipo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p16', tipo: 'escala', texto: '¿Tu líder directo genera oportunidades de aprendizaje dentro del equipo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+
+    { id: 's5', tipo: 'seccion', texto: 'Toma de decisiones y resultados', icono: 'hermetica' },
+    { id: 'p17', tipo: 'escala', texto: '¿Tu líder directo toma decisiones oportunas cuando se presentan problemas en el área?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p18', tipo: 'escala', texto: 'En términos generales, ¿qué tan satisfecho estás con el liderazgo de tu líder directo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Nada satisfecho', 10: 'Muy satisfecho' } },
+
+    { id: 's6', tipo: 'seccion', texto: 'Preguntas abiertas', icono: 'frioteam' },
+    { id: 'p19', tipo: 'texto', texto: '¿Qué práctica o comportamiento positivo de tu líder directo debería mantenerse?', requerida: false },
+    { id: 'p20', tipo: 'texto', texto: '¿Qué práctica o comportamiento debería mejorar tu líder directo para fortalecer la gestión del equipo?', requerida: false },
+  ],
+}
+export default encuesta
