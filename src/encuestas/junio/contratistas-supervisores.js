@@ -3,7 +3,7 @@ const encuesta = {
   titulo: 'Supervisores (Junio)',
   descripcion: 'Evaluación de los contratistas hacia los supervisores de obra',
   respondedor: 'externo',
-  activa: false,
+  activa: true,
   mes: 'Junio',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [

@@ -3,7 +3,7 @@ const encuesta = {
   titulo: 'Grupo Friopacking (Junio)',
   descripcion: 'Evaluación de los contratistas hacia las áreas de Grupo Friopacking',
   respondedor: 'externo',
-  activa: false,
+  activa: true,
   mes: 'Junio',
   modo: 'secciones',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
