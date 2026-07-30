@@ -108,9 +108,8 @@ export default function Home() {
           return grupos.map(({ mes, encuestas }) => (
             <section key={mes} style={s.mesSection}>
               <div style={s.mesHeading}>
-                <span style={s.mesLinea} />
-                <h2 style={s.mesTitulo}>{mes}</h2>
-                <span style={s.mesLinea} />
+                <span style={s.mesBadge}>{mes}</span>
+                <span style={s.mesCount}>{encuestas.length} evaluación{encuestas.length !== 1 ? 'es' : ''}</span>
               </div>
               <div style={s.grid}>
                 {encuestas.map((enc) => {
@@ -240,13 +239,19 @@ const s = {
     display: 'inline-block', boxShadow: '0 0 8px #B9DED8',
   },
   main: { maxWidth: 900, margin: '-24px auto 0', padding: '0 16px 60px', flex: 1, position: 'relative', zIndex: 1 },
-  mesSection: { marginBottom: 28 },
-  mesHeading: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 },
-  mesLinea: { flex: 1, height: 1, background: 'rgba(255,255,255,0.35)', borderRadius: 1 },
-  mesTitulo: {
-    fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 700, color: '#ffffff',
-    textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap',
+  mesSection: {
+    background: 'white', borderRadius: 18, padding: '20px 18px 22px',
+    marginBottom: 20, boxShadow: '0 4px 20px rgba(55,107,158,0.10)',
+    border: '1px solid rgba(55,107,158,0.08)',
   },
+  mesHeading: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 },
+  mesBadge: {
+    fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 700, color: 'white',
+    textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap',
+    background: 'linear-gradient(135deg, #376B9E 0%, #5F8FBF 100%)',
+    padding: '6px 16px', borderRadius: 20,
+  },
+  mesCount: { fontSize: 12, color: '#5C7C93', fontWeight: 700 },
   grid: { display: 'grid', gap: 14, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' },
   cardLink: {
     background: 'white', borderRadius: 14, padding: '22px 20px',
