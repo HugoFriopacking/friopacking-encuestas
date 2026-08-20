@@ -10,6 +10,93 @@ const NOMBRE_CAMPO = {
   lider: 'líderes',
 }
 
+// Ranking consolidado: agrupa varias encuestas (de distintos meses) que evalúan
+// al mismo tipo de persona o área, para un ranking único acumulado.
+const RANKING_GROUPS = [
+  {
+    key: 'supervisores',
+    titulo: 'Supervisores de obra',
+    modo: 'campo',
+    campo: 'supervisor',
+    encuestaIds: ['contratistas-supervisores', 'contratistas-supervisores-julio', 'contratistas-supervisores-agosto'],
+  },
+  {
+    key: 'ssoma',
+    titulo: 'Supervisores SSOMA',
+    modo: 'campo',
+    campo: 'supervisor',
+    encuestaIds: ['contratistas-ssoma', 'contratistas-ssoma-julio', 'contratistas-ssoma-agosto'],
+  },
+  {
+    key: 'friopacking',
+    titulo: 'Grupo Friopacking (por área)',
+    modo: 'seccion',
+    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio'],
+  },
+]
+
+function score100(promedio) {
+  return Math.round(promedio * 10)
+}
+
+function construirMapaSeccion(encuesta) {
+  const mapa = {}
+  let actual = null
+  encuesta.preguntas.forEach((p) => {
+    if (p.tipo === 'seccion') actual = p.texto
+    else if (p.tipo === 'escala' && actual) mapa[p.id] = actual
+  })
+  return mapa
+}
+
+function calcularRankingGrupo(grupo, filasRanking) {
+  const filasGrupo = filasRanking.filter((f) => grupo.encuestaIds.includes(f.encuesta_id))
+
+  if (grupo.modo === 'campo') {
+    const mapa = new Map()
+    filasGrupo.forEach((f) => {
+      const crudo = f.respuestas?.[grupo.campo]
+      const nombre = (crudo || '').toString().trim() || 'Sin especificar'
+      if (!mapa.has(nombre)) mapa.set(nombre, [])
+      mapa.get(nombre).push(f)
+    })
+    return Array.from(mapa.entries())
+      .map(([nombre, filas]) => {
+        const valores = []
+        filas.forEach((f) => Object.values(f.respuestas || {}).forEach((v) => {
+          if (typeof v === 'number') valores.push(v)
+        }))
+        const promedio = valores.length ? valores.reduce((a, b) => a + b, 0) / valores.length : 0
+        return { nombre, cantidad: filas.length, unidad: 'evaluaciones', promedio }
+      })
+      .sort((a, b) => b.promedio - a.promedio)
+  }
+
+  // modo 'seccion': agrupa por área/sección en lugar de por persona
+  const mapasPorEncuesta = {}
+  grupo.encuestaIds.forEach((id) => {
+    const enc = encuestas.find((e) => e.id === id)
+    if (enc) mapasPorEncuesta[id] = construirMapaSeccion(enc)
+  })
+  const acumulado = new Map()
+  filasGrupo.forEach((f) => {
+    const mapa = mapasPorEncuesta[f.encuesta_id] || {}
+    Object.entries(f.respuestas || {}).forEach(([k, v]) => {
+      if (typeof v === 'number' && mapa[k]) {
+        if (!acumulado.has(mapa[k])) acumulado.set(mapa[k], { suma: 0, cantidad: 0 })
+        const acc = acumulado.get(mapa[k])
+        acc.suma += v
+        acc.cantidad += 1
+      }
+    })
+  })
+  return Array.from(acumulado.entries())
+    .map(([nombre, { suma, cantidad }]) => ({
+      nombre, cantidad, unidad: 'respuestas', promedio: cantidad ? suma / cantidad : 0,
+    }))
+    .sort((a, b) => b.promedio - a.promedio)
+}
+
 function agruparEncuestasPorMes(lista) {
   const grupos = new Map()
   lista.forEach((enc) => {
@@ -20,11 +107,32 @@ function agruparEncuestasPorMes(lista) {
   return Array.from(grupos.entries())
 }
 
+function BarraRanking({ nombre, cantidad, unidad, promedio, rank }) {
+  const col = scaleColor(promedio)
+  return (
+    <div style={s.barRow}>
+      <div style={s.barRowTop}>
+        {rank != null && <span style={s.barRank}>#{rank}</span>}
+        <span style={s.barName}>{nombre}</span>
+        <span style={s.barCount}>{cantidad} {unidad}</span>
+        <span style={{ ...s.barValue, color: col.text }}>{score100(promedio)}/100</span>
+      </div>
+      <div style={s.barTrack}>
+        <div style={{ ...s.barFill, width: `${score100(promedio)}%`, background: col.active }} />
+      </div>
+    </div>
+  )
+}
+
 export default function Resultados() {
   const [encuestaId, setEncuestaId] = useState(encuestas[encuestas.length - 1]?.id || '')
   const [filas, setFilas] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  const [filasRanking, setFilasRanking] = useState([])
+  const [loadingRanking, setLoadingRanking] = useState(true)
+  const [errorRanking, setErrorRanking] = useState(null)
 
   const encuesta = encuestas.find((e) => e.id === encuestaId)
 
@@ -50,6 +158,33 @@ export default function Resultados() {
       })
     return () => { cancelado = true }
   }, [encuestaId])
+
+  useEffect(() => {
+    let cancelado = false
+    const todosLosIds = RANKING_GROUPS.flatMap((g) => g.encuestaIds)
+    setLoadingRanking(true)
+    setErrorRanking(null)
+    supabase
+      .from('respuestas')
+      .select('*')
+      .in('encuesta_id', todosLosIds)
+      .then(({ data, error: sbError }) => {
+        if (cancelado) return
+        if (sbError) {
+          setErrorRanking('No se pudieron cargar los rankings.')
+          setFilasRanking([])
+        } else {
+          setFilasRanking(data || [])
+        }
+        setLoadingRanking(false)
+      })
+    return () => { cancelado = true }
+  }, [])
+
+  const rankingsGenerales = useMemo(
+    () => RANKING_GROUPS.map((g) => ({ ...g, ranking: calcularRankingGrupo(g, filasRanking) })),
+    [filasRanking],
+  )
 
   const stats = useMemo(() => {
     if (!encuesta) return null
@@ -123,7 +258,30 @@ export default function Resultados() {
 
       <main style={s.main}>
         <h1 style={s.title}>Resultados y ranking</h1>
-        <p style={s.subtitle}>Promedios y ranking según las respuestas recibidas en cada evaluación.</p>
+        <p style={s.subtitle}>Puntuación sobre 100, acumulando todos los meses disponibles.</p>
+
+        {loadingRanking && <p style={s.info}>Cargando rankings...</p>}
+        {errorRanking && <p style={s.errorMsg}>{errorRanking}</p>}
+
+        {!loadingRanking && !errorRanking && rankingsGenerales.map((g) => (
+          <section key={g.key} style={s.section}>
+            <h2 style={s.sectionTitle}>Ranking — {g.titulo}</h2>
+            {g.ranking.length === 0 ? (
+              <p style={s.info}>Aún no hay respuestas registradas.</p>
+            ) : (
+              <div style={s.barList}>
+                {g.ranking.map((r, i) => (
+                  <BarraRanking key={r.nombre} rank={i + 1} {...r} />
+                ))}
+              </div>
+            )}
+          </section>
+        ))}
+
+        <div style={s.divider} />
+
+        <h2 style={{ ...s.title, fontSize: 18, marginTop: 0 }}>Detalle por encuesta</h2>
+        <p style={s.subtitle}>Revisa una encuesta puntual: promedio por pregunta y comentarios abiertos.</p>
 
         <div style={s.selectorWrap}>
           <label style={s.selectorLabel}>Encuesta</label>
@@ -151,9 +309,9 @@ export default function Resultados() {
               {stats.promedioGeneral != null && (
                 <div style={s.statCard}>
                   <div style={{ ...s.statValue, color: scaleColor(stats.promedioGeneral).text }}>
-                    {stats.promedioGeneral.toFixed(1)}
+                    {score100(stats.promedioGeneral)}
                   </div>
-                  <div style={s.statLabel}>Promedio general (de 10)</div>
+                  <div style={s.statLabel}>Promedio general (de 100)</div>
                 </div>
               )}
             </div>
@@ -165,25 +323,12 @@ export default function Resultados() {
             {stats.ranking && stats.ranking.length > 0 && (
               <section style={s.section}>
                 <h2 style={s.sectionTitle}>
-                  Ranking — {NOMBRE_CAMPO[encuesta.campoEvaluado] || 'evaluados'}
+                  Ranking de esta encuesta — {NOMBRE_CAMPO[encuesta.campoEvaluado] || 'evaluados'}
                 </h2>
                 <div style={s.barList}>
-                  {stats.ranking.map((r, i) => {
-                    const col = scaleColor(r.promedio)
-                    return (
-                      <div key={r.nombre} style={s.barRow}>
-                        <div style={s.barRowTop}>
-                          <span style={s.barRank}>#{i + 1}</span>
-                          <span style={s.barName}>{r.nombre}</span>
-                          <span style={s.barCount}>{r.cantidad} resp.</span>
-                          <span style={{ ...s.barValue, color: col.text }}>{r.promedio.toFixed(1)}</span>
-                        </div>
-                        <div style={s.barTrack}>
-                          <div style={{ ...s.barFill, width: `${r.promedio * 10}%`, background: col.active }} />
-                        </div>
-                      </div>
-                    )
-                  })}
+                  {stats.ranking.map((r, i) => (
+                    <BarraRanking key={r.nombre} rank={i + 1} nombre={r.nombre} cantidad={r.cantidad} unidad="resp." promedio={r.promedio} />
+                  ))}
                 </div>
               </section>
             )}
@@ -200,10 +345,10 @@ export default function Resultados() {
                         <div style={s.barRowTop}>
                           <span style={s.barQNum}>{i + 1}</span>
                           <span style={s.barQTexto}>{p.texto}</span>
-                          <span style={{ ...s.barValue, color: col.text }}>{p.promedio.toFixed(1)}</span>
+                          <span style={{ ...s.barValue, color: col.text }}>{score100(p.promedio)}/100</span>
                         </div>
                         <div style={s.barTrack}>
-                          <div style={{ ...s.barFill, width: `${p.promedio * 10}%`, background: col.active }} />
+                          <div style={{ ...s.barFill, width: `${score100(p.promedio)}%`, background: col.active }} />
                         </div>
                       </div>
                     )
@@ -259,11 +404,12 @@ const s = {
 
   main: { maxWidth: 820, margin: '0 auto', padding: '28px 16px 60px' },
   title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: '#376B9E', marginBottom: 6 },
-  subtitle: { color: '#5C7C93', fontSize: 14, fontWeight: 600, marginBottom: 20, lineHeight: 1.6 },
+  subtitle: { color: '#4D6478', fontSize: 14, fontWeight: 600, marginBottom: 20, lineHeight: 1.6 },
+  divider: { height: 1, background: '#D4DADF', margin: '8px 0 26px' },
 
   selectorWrap: { marginBottom: 24 },
   selectorLabel: {
-    display: 'block', fontSize: 11, fontWeight: 800, color: '#5C7C93',
+    display: 'block', fontSize: 11, fontWeight: 800, color: '#4D6478',
     textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8,
   },
   select: {
@@ -273,14 +419,14 @@ const s = {
     background: 'white', minHeight: 48, cursor: 'pointer',
   },
 
-  info: { color: '#5C7C93', fontSize: 14, fontWeight: 600 },
+  info: { color: '#4D6478', fontSize: 14, fontWeight: 600 },
   errorMsg: {
     background: '#fef2f2', color: '#dc2626', border: '1.5px solid #fecaca',
     borderRadius: 8, padding: '13px 14px', fontSize: 14, fontWeight: 700,
   },
   empty: {
     background: 'white', borderRadius: 10, padding: '20px', textAlign: 'center',
-    color: '#5C7C93', fontSize: 14, fontWeight: 600, border: '1px solid #D4DADF',
+    color: '#4D6478', fontSize: 14, fontWeight: 600, border: '1px solid #D4DADF',
   },
 
   statsRow: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' },
@@ -289,7 +435,7 @@ const s = {
     boxShadow: '0 2px 10px rgba(55,107,158,0.08)', border: '1px solid #D4DADF',
   },
   statValue: { fontFamily: 'Inter, sans-serif', fontSize: 30, fontWeight: 700, color: '#376B9E', lineHeight: 1.1 },
-  statLabel: { fontSize: 12, color: '#5C7C93', fontWeight: 700, marginTop: 4 },
+  statLabel: { fontSize: 12, color: '#4D6478', fontWeight: 700, marginTop: 4 },
 
   section: {
     background: 'white', borderRadius: 14, padding: '20px 18px',
@@ -306,7 +452,7 @@ const s = {
   barRowTop: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 },
   barRank: { fontSize: 12, fontWeight: 800, color: '#BFC5CC', minWidth: 22 },
   barName: { fontSize: 14, fontWeight: 700, color: '#1e293b', flex: 1 },
-  barCount: { fontSize: 11, color: '#5C7C93', fontWeight: 700, whiteSpace: 'nowrap' },
+  barCount: { fontSize: 11, color: '#4D6478', fontWeight: 700, whiteSpace: 'nowrap' },
   barQNum: {
     minWidth: 20, height: 20, background: '#D4DADF', color: '#376B9E',
     borderRadius: 5, fontSize: 11, fontWeight: 800,
@@ -325,5 +471,5 @@ const s = {
     border: '1px solid #D4DADF',
   },
   comentarioTexto: { fontSize: 13, color: '#334155', fontWeight: 600, lineHeight: 1.55, fontStyle: 'italic' },
-  comentarioMeta: { fontSize: 11, color: '#5C7C93', fontWeight: 700, display: 'block', marginTop: 6 },
+  comentarioMeta: { fontSize: 11, color: '#4D6478', fontWeight: 700, display: 'block', marginTop: 6 },
 }
