@@ -10,6 +10,9 @@ const NOMBRE_CAMPO = {
   lider: 'líderes',
 }
 
+// Campos que identifican a quién se evalúa (no son comentarios abiertos aunque sean texto).
+const CAMPOS_IDENTIFICADORES = ['supervisor', 'obra', 'contratista', 'lider']
+
 // Ranking consolidado: agrupa varias encuestas (de distintos meses) que evalúan
 // al mismo tipo de persona o área, para un ranking único acumulado.
 const RANKING_GROUPS = [
@@ -35,6 +38,9 @@ const RANKING_GROUPS = [
   },
 ]
 
+const IDS_AGRUPADOS = new Set(RANKING_GROUPS.flatMap((g) => g.encuestaIds))
+const ENCUESTAS_INDEPENDIENTES = encuestas.filter((e) => !IDS_AGRUPADOS.has(e.id))
+
 function score100(promedio) {
   return Math.round(promedio * 10)
 }
@@ -49,9 +55,7 @@ function construirMapaSeccion(encuesta) {
   return mapa
 }
 
-function calcularRankingGrupo(grupo, filasRanking) {
-  const filasGrupo = filasRanking.filter((f) => grupo.encuestaIds.includes(f.encuesta_id))
-
+function calcularRankingGrupo(grupo, filasGrupo) {
   if (grupo.modo === 'campo') {
     const mapa = new Map()
     filasGrupo.forEach((f) => {
@@ -72,7 +76,7 @@ function calcularRankingGrupo(grupo, filasRanking) {
       .sort((a, b) => b.promedio - a.promedio)
   }
 
-  // modo 'seccion': agrupa por área/sección en lugar de por persona
+  // modo 'seccion': agrupa por área en lugar de por persona
   const mapasPorEncuesta = {}
   grupo.encuestaIds.forEach((id) => {
     const enc = encuestas.find((e) => e.id === id)
@@ -97,16 +101,6 @@ function calcularRankingGrupo(grupo, filasRanking) {
     .sort((a, b) => b.promedio - a.promedio)
 }
 
-function agruparEncuestasPorMes(lista) {
-  const grupos = new Map()
-  lista.forEach((enc) => {
-    const mes = enc.mes || 'Otras'
-    if (!grupos.has(mes)) grupos.set(mes, [])
-    grupos.get(mes).push(enc)
-  })
-  return Array.from(grupos.entries())
-}
-
 function BarraRanking({ nombre, cantidad, unidad, promedio, rank }) {
   const col = scaleColor(promedio)
   return (
@@ -125,95 +119,84 @@ function BarraRanking({ nombre, cantidad, unidad, promedio, rank }) {
 }
 
 export default function Resultados() {
-  const [encuestaId, setEncuestaId] = useState(encuestas[encuestas.length - 1]?.id || '')
+  const [filtro, setFiltro] = useState(`grupo:${RANKING_GROUPS[0].key}`)
   const [filas, setFilas] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const [filasRanking, setFilasRanking] = useState([])
-  const [loadingRanking, setLoadingRanking] = useState(true)
-  const [errorRanking, setErrorRanking] = useState(null)
-
-  const encuesta = encuestas.find((e) => e.id === encuestaId)
+  const grupoSeleccionado = filtro.startsWith('grupo:')
+    ? RANKING_GROUPS.find((g) => g.key === filtro.slice(6))
+    : null
+  const encuestaSeleccionada = !grupoSeleccionado ? encuestas.find((e) => e.id === filtro) : null
 
   useEffect(() => {
-    if (!encuestaId) return
     let cancelado = false
     setLoading(true)
     setError(null)
-    supabase
-      .from('respuestas')
-      .select('*')
-      .eq('encuesta_id', encuestaId)
-      .order('enviado_en', { ascending: false })
-      .then(({ data, error: sbError }) => {
-        if (cancelado) return
-        if (sbError) {
-          setError('No se pudieron cargar los resultados.')
-          setFilas([])
-        } else {
-          setFilas(data || [])
-        }
-        setLoading(false)
-      })
+    const query = grupoSeleccionado
+      ? supabase.from('respuestas').select('*').in('encuesta_id', grupoSeleccionado.encuestaIds)
+      : supabase.from('respuestas').select('*').eq('encuesta_id', filtro)
+    query.order('enviado_en', { ascending: false }).then(({ data, error: sbError }) => {
+      if (cancelado) return
+      if (sbError) {
+        setError('No se pudieron cargar los resultados.')
+        setFilas([])
+      } else {
+        setFilas(data || [])
+      }
+      setLoading(false)
+    })
     return () => { cancelado = true }
-  }, [encuestaId])
-
-  useEffect(() => {
-    let cancelado = false
-    const todosLosIds = RANKING_GROUPS.flatMap((g) => g.encuestaIds)
-    setLoadingRanking(true)
-    setErrorRanking(null)
-    supabase
-      .from('respuestas')
-      .select('*')
-      .in('encuesta_id', todosLosIds)
-      .then(({ data, error: sbError }) => {
-        if (cancelado) return
-        if (sbError) {
-          setErrorRanking('No se pudieron cargar los rankings.')
-          setFilasRanking([])
-        } else {
-          setFilasRanking(data || [])
-        }
-        setLoadingRanking(false)
-      })
-    return () => { cancelado = true }
-  }, [])
-
-  const rankingsGenerales = useMemo(
-    () => RANKING_GROUPS.map((g) => ({ ...g, ranking: calcularRankingGrupo(g, filasRanking) })),
-    [filasRanking],
-  )
+  }, [filtro])
 
   const stats = useMemo(() => {
-    if (!encuesta) return null
-    const preguntasEscala = encuesta.preguntas.filter((p) => p.tipo === 'escala')
-    const preguntasAbiertas = encuesta.preguntas.filter((p) => p.tipo === 'texto' && p.requerida === false)
     const totalRespuestas = filas.length
 
     const valoresGenerales = []
-    const porPregunta = preguntasEscala.map((p) => {
-      const valores = filas.map((f) => f.respuestas?.[p.id]).filter((v) => typeof v === 'number')
-      valoresGenerales.push(...valores)
-      const promedio = valores.length ? valores.reduce((a, b) => a + b, 0) / valores.length : null
-      return { id: p.id, texto: p.texto, promedio, cantidad: valores.length }
-    })
-
+    filas.forEach((f) => Object.values(f.respuestas || {}).forEach((v) => {
+      if (typeof v === 'number') valoresGenerales.push(v)
+    }))
     const promedioGeneral = valoresGenerales.length
       ? valoresGenerales.reduce((a, b) => a + b, 0) / valoresGenerales.length
       : null
 
+    if (grupoSeleccionado) {
+      const ranking = calcularRankingGrupo(grupoSeleccionado, filas)
+      const comentarios = filas
+        .flatMap((f) => Object.entries(f.respuestas || {})
+          .filter(([k, v]) => typeof v === 'string' && v.trim() && !CAMPOS_IDENTIFICADORES.includes(k))
+          .map(([, v]) => ({
+            valor: v.trim(),
+            evaluado: grupoSeleccionado.modo === 'campo' ? f.respuestas?.[grupoSeleccionado.campo] : null,
+          })))
+      return {
+        totalRespuestas, promedioGeneral,
+        tituloRanking: grupoSeleccionado.titulo,
+        ranking, porPregunta: null, comentarios,
+      }
+    }
+
+    if (!encuestaSeleccionada) return { totalRespuestas: 0, promedioGeneral: null, ranking: null, porPregunta: [], comentarios: [] }
+
+    const preguntasEscala = encuestaSeleccionada.preguntas.filter((p) => p.tipo === 'escala')
+    const preguntasAbiertas = encuestaSeleccionada.preguntas.filter((p) => p.tipo === 'texto' && p.requerida === false)
+
+    const porPregunta = preguntasEscala.map((p) => {
+      const valores = filas.map((f) => f.respuestas?.[p.id]).filter((v) => typeof v === 'number')
+      const promedio = valores.length ? valores.reduce((a, b) => a + b, 0) / valores.length : null
+      return { id: p.id, texto: p.texto, promedio, cantidad: valores.length }
+    })
+
     let ranking = null
-    if (encuesta.campoEvaluado) {
-      const grupos = new Map()
+    if (encuestaSeleccionada.campoEvaluado) {
+      const mapa = new Map()
       filas.forEach((f) => {
-        const crudo = f.respuestas?.[encuesta.campoEvaluado]
+        const crudo = f.respuestas?.[encuestaSeleccionada.campoEvaluado]
         const nombre = (crudo || '').toString().trim() || 'Sin especificar'
-        if (!grupos.has(nombre)) grupos.set(nombre, [])
-        grupos.get(nombre).push(f)
+        if (!mapa.has(nombre)) mapa.set(nombre, [])
+        mapa.get(nombre).push(f)
       })
-      ranking = Array.from(grupos.entries())
+      ranking = Array.from(mapa.entries())
         .map(([nombre, filasGrupo]) => {
           const valores = []
           filasGrupo.forEach((f) => preguntasEscala.forEach((p) => {
@@ -221,7 +204,7 @@ export default function Resultados() {
             if (typeof v === 'number') valores.push(v)
           }))
           const promedio = valores.length ? valores.reduce((a, b) => a + b, 0) / valores.length : 0
-          return { nombre, cantidad: filasGrupo.length, promedio }
+          return { nombre, cantidad: filasGrupo.length, unidad: 'resp.', promedio }
         })
         .sort((a, b) => b.promedio - a.promedio)
     }
@@ -232,15 +215,20 @@ export default function Resultados() {
       respuestas: filas
         .map((f) => ({
           valor: (f.respuestas?.[p.id] || '').toString().trim(),
-          evaluado: encuesta.campoEvaluado ? f.respuestas?.[encuesta.campoEvaluado] : null,
+          evaluado: encuestaSeleccionada.campoEvaluado ? f.respuestas?.[encuestaSeleccionada.campoEvaluado] : null,
         }))
         .filter((r) => r.valor),
     }))
 
-    return { totalRespuestas, promedioGeneral, porPregunta, ranking, comentarios }
-  }, [encuesta, filas])
+    return {
+      totalRespuestas, promedioGeneral,
+      tituloRanking: NOMBRE_CAMPO[encuestaSeleccionada.campoEvaluado] || 'evaluados',
+      ranking, porPregunta, comentarios,
+    }
+  }, [filtro, filas, grupoSeleccionado, encuestaSeleccionada])
 
-  const gruposEncuestas = agruparEncuestasPorMes(encuestas)
+  const comentariosPlanos = grupoSeleccionado ? stats.comentarios : null
+  const comentariosPorPregunta = !grupoSeleccionado ? stats.comentarios : null
 
   return (
     <div style={s.page}>
@@ -258,48 +246,28 @@ export default function Resultados() {
 
       <main style={s.main}>
         <h1 style={s.title}>Resultados y ranking</h1>
-        <p style={s.subtitle}>Puntuación sobre 100, acumulando todos los meses disponibles.</p>
-
-        {loadingRanking && <p style={s.info}>Cargando rankings...</p>}
-        {errorRanking && <p style={s.errorMsg}>{errorRanking}</p>}
-
-        {!loadingRanking && !errorRanking && rankingsGenerales.map((g) => (
-          <section key={g.key} style={s.section}>
-            <h2 style={s.sectionTitle}>Ranking — {g.titulo}</h2>
-            {g.ranking.length === 0 ? (
-              <p style={s.info}>Aún no hay respuestas registradas.</p>
-            ) : (
-              <div style={s.barList}>
-                {g.ranking.map((r, i) => (
-                  <BarraRanking key={r.nombre} rank={i + 1} {...r} />
-                ))}
-              </div>
-            )}
-          </section>
-        ))}
-
-        <div style={s.divider} />
-
-        <h2 style={{ ...s.title, fontSize: 18, marginTop: 0 }}>Detalle por encuesta</h2>
-        <p style={s.subtitle}>Revisa una encuesta puntual: promedio por pregunta y comentarios abiertos.</p>
+        <p style={s.subtitle}>Puntuación sobre 100, según las respuestas recibidas.</p>
 
         <div style={s.selectorWrap}>
           <label style={s.selectorLabel}>Encuesta</label>
-          <select style={s.select} value={encuestaId} onChange={(e) => setEncuestaId(e.target.value)}>
-            {gruposEncuestas.map(([mes, lista]) => (
-              <optgroup key={mes} label={mes}>
-                {lista.map((enc) => (
-                  <option key={enc.id} value={enc.id}>{enc.titulo}</option>
-                ))}
-              </optgroup>
-            ))}
+          <select style={s.select} value={filtro} onChange={(e) => setFiltro(e.target.value)}>
+            <optgroup label="Rankings consolidados (todos los meses)">
+              {RANKING_GROUPS.map((g) => (
+                <option key={g.key} value={`grupo:${g.key}`}>{g.titulo}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Otras encuestas">
+              {ENCUESTAS_INDEPENDIENTES.map((enc) => (
+                <option key={enc.id} value={enc.id}>{enc.titulo}</option>
+              ))}
+            </optgroup>
           </select>
         </div>
 
         {loading && <p style={s.info}>Cargando resultados...</p>}
         {error && <p style={s.errorMsg}>{error}</p>}
 
-        {!loading && !error && stats && (
+        {!loading && !error && (
           <>
             <div style={s.statsRow}>
               <div style={s.statCard}>
@@ -317,23 +285,21 @@ export default function Resultados() {
             </div>
 
             {stats.totalRespuestas === 0 && (
-              <div style={s.empty}>Aún no hay respuestas registradas para esta evaluación.</div>
+              <div style={s.empty}>Aún no hay respuestas registradas.</div>
             )}
 
             {stats.ranking && stats.ranking.length > 0 && (
               <section style={s.section}>
-                <h2 style={s.sectionTitle}>
-                  Ranking de esta encuesta — {NOMBRE_CAMPO[encuesta.campoEvaluado] || 'evaluados'}
-                </h2>
+                <h2 style={s.sectionTitle}>Ranking — {stats.tituloRanking}</h2>
                 <div style={s.barList}>
                   {stats.ranking.map((r, i) => (
-                    <BarraRanking key={r.nombre} rank={i + 1} nombre={r.nombre} cantidad={r.cantidad} unidad="resp." promedio={r.promedio} />
+                    <BarraRanking key={r.nombre} rank={i + 1} {...r} />
                   ))}
                 </div>
               </section>
             )}
 
-            {stats.porPregunta.length > 0 && (
+            {stats.porPregunta && stats.porPregunta.length > 0 && (
               <section style={s.section}>
                 <h2 style={s.sectionTitle}>Promedio por pregunta</h2>
                 <div style={s.barList}>
@@ -357,10 +323,24 @@ export default function Resultados() {
               </section>
             )}
 
-            {stats.comentarios.some((c) => c.respuestas.length > 0) && (
+            {comentariosPlanos && comentariosPlanos.length > 0 && (
               <section style={s.section}>
                 <h2 style={s.sectionTitle}>Comentarios abiertos</h2>
-                {stats.comentarios.filter((c) => c.respuestas.length > 0).map((c) => (
+                <div style={s.comentarioLista}>
+                  {comentariosPlanos.map((r, i) => (
+                    <div key={i} style={s.comentarioCard}>
+                      <p style={s.comentarioTexto}>"{r.valor}"</p>
+                      {r.evaluado && <span style={s.comentarioMeta}>{r.evaluado}</span>}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {comentariosPorPregunta && comentariosPorPregunta.some((c) => c.respuestas.length > 0) && (
+              <section style={s.section}>
+                <h2 style={s.sectionTitle}>Comentarios abiertos</h2>
+                {comentariosPorPregunta.filter((c) => c.respuestas.length > 0).map((c) => (
                   <div key={c.id} style={s.comentarioBloque}>
                     <div style={s.comentarioPregunta}>{c.texto}</div>
                     <div style={s.comentarioLista}>
@@ -405,7 +385,6 @@ const s = {
   main: { maxWidth: 820, margin: '0 auto', padding: '28px 16px 60px' },
   title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: '#376B9E', marginBottom: 6 },
   subtitle: { color: '#4D6478', fontSize: 14, fontWeight: 600, marginBottom: 20, lineHeight: 1.6 },
-  divider: { height: 1, background: '#D4DADF', margin: '8px 0 26px' },
 
   selectorWrap: { marginBottom: 24 },
   selectorLabel: {
