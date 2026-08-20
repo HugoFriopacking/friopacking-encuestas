@@ -1,0 +1,182 @@
+/* Portal de Evaluaciones — mobile-first layout.
+   Colores y gradientes siguen viniendo de estilos inline (tokens de la marca);
+   este archivo solo controla tamaño, espaciado y breakpoints. */
+
+.home-header-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: relative;
+}
+
+.home-header-logo {
+  height: 28px;
+  object-fit: contain;
+  max-width: 140px;
+}
+
+.home-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.home-header-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 20px;
+}
+
+.home-portal-pill {
+  display: none;
+}
+
+.home-header-iniciales {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+}
+
+.home-hero-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 16px 16px 18px;
+}
+
+.home-hero-title {
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+
+.home-hero-sub {
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.home-hero-badge {
+  font-size: 12px;
+  padding: 5px 12px;
+}
+
+.home-main {
+  max-width: 1040px;
+  margin: -14px auto 0;
+  padding: 0 16px 48px;
+}
+
+.home-mes-section {
+  margin-bottom: 26px;
+}
+
+.home-mes-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.home-mes-badge {
+  font-size: 12px;
+  padding: 5px 12px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.home-card {
+  padding: 18px;
+  border-radius: 16px;
+}
+
+.home-card-title {
+  font-size: 20px;
+}
+
+.home-card-desc {
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.home-card-cta {
+  width: 100%;
+  min-height: 48px;
+  justify-content: center;
+  font-size: 14px;
+  padding: 0 18px;
+}
+
+.home-card-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(55, 107, 158, 0.45);
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .home-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-header-inner {
+    padding: 14px 20px;
+  }
+  .home-header-logo {
+    height: 36px;
+    max-width: 160px;
+  }
+  .home-portal-pill {
+    display: inline-block;
+  }
+  .home-hero-inner {
+    padding: 30px 20px 36px;
+  }
+  .home-hero-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  .home-hero-sub {
+    font-size: 16px;
+    margin-bottom: 18px;
+  }
+  .home-main {
+    margin-top: -22px;
+    padding: 0 20px 60px;
+  }
+  .home-card {
+    padding: 22px 20px;
+    border-radius: 18px;
+  }
+  .home-card-title {
+    font-size: 20px;
+  }
+  .home-card-desc {
+    font-size: 13px;
+  }
+  .home-card-cta {
+    width: auto;
+    min-height: 44px;
+    align-self: flex-start;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .home-hero-title {
+    font-size: 34px;
+  }
+  .home-grid {
+    gap: 16px;
+  }
+}

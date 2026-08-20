@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { encuestasActivas } from '../encuestas/index.js'
+import './Home.css'
 
 // Cambia este PIN cuando quieras
 const PIN_ACCESO = '2025'
@@ -13,6 +14,15 @@ const tagColors = {
 
 // Orden de aparición de los grupos por mes (más reciente primero)
 const MES_ORDEN = ['Agosto', 'Julio', 'Junio']
+
+// Duración estimada solo visual (no viene de la base de datos): ~15s por pregunta de escala.
+function estimarDuracion(escalaCount) {
+  if (escalaCount === 0) return null
+  if (escalaCount <= 10) return '3–5 min'
+  if (escalaCount <= 15) return '5–7 min'
+  if (escalaCount <= 20) return '7–9 min'
+  return '10+ min'
+}
 
 function agruparPorMes(encuestas) {
   const grupos = {}
@@ -81,60 +91,60 @@ export default function Home() {
     <div style={s.pageLight}>
       <header style={s.header}>
         <div style={s.headerBg} />
-        <div style={s.headerInner}>
-          <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.headerLogo} />
-          <div style={s.headerRight}>
-            <Link to="/resultados" style={s.headerResultados}>Resultados</Link>
-            <div style={s.headerPill}>Portal de Evaluaciones</div>
-            <span style={s.headerIniciales}>H. M. P.</span>
+        <div className="home-header-inner">
+          <img src="/logo-oscuro.png" alt="Grupo Friopacking" className="home-header-logo" />
+          <div className="home-header-right">
+            <Link to="/resultados" style={s.headerResultados} className="home-header-link">Resultados</Link>
+            <div style={s.headerPill} className="home-portal-pill">Portal de Evaluaciones</div>
+            <span style={s.headerIniciales} className="home-header-iniciales">H. M. P.</span>
           </div>
         </div>
       </header>
 
       <div style={s.hero}>
-        <div style={s.heroInner}>
-          <h1 style={s.heroTitle}>Evaluaciones de Desempeño</h1>
-          <p style={s.heroSub}>Selecciona la evaluación que debes completar. Tus respuestas son confidenciales.</p>
-          <div style={s.heroBadge}>
+        <div className="home-hero-inner">
+          <h1 style={s.heroTitle} className="home-hero-title">Evaluaciones</h1>
+          <p style={s.heroSub} className="home-hero-sub">Selecciona una evaluación para comenzar. Tus respuestas son confidenciales.</p>
+          <div style={s.heroBadge} className="home-hero-badge">
             <span style={s.heroDot} />
-            {encuestasActivas.length} evaluación{encuestasActivas.length !== 1 ? 'es' : ''} disponible{encuestasActivas.length !== 1 ? 's' : ''}
+            {encuestasActivas.length} disponible{encuestasActivas.length !== 1 ? 's' : ''}
           </div>
         </div>
       </div>
 
-      <main style={s.main}>
+      <main className="home-main">
         {(() => {
           const grupos = agruparPorMes(encuestasActivas)
           let contador = 0
           return grupos.map(({ mes, encuestas }) => (
-            <section key={mes} style={s.mesSection}>
-              <div style={s.mesHeading}>
-                <span style={s.mesBadge}>{mes}</span>
+            <section key={mes} className="home-mes-section">
+              <div className="home-mes-heading">
+                <span style={s.mesBadge} className="home-mes-badge">{mes}</span>
                 <span style={s.mesCount}>{encuestas.length} evaluación{encuestas.length !== 1 ? 'es' : ''}</span>
               </div>
-              <div style={s.grid}>
+              <div className="home-grid">
                 {encuestas.map((enc) => {
                   contador++
                   const num = contador
                   const tag = tagColors[enc.respondedor] || tagColors.ambos
                   const escalaCount = enc.preguntas.filter(p => p.tipo === 'escala').length
+                  const duracion = estimarDuracion(escalaCount)
                   return (
-                    <Link key={enc.id} to={`/encuesta/${enc.id}`} style={s.cardLink}>
+                    <Link key={enc.id} to={`/encuesta/${enc.id}`} style={s.cardLink} className="home-card home-card-link">
                       <div style={s.cardTop}>
                         <span style={{ ...s.cardTag, background: tag.bg, color: tag.color }}>
                           {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Contratistas' : 'Ambos'}
                         </span>
                         <span style={s.cardNum}>#{String(num).padStart(2,'0')}</span>
                       </div>
-                      <h2 style={s.cardTitle}>{enc.titulo}</h2>
-                      <p style={s.cardDesc}>{enc.descripcion}</p>
-                      <div style={s.cardDivider} />
+                      <h2 style={s.cardTitle} className="home-card-title">{enc.titulo}</h2>
+                      <p style={s.cardDesc} className="home-card-desc">{enc.descripcion}</p>
                       <div style={s.cardFooter}>
                         <span style={s.cardMeta}>
-                          {escalaCount > 0 ? `${escalaCount} preguntas` : 'Próximamente'}
+                          {escalaCount > 0 ? `${escalaCount} preguntas${duracion ? ` · ${duracion}` : ''}` : 'Próximamente'}
                         </span>
-                        <div style={s.cardCta}>
-                          Iniciar
+                        <div style={s.cardCta} className="home-card-cta">
+                          Iniciar evaluación
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                           </svg>
@@ -179,7 +189,7 @@ const s = {
   },
   logo: { height: 40, objectFit: 'contain', marginBottom: 24, opacity: 0.85, maxWidth: '100%' },
   title: { fontFamily: 'Inter, sans-serif', fontSize: 22, fontWeight: 700, color: '#376B9E', marginBottom: 6 },
-  subtitle: { color: '#5C7C93', fontSize: 15, fontWeight: 600, marginBottom: 28 },
+  subtitle: { color: '#4D6478', fontSize: 15, fontWeight: 600, marginBottom: 28 },
   form: { display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 },
   pinInput: {
     width: '100%', border: '2px solid', borderRadius: 12,
@@ -206,17 +216,11 @@ const s = {
     background: 'radial-gradient(ellipse at 80% 50%, rgba(185,222,216,0.12) 0%, transparent 70%)',
     pointerEvents: 'none',
   },
-  headerInner: {
-    maxWidth: 900, margin: '0 auto', padding: '16px 20px',
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative',
-  },
-  headerLogo: { height: 40, objectFit: 'contain', maxWidth: 160 },
-  headerRight: { display: 'flex', alignItems: 'center', gap: 10 },
   headerPill: {
     background: 'rgba(185,222,216,0.22)', color: '#B9DED8',
-    fontSize: 11, fontWeight: 800, padding: '5px 12px',
+    fontSize: 11, fontWeight: 800,
     borderRadius: 20, letterSpacing: '0.08em', textTransform: 'uppercase',
-    border: '1px solid rgba(185,222,216,0.35)',
+    border: '1px solid rgba(185,222,216,0.35)', padding: '5px 12px',
   },
   headerIniciales: {
     color: 'rgba(255,255,255,0.75)', fontSize: 12, fontWeight: 700,
@@ -229,53 +233,42 @@ const s = {
   },
   hero: {
     background: 'linear-gradient(135deg, #25496B 0%, #376B9E 50%, #5F8FBF 100%)',
-    paddingBottom: 44,
   },
-  heroInner: { maxWidth: 900, margin: '0 auto', padding: '36px 20px 0' },
-  heroTitle: { fontFamily: 'Inter, sans-serif', fontSize: 28, fontWeight: 700, color: 'white', lineHeight: 1.15, marginBottom: 10 },
-  heroSub: { fontSize: 15, color: 'rgba(255,255,255,0.72)', fontWeight: 600, maxWidth: 520, lineHeight: 1.6, marginBottom: 20 },
+  heroTitle: { fontFamily: 'Inter, sans-serif', fontWeight: 700, color: 'white', lineHeight: 1.15 },
+  heroSub: { color: 'rgba(255,255,255,0.75)', fontWeight: 600, maxWidth: 520, lineHeight: 1.55 },
   heroBadge: {
     display: 'inline-flex', alignItems: 'center', gap: 8,
     background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.85)',
-    fontSize: 13, fontWeight: 700, padding: '6px 14px', borderRadius: 20,
+    fontWeight: 700, borderRadius: 20,
     border: '1px solid rgba(255,255,255,0.15)',
   },
   heroDot: {
     width: 8, height: 8, borderRadius: '50%', background: '#B9DED8',
     display: 'inline-block', boxShadow: '0 0 8px #B9DED8',
   },
-  main: { maxWidth: 900, margin: '-24px auto 0', padding: '0 16px 60px', flex: 1, position: 'relative', zIndex: 1 },
-  mesSection: {
-    background: 'white', borderRadius: 18, padding: '20px 18px 22px',
-    marginBottom: 20, boxShadow: '0 4px 20px rgba(55,107,158,0.10)',
-    border: '1px solid rgba(55,107,158,0.08)',
-  },
-  mesHeading: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 },
   mesBadge: {
-    fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 700, color: 'white',
+    fontFamily: 'Inter, sans-serif', fontWeight: 700, color: 'white',
     textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap',
     background: 'linear-gradient(135deg, #376B9E 0%, #5F8FBF 100%)',
-    padding: '6px 16px', borderRadius: 20,
+    borderRadius: 20,
   },
-  mesCount: { fontSize: 12, color: '#5C7C93', fontWeight: 700 },
-  grid: { display: 'grid', gap: 14, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' },
+  mesCount: { fontSize: 12, color: '#4D6478', fontWeight: 700 },
   cardLink: {
-    background: 'white', borderRadius: 14, padding: '22px 20px',
+    background: 'white',
     boxShadow: '0 4px 20px rgba(55,107,158,0.10)', border: '1.5px solid rgba(55,107,158,0.07)',
     display: 'flex', flexDirection: 'column', cursor: 'pointer',
   },
-  cardTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
+  cardTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
   cardTag: { fontSize: 11, fontWeight: 800, padding: '4px 10px', borderRadius: 20 },
-  cardNum: { fontSize: 11, fontWeight: 800, color: '#BFC5CC' },
-  cardTitle: { fontFamily: 'Inter, sans-serif', fontSize: 18, fontWeight: 700, color: '#376B9E', marginBottom: 6, lineHeight: 1.3 },
-  cardDesc: { fontSize: 13, color: '#5C7C93', fontWeight: 600, lineHeight: 1.6, marginBottom: 16, flex: 1 },
-  cardDivider: { height: 1, background: '#D4DADF', marginBottom: 14 },
-  cardFooter: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  cardMeta: { fontSize: 12, color: '#5C7C93', fontWeight: 700 },
+  cardNum: { fontSize: 11, fontWeight: 800, color: '#9AA5B1' },
+  cardTitle: { fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#376B9E', marginBottom: 6, lineHeight: 1.3 },
+  cardDesc: { color: '#4D6478', fontWeight: 600, lineHeight: 1.55, flex: 1 },
+  cardFooter: { display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 10, marginTop: 6 },
+  cardMeta: { fontSize: 12, color: '#4D6478', fontWeight: 700 },
   cardCta: {
     display: 'flex', alignItems: 'center', gap: 6,
     background: '#376B9E', color: 'white',
-    fontSize: 12, fontWeight: 800, padding: '7px 14px', borderRadius: 8,
+    fontWeight: 800, borderRadius: 10,
   },
   footer: {
     background: '#376B9E', padding: '24px 20px',
