@@ -38,8 +38,21 @@ const RANKING_GROUPS = [
   },
 ]
 
-const IDS_AGRUPADOS = new Set(RANKING_GROUPS.flatMap((g) => g.encuestaIds))
-const ENCUESTAS_INDEPENDIENTES = encuestas.filter((e) => !IDS_AGRUPADOS.has(e.id))
+const MES_ORDEN = ['Agosto', 'Julio', 'Junio']
+
+function agruparEncuestasPorMes(lista) {
+  const grupos = new Map()
+  lista.forEach((enc) => {
+    const mes = enc.mes || 'Otras'
+    if (!grupos.has(mes)) grupos.set(mes, [])
+    grupos.get(mes).push(enc)
+  })
+  const ordenados = [
+    ...MES_ORDEN.filter((m) => grupos.has(m)),
+    ...Array.from(grupos.keys()).filter((m) => !MES_ORDEN.includes(m)),
+  ]
+  return ordenados.map((mes) => [mes, grupos.get(mes)])
+}
 
 function score100(promedio) {
   return Math.round(promedio * 10)
@@ -256,11 +269,13 @@ export default function Resultados() {
                 <option key={g.key} value={`grupo:${g.key}`}>{g.titulo}</option>
               ))}
             </optgroup>
-            <optgroup label="Otras encuestas">
-              {ENCUESTAS_INDEPENDIENTES.map((enc) => (
-                <option key={enc.id} value={enc.id}>{enc.titulo}</option>
-              ))}
-            </optgroup>
+            {agruparEncuestasPorMes(encuestas).map(([mes, lista]) => (
+              <optgroup key={mes} label={mes}>
+                {lista.map((enc) => (
+                  <option key={enc.id} value={enc.id}>{enc.titulo}</option>
+                ))}
+              </optgroup>
+            ))}
           </select>
         </div>
 
