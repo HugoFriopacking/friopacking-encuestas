@@ -67,8 +67,8 @@
 
 .home-main {
   max-width: 1040px;
-  margin: -14px auto 0;
-  padding: 0 16px 48px;
+  margin: 0 auto;
+  padding: 18px 16px 48px;
 }
 
 .home-mes-section {
@@ -151,8 +151,7 @@
     margin-bottom: 18px;
   }
   .home-main {
-    margin-top: -22px;
-    padding: 0 20px 60px;
+    padding: 24px 20px 60px;
   }
   .home-card {
     padding: 22px 20px;
