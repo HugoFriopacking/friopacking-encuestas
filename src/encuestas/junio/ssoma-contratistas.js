@@ -5,6 +5,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Junio',
+  campoEvaluado: 'contratista',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 'contratista', tipo: 'texto', texto: 'Contratista a evaluar', requerida: true },

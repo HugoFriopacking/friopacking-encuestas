@@ -12,7 +12,7 @@ const tagColors = {
 }
 
 // Orden de aparición de los grupos por mes (más reciente primero)
-const MES_ORDEN = ['Julio', 'Junio']
+const MES_ORDEN = ['Agosto', 'Julio', 'Junio']
 
 function agruparPorMes(encuestas) {
   const grupos = {}
@@ -84,6 +84,7 @@ export default function Home() {
         <div style={s.headerInner}>
           <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.headerLogo} />
           <div style={s.headerRight}>
+            <Link to="/resultados" style={s.headerResultados}>Resultados</Link>
             <div style={s.headerPill}>Portal de Evaluaciones</div>
             <span style={s.headerIniciales}>H. M. P.</span>
           </div>
@@ -220,6 +221,11 @@ const s = {
   headerIniciales: {
     color: 'rgba(255,255,255,0.75)', fontSize: 12, fontWeight: 700,
     letterSpacing: '0.04em',
+  },
+  headerResultados: {
+    color: 'white', fontSize: 12, fontWeight: 700,
+    background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+    padding: '6px 12px', borderRadius: 20,
   },
   hero: {
     background: 'linear-gradient(135deg, #25496B 0%, #376B9E 50%, #5F8FBF 100%)',

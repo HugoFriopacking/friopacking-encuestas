@@ -2,19 +2,7 @@ import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import encuestas from '../encuestas/index.js'
 import { supabase } from '../lib/supabase.js'
-
-const scaleColor = (val) => {
-  if (val === 1) return { bg: '#fef2f2', border: '#fca5a5', text: '#991b1b', active: '#991b1b' }
-  if (val === 2) return { bg: '#fef2f2', border: '#fca5a5', text: '#dc2626', active: '#dc2626' }
-  if (val === 3) return { bg: '#fff7ed', border: '#fdba74', text: '#ea580c', active: '#ea580c' }
-  if (val === 4) return { bg: '#fffbeb', border: '#fcd34d', text: '#d97706', active: '#d97706' }
-  if (val === 5) return { bg: '#fefce8', border: '#fde047', text: '#eab308', active: '#eab308' }
-  if (val === 6) return { bg: '#fefce8', border: '#fde047', text: '#ca8a04', active: '#ca8a04' }
-  if (val === 7) return { bg: '#fdf6e3', border: '#e8d48b', text: '#92700a', active: '#92700a' }
-  if (val === 8) return { bg: '#f0fdf4', border: '#86efac', text: '#22c55e', active: '#22c55e' }
-  if (val === 9) return { bg: '#ecfdf5', border: '#6ee7b7', text: '#16a34a', active: '#16a34a' }
-  return { bg: '#ecfdf5', border: '#34d399', text: '#15803d', active: '#15803d' }
-}
+import { scaleColor } from '../lib/escalaColor.js'
 
 const ICONOS = {
   operaciones: (
@@ -68,6 +56,28 @@ const ICONO_CHECK = (
     <polyline points="20 6 9 17 4 12"/>
   </svg>
 )
+
+function LeyendaEscala({ encuesta }) {
+  if (!encuesta.leyendaTiers && !encuesta.leyenda) return null
+  const tiers = encuesta.leyendaTiers || [
+    { rango: '1', texto: 'Muy malo', bg: '#fef2f2', color: '#991b1b' },
+    { rango: '5', texto: 'Regular', bg: '#fefce8', color: '#eab308' },
+    { rango: '10', texto: 'Muy bueno', bg: '#ecfdf5', color: '#15803d' },
+  ]
+  return (
+    <div style={s.leyenda}>
+      <div style={s.leyendaTitle}>Escala de calificación</div>
+      <div style={s.leyendaItems}>
+        {tiers.map((t) => (
+          <div key={t.rango} style={s.leyendaItem}>
+            <span style={{ ...s.leyendaBadge, background: t.bg, color: t.color }}>{t.rango}</span>
+            {t.texto}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function parseSecciones(preguntas) {
   const result = []
@@ -239,14 +249,7 @@ export default function Encuesta() {
             <span style={s.encuestaTag}>Contratistas</span>
             <h1 style={s.title}>{encuesta.titulo}</h1>
             <p style={s.desc}>{encuesta.descripcion}</p>
-            <div style={s.leyenda}>
-              <div style={s.leyendaTitle}>Escala de calificación</div>
-              <div style={s.leyendaItems}>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef2f2', color: '#991b1b' }}>1</span>Muy malo</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fefce8', color: '#eab308' }}>5</span>Regular</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#ecfdf5', color: '#15803d' }}>10</span>Muy bueno</div>
-              </div>
-            </div>
+            <LeyendaEscala encuesta={encuesta} />
           </div>
 
           {error && <div style={s.errorMsg}>{error}</div>}
@@ -376,16 +379,7 @@ export default function Encuesta() {
           </span>
           <h1 style={s.title}>{encuesta.titulo}</h1>
           <p style={s.desc}>{encuesta.descripcion}</p>
-          {encuesta.leyenda && (
-            <div style={s.leyenda}>
-              <div style={s.leyendaTitle}>Escala de calificación</div>
-              <div style={s.leyendaItems}>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fef2f2', color: '#991b1b' }}>1</span>Muy malo</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#fefce8', color: '#eab308' }}>5</span>Regular</div>
-                <div style={s.leyendaItem}><span style={{ ...s.leyendaBadge, background: '#ecfdf5', color: '#15803d' }}>10</span>Muy bueno</div>
-              </div>
-            </div>
-          )}
+          <LeyendaEscala encuesta={encuesta} />
         </div>
 
         {error && <div style={s.errorMsg}>{error}</div>}

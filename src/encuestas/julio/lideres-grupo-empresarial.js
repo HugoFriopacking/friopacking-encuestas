@@ -5,6 +5,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Julio',
+  campoEvaluado: 'lider',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     {
