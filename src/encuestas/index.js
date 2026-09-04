@@ -9,6 +9,7 @@ import contratistasFriopackingJulio from './julio/contratistas-friopacking-julio
 import contratistaSupervisoresAgosto from './agosto/contratistas-supervisores-agosto.js'
 import contratistasSsomaAgosto from './agosto/contratistas-ssoma-agosto.js'
 import contratistasFriopackingAgosto from './agosto/contratistas-friopacking-agosto.js'
+import ssomaContratistasAgosto from './agosto/ssoma-contratistas-agosto.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -23,6 +24,7 @@ const encuestas = [
   contratistaSupervisoresAgosto,
   contratistasSsomaAgosto,
   contratistasFriopackingAgosto,
+  ssomaContratistasAgosto,
 ]
 
 // Solo exporta las activas para mostrar en la home

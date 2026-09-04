@@ -36,6 +36,13 @@ const RANKING_GROUPS = [
     modo: 'seccion',
     encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto'],
   },
+  {
+    key: 'contratistas',
+    titulo: 'Contratistas evaluados por SSOMA',
+    modo: 'campo',
+    campo: 'contratista',
+    encuestaIds: ['ssoma-contratistas', 'ssoma-contratistas-agosto'],
+  },
 ]
 
 const MES_ORDEN = ['Agosto', 'Julio', 'Junio']
