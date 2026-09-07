@@ -1,3 +1,5 @@
+import { supervisoresPorProyecto } from '../../lib/supervisores.js'
+
 const encuesta = {
   id: 'contratistas-supervisores-julio',
   titulo: 'Supervisores (Julio)',
@@ -8,7 +10,7 @@ const encuesta = {
   campoEvaluado: 'supervisor',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
-    { id: 'supervisor', tipo: 'texto', texto: 'Supervisor a evaluar', requerida: true },
+    { id: 'supervisor', tipo: 'lista_desplegable', texto: 'Supervisor a evaluar', requerida: true, opcionesAgrupadas: supervisoresPorProyecto },
     { id: 'obra', tipo: 'texto', texto: 'Obra', requerida: true },
 
     { id: 's1', tipo: 'seccion', texto: 'Planificación y coordinación', icono: 'operaciones' },

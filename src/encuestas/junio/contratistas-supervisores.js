@@ -1,3 +1,5 @@
+import { supervisoresPorProyecto } from '../../lib/supervisores.js'
+
 const encuesta = {
   id: 'contratistas-supervisores',
   titulo: 'Supervisores (Junio)',
@@ -8,7 +10,7 @@ const encuesta = {
   campoEvaluado: 'supervisor',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
-    { id: 'supervisor', tipo: 'texto', texto: 'Supervisor a evaluar', requerida: true },
+    { id: 'supervisor', tipo: 'lista_desplegable', texto: 'Supervisor a evaluar', requerida: true, opcionesAgrupadas: supervisoresPorProyecto },
     { id: 'obra', tipo: 'texto', texto: 'Obra', requerida: true },
     { id: 'p1',  tipo: 'escala', texto: '¿Qué tan claro es el supervisor al comunicarle las instrucciones y el alcance de los trabajos a realizar?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p2',  tipo: 'escala', texto: '¿Qué tan bien organiza y planifica el supervisor las actividades diarias de la obra?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },

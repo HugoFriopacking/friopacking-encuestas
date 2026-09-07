@@ -457,9 +457,17 @@ export default function Encuesta() {
                       onChange={(e) => handleChange(pregunta.id, e.target.value)}
                     >
                       <option value="" disabled>Selecciona una opción...</option>
-                      {pregunta.opciones.map((op) => (
-                        <option key={op} value={op}>{op}</option>
-                      ))}
+                      {pregunta.opcionesAgrupadas
+                        ? pregunta.opcionesAgrupadas.map((grupo) => (
+                          <optgroup key={grupo.proyecto} label={grupo.proyecto}>
+                            {grupo.nombres.map((op) => (
+                              <option key={op} value={op}>{op}</option>
+                            ))}
+                          </optgroup>
+                        ))
+                        : pregunta.opciones.map((op) => (
+                          <option key={op} value={op}>{op}</option>
+                        ))}
                     </select>
                   )}
 
