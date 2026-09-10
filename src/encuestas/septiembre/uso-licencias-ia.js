@@ -1,11 +1,9 @@
 const encuesta = {
   id: 'uso-licencias-ia',
-  titulo: 'Uso y aprovechamiento de licencias de IA (ChatGPT / Claude)',
-  descripcion: 'Conocer cómo se están utilizando las herramientas de inteligencia artificial en el trabajo, identificar los principales casos de uso y evaluar oportunidades de mejora, capacitación y aprovechamiento de las licencias.',
+  titulo: 'Uso de licencias de IA (ChatGPT / Claude)',
   respondedor: 'interno',
   activa: true,
   mes: 'Septiembre',
-  leyenda: '1 = Conocimiento muy básico · 10 = Nivel avanzado / experto',
   preguntas: [
     { id: 'nombre', tipo: 'texto', texto: 'Nombre completo', requerida: true },
     {
@@ -21,7 +19,7 @@ const encuesta = {
       opciones: ['Todos los días', 'Varias veces por semana', 'Una vez por semana', 'Esporádicamente', 'Casi no lo uso', 'No utilizo ChatGPT'],
     },
     {
-      id: 'uso_claude', tipo: 'seleccion_multiple', texto: '¿Para qué utilizas Claude en tu trabajo?', requerida: true,
+      id: 'uso_claude', tipo: 'seleccion_multiple', texto: '¿Para qué utilizas Claude en tu trabajo? (Elección Múltiple)', requerida: true,
       opciones: [
         'Redacción y mejora de textos',
         'Elaboración de correos o comunicaciones',
@@ -40,7 +38,7 @@ const encuesta = {
       ],
     },
     {
-      id: 'uso_chatgpt', tipo: 'seleccion_multiple', texto: '¿Para qué utilizas ChatGPT en tu trabajo?', requerida: true,
+      id: 'uso_chatgpt', tipo: 'seleccion_multiple', texto: '¿Para qué utilizas ChatGPT en tu trabajo? (Elección Múltiple)', requerida: true,
       opciones: [
         'Redacción y mejora de textos',
         'Elaboración de correos o comunicaciones',

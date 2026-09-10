@@ -138,7 +138,9 @@ export default function Home() {
                         <span style={s.cardNum}>#{String(num).padStart(2,'0')}</span>
                       </div>
                       <h2 style={s.cardTitle} className="home-card-title">{enc.titulo}</h2>
-                      <p style={s.cardDesc} className="home-card-desc">{enc.descripcion}</p>
+                      {enc.descripcion
+                        ? <p style={s.cardDesc} className="home-card-desc">{enc.descripcion}</p>
+                        : <div style={{ flex: 1 }} />}
                       <div style={s.cardFooter}>
                         <span style={s.cardMeta}>
                           {escalaCount > 0 ? `${escalaCount} preguntas${duracion ? ` · ${duracion}` : ''}` : 'Próximamente'}

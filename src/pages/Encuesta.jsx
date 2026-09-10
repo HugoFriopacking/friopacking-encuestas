@@ -261,7 +261,7 @@ export default function Encuesta() {
           <div style={s.encuestaHeader}>
             <span style={s.encuestaTag}>Contratistas</span>
             <h1 style={s.title}>{encuesta.titulo}</h1>
-            <p style={s.desc}>{encuesta.descripcion}</p>
+            {encuesta.descripcion && <p style={s.desc}>{encuesta.descripcion}</p>}
             <LeyendaEscala encuesta={encuesta} />
           </div>
 
@@ -359,8 +359,8 @@ export default function Encuesta() {
   }
 
   // ─── MODO NORMAL ──────────────────────────────────────────────────────────
-  const totalPreguntas = encuesta.preguntas.filter(p => p.tipo === 'escala').length
-  const respondidas = encuesta.preguntas.filter(p => p.tipo === 'escala' && respuestas[p.id]).length
+  const totalPreguntas = encuesta.preguntas.filter(p => p.tipo !== 'seccion').length
+  const respondidas = encuesta.preguntas.filter(p => p.tipo !== 'seccion' && preguntaRespondida(p)).length
   const progreso = totalPreguntas > 0 ? Math.round((respondidas / totalPreguntas) * 100) : 0
 
   return (
@@ -391,7 +391,7 @@ export default function Encuesta() {
             {encuesta.respondedor === 'interno' ? 'Personal interno' : 'Contratistas'}
           </span>
           <h1 style={s.title}>{encuesta.titulo}</h1>
-          <p style={s.desc}>{encuesta.descripcion}</p>
+          {encuesta.descripcion && <p style={s.desc}>{encuesta.descripcion}</p>}
           <LeyendaEscala encuesta={encuesta} />
         </div>
 
@@ -753,12 +753,12 @@ const s = {
     background: '#F5F7F8', minHeight: 48, cursor: 'pointer',
   },
 
-  escalaRow: { display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 7 },
+  escalaRow: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(44px, 1fr))', gap: 6, marginBottom: 7 },
   escalaBtn: {
-    width: 42, height: 42, border: '2px solid',
+    height: 44, border: '2px solid',
     borderRadius: 8, cursor: 'pointer',
     fontSize: 14, fontWeight: 900, fontFamily: 'Manrope, sans-serif',
-    transition: 'all 0.12s', flexShrink: 0,
+    transition: 'all 0.12s',
   },
   escalaEtiquetas: {
     display: 'flex', justifyContent: 'space-between',
