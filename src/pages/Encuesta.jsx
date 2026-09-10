@@ -182,10 +182,23 @@ export default function Encuesta() {
     setRespuestas((prev) => ({ ...prev, [preguntaId]: valor }))
   }
 
+  function handleToggleMulti(preguntaId, opcion) {
+    setRespuestas((prev) => {
+      const actual = Array.isArray(prev[preguntaId]) ? prev[preguntaId] : []
+      const nuevo = actual.includes(opcion) ? actual.filter((o) => o !== opcion) : [...actual, opcion]
+      return { ...prev, [preguntaId]: nuevo }
+    })
+  }
+
+  function preguntaRespondida(p) {
+    if (p.tipo === 'seleccion_multiple') return Array.isArray(respuestas[p.id]) && respuestas[p.id].length > 0
+    return !!respuestas[p.id]
+  }
+
   async function handleSubmit(e) {
     if (e && e.preventDefault) e.preventDefault()
     setError(null)
-    const faltantes = encuesta.preguntas.filter((p) => p.requerida && !respuestas[p.id])
+    const faltantes = encuesta.preguntas.filter((p) => p.requerida && !preguntaRespondida(p))
     if (faltantes.length > 0) {
       setError(`Faltan ${faltantes.length} campo${faltantes.length > 1 ? 's' : ''} obligatorio${faltantes.length > 1 ? 's' : ''} por completar.`)
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -487,6 +500,28 @@ export default function Encuesta() {
                           {op}
                         </label>
                       ))}
+                    </div>
+                  )}
+
+                  {pregunta.tipo === 'seleccion_multiple' && (
+                    <div style={s.opciones}>
+                      {pregunta.opciones.map((op) => {
+                        const seleccionado = Array.isArray(respuestas[pregunta.id]) && respuestas[pregunta.id].includes(op)
+                        return (
+                          <label key={op} style={{
+                            ...s.opcionLabel,
+                            background: seleccionado ? '#E7F1FA' : '#F5F7F8',
+                            borderColor: seleccionado ? '#376B9E' : '#D4DADF',
+                          }}>
+                            <input type="checkbox" name={pregunta.id} value={op}
+                              checked={seleccionado}
+                              onChange={() => handleToggleMulti(pregunta.id, op)}
+                              style={{ accentColor: '#376B9E', width: 18, height: 18, flexShrink: 0 }}
+                            />
+                            {op}
+                          </label>
+                        )
+                      })}
                     </div>
                   )}
 

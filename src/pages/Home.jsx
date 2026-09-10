@@ -13,7 +13,7 @@ const tagColors = {
 }
 
 // Orden de aparición de los grupos por mes (más reciente primero)
-const MES_ORDEN = ['Agosto', 'Julio', 'Junio']
+const MES_ORDEN = ['Septiembre', 'Agosto', 'Julio', 'Junio']
 
 // Duración estimada solo visual (no viene de la base de datos): ~15s por pregunta de escala.
 function estimarDuracion(escalaCount) {

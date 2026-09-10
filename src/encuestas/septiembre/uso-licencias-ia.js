@@ -1,0 +1,82 @@
+const encuesta = {
+  id: 'uso-licencias-ia',
+  titulo: 'Uso y aprovechamiento de licencias de IA (ChatGPT / Claude)',
+  descripcion: 'Conocer cómo se están utilizando las herramientas de inteligencia artificial en el trabajo, identificar los principales casos de uso y evaluar oportunidades de mejora, capacitación y aprovechamiento de las licencias.',
+  respondedor: 'interno',
+  activa: true,
+  mes: 'Septiembre',
+  leyenda: '1 = Conocimiento muy básico · 10 = Nivel avanzado / experto',
+  preguntas: [
+    { id: 'nombre', tipo: 'texto', texto: 'Nombre completo', requerida: true },
+    {
+      id: 'herramientas', tipo: 'opcion_multiple', texto: '¿Qué herramienta(s) utilizas actualmente?', requerida: true,
+      opciones: ['Claude', 'ChatGPT', 'Ambas', 'Actualmente no utilizo ninguna'],
+    },
+    {
+      id: 'frecuencia_claude', tipo: 'opcion_multiple', texto: '¿Con qué frecuencia utilizas Claude?', requerida: true,
+      opciones: ['Todos los días', 'Varias veces por semana', 'Una vez por semana', 'Esporádicamente', 'Casi no lo uso', 'No utilizo Claude'],
+    },
+    {
+      id: 'frecuencia_chatgpt', tipo: 'opcion_multiple', texto: '¿Con qué frecuencia utilizas ChatGPT?', requerida: true,
+      opciones: ['Todos los días', 'Varias veces por semana', 'Una vez por semana', 'Esporádicamente', 'Casi no lo uso', 'No utilizo ChatGPT'],
+    },
+    {
+      id: 'uso_claude', tipo: 'seleccion_multiple', texto: '¿Para qué utilizas Claude en tu trabajo?', requerida: true,
+      opciones: [
+        'Redacción y mejora de textos',
+        'Elaboración de correos o comunicaciones',
+        'Resumen de documentos',
+        'Análisis de información',
+        'Investigación',
+        'Generación de ideas',
+        'Elaboración de informes',
+        'Apoyo en presentaciones',
+        'Excel, fórmulas o análisis de datos',
+        'Programación o automatización',
+        'Revisión o análisis de documentos extensos',
+        'Apoyo en tareas técnicas de mi área',
+        'Otro',
+        'No utilizo Claude',
+      ],
+    },
+    {
+      id: 'uso_chatgpt', tipo: 'seleccion_multiple', texto: '¿Para qué utilizas ChatGPT en tu trabajo?', requerida: true,
+      opciones: [
+        'Redacción y mejora de textos',
+        'Elaboración de correos o comunicaciones',
+        'Resumen de documentos',
+        'Análisis de información',
+        'Investigación',
+        'Generación de ideas',
+        'Elaboración de informes',
+        'Apoyo en presentaciones',
+        'Excel, fórmulas o análisis de datos',
+        'Programación o automatización',
+        'Creación de contenido visual o imágenes',
+        'Apoyo en tareas técnicas de mi área',
+        'Otro',
+        'No utilizo ChatGPT',
+      ],
+    },
+    { id: 'ejemplo', tipo: 'texto', texto: 'Describe un ejemplo concreto de cómo utilizas Claude y/o ChatGPT en tu trabajo (ej: "Utilizo ChatGPT para analizar información de Excel y preparar resúmenes para reportes semanales")', requerida: false },
+    {
+      id: 'necesidad_licencia', tipo: 'opcion_multiple', texto: 'Considerando tus funciones actuales, ¿consideras necesario mantener tu licencia de IA?', requerida: true,
+      opciones: [
+        'Sí, es indispensable para mi trabajo',
+        'Sí, la utilizo con frecuencia',
+        'Sí, aunque podría aprovecharla mejor',
+        'No estoy seguro/a',
+        'Actualmente no considero necesaria la licencia',
+      ],
+    },
+    {
+      id: 'preferencia', tipo: 'opcion_multiple', texto: 'Si tienes acceso a Claude y ChatGPT, ¿cuál utilizas con mayor frecuencia?', requerida: false,
+      opciones: ['ChatGPT', 'Claude', 'Utilizo ambas aproximadamente por igual'],
+    },
+    {
+      id: 'nivel', tipo: 'escala', texto: '¿Cómo calificarías tu nivel actual de conocimiento y manejo de herramientas de IA?', requerida: true,
+      min: 1, max: 10, etiquetas: { 1: 'Conocimiento muy básico', 10: 'Nivel avanzado / experto' },
+    },
+  ],
+}
+export default encuesta

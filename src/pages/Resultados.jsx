@@ -45,7 +45,7 @@ const RANKING_GROUPS = [
   },
 ]
 
-const MES_ORDEN = ['Agosto', 'Julio', 'Junio']
+const MES_ORDEN = ['Septiembre', 'Agosto', 'Julio', 'Junio']
 
 function agruparEncuestasPorMes(lista) {
   const grupos = new Map()
