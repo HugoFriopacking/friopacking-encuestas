@@ -810,7 +810,7 @@ const s = {
   calavera: { fontSize: 14, lineHeight: 1 },
 
   opcionesGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10,
+    display: 'flex', flexDirection: 'column', gap: 10,
   },
   opcionCard: {
     display: 'flex', alignItems: 'center', gap: 10,
