@@ -1,0 +1,63 @@
+@keyframes encuestaFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.encuesta-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.encuesta-blob-1 {
+  top: -120px;
+  left: -140px;
+  width: 360px;
+  height: 360px;
+  background: #376B9E;
+  opacity: 0.14;
+}
+.encuesta-blob-2 {
+  bottom: -140px;
+  right: -160px;
+  width: 420px;
+  height: 420px;
+  background: #B9DED8;
+  opacity: 0.22;
+}
+@media (max-width: 480px) {
+  .encuesta-blob-1 { width: 220px; height: 220px; top: -80px; left: -90px; }
+  .encuesta-blob-2 { width: 260px; height: 260px; bottom: -90px; right: -100px; }
+}
+
+.pregunta-card-anim {
+  animation: encuestaFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.option-card {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s ease;
+}
+.option-card:hover {
+  transform: translateY(-4px);
+  border-color: #5F8FBF;
+  box-shadow: 0 10px 24px rgba(55, 107, 158, 0.14);
+}
+
+.submit-btn-anim {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+.submit-btn-anim:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(55, 107, 158, 0.32);
+}
+
+.escala-btn-anim {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+}
+.escala-btn-anim:hover {
+  transform: translateY(-2px);
+}
