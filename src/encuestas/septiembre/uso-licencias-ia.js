@@ -56,7 +56,7 @@ const encuesta = {
         'No utilizo ChatGPT',
       ],
     },
-    { id: 'ejemplo', tipo: 'texto', texto: 'Describe un ejemplo concreto de cómo utilizas Claude y/o ChatGPT en tu trabajo (ej: "Utilizo ChatGPT para analizar información de Excel y preparar resúmenes para reportes semanales")', requerida: false },
+    { id: 'ejemplo', tipo: 'texto', texto: 'Describe un ejemplo concreto de cómo utilizas Claude y/o ChatGPT en tu trabajo', requerida: false, placeholder: 'Ej: Utilizo ChatGPT para analizar información de Excel y preparar resúmenes para reportes semanales' },
     {
       id: 'necesidad_licencia', tipo: 'opcion_multiple', texto: 'Considerando tus funciones actuales, ¿consideras necesario mantener tu licencia de IA?', requerida: true,
       opciones: [

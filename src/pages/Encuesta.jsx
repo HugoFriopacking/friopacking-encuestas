@@ -58,22 +58,6 @@ const ICONO_CHECK = (
   </svg>
 )
 
-const ICONO_MARCA = (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="20 6 9 17 4 12"/>
-  </svg>
-)
-const ICONO_CIRCULO = (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <circle cx="12" cy="12" r="8"/>
-  </svg>
-)
-const ICONO_CUADRO = (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <rect x="4" y="4" width="16" height="16" rx="4"/>
-  </svg>
-)
-
 function LeyendaEscala({ encuesta }) {
   if (!encuesta.leyendaTiers && !encuesta.leyenda) return null
   const tiers = encuesta.leyendaTiers || [
@@ -449,7 +433,7 @@ export default function Encuesta() {
                     <input type="text" style={s.input}
                       value={respuestas[pregunta.id] || ''}
                       onChange={(e) => handleChange(pregunta.id, e.target.value)}
-                      placeholder="Escribe aquí..."
+                      placeholder={pregunta.placeholder || 'Escribe aquí...'}
                       autoComplete="off" autoCorrect="off" spellCheck="false"
                     />
                   )}
@@ -520,15 +504,8 @@ export default function Encuesta() {
                             <input type="radio" name={pregunta.id} value={op}
                               checked={activo}
                               onChange={() => handleChange(pregunta.id, op)}
-                              style={{ accentColor: '#376B9E', width: 16, height: 16, flexShrink: 0 }}
+                              style={{ accentColor: '#376B9E', width: 18, height: 18, flexShrink: 0 }}
                             />
-                            <span style={{
-                              ...s.opcionIcono,
-                              background: activo ? '#376B9E' : '#E7F1FA',
-                              color: activo ? 'white' : '#376B9E',
-                            }}>
-                              {activo ? ICONO_MARCA : ICONO_CIRCULO}
-                            </span>
                             <span style={s.opcionTexto}>{op}</span>
                           </label>
                         )
@@ -549,15 +526,8 @@ export default function Encuesta() {
                             <input type="checkbox" name={pregunta.id} value={op}
                               checked={seleccionado}
                               onChange={() => handleToggleMulti(pregunta.id, op)}
-                              style={{ accentColor: '#3F7A70', width: 16, height: 16, flexShrink: 0 }}
+                              style={{ accentColor: '#3F7A70', width: 18, height: 18, flexShrink: 0 }}
                             />
-                            <span style={{
-                              ...s.opcionIcono,
-                              background: seleccionado ? '#3F7A70' : '#EAF6F4',
-                              color: seleccionado ? 'white' : '#3F7A70',
-                            }}>
-                              {seleccionado ? ICONO_MARCA : ICONO_CUADRO}
-                            </span>
                             <span style={s.opcionTexto}>{op}</span>
                           </label>
                         )
@@ -816,11 +786,6 @@ const s = {
     display: 'flex', alignItems: 'center', gap: 10,
     padding: '12px 14px', borderRadius: 18, border: '1.5px solid',
     cursor: 'pointer', minHeight: 56,
-  },
-  opcionIcono: {
-    width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    transition: 'background 0.2s ease, color 0.2s ease',
   },
   opcionTexto: { fontSize: 14, fontWeight: 700, color: '#2C3E50', lineHeight: 1.35 },
 
