@@ -28,16 +28,16 @@ const encuesta = {
     { id: 'p10', tipo: 'escala', texto: '¿Qué tan bien organiza y prioriza las actividades cuando existen varios trabajos pendientes?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
 
     { id: 's3', tipo: 'seccion', texto: 'Capacidad operativa y solución de problemas', icono: 'ingenieria' },
-    { id: 'p11', tipo: 'escala', texto: '¿Qué nivel de conocimiento demuestra sobre los trabajos y procesos que supervisa o coordina?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p11', tipo: 'escala', texto: '¿Qué nivel de conocimiento técnico demuestra sobre los trabajos que supervisa o coordina?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p12', tipo: 'escala', texto: '¿Qué tan rápido responde cuando se presenta un problema operativo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p13', tipo: 'escala', texto: '¿Qué tan efectivas son las soluciones que propone ante dificultades o imprevistos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p14', tipo: 'escala', texto: '¿Qué tan oportunamente toma decisiones para evitar retrasos en el trabajo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
-    { id: 'p15', tipo: 'escala', texto: '¿Qué tan bien identifica anticipadamente los riesgos o problemas que podrían afectar la actividad?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p15', tipo: 'escala', texto: '¿Qué tan bien anticipa problemas técnicos, interferencias o restricciones que podrían afectar la ejecución del trabajo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
 
     { id: 's4', tipo: 'seccion', texto: 'Seguridad, calidad y cumplimiento', icono: 'finanzas' },
-    { id: 'p16', tipo: 'escala', texto: '¿Qué tan consistente es al exigir el cumplimiento de las normas de seguridad?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
-    { id: 'p17', tipo: 'escala', texto: '¿Qué tan bien verifica que los trabajos se realicen de acuerdo con los estándares de calidad establecidos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
-    { id: 'p18', tipo: 'escala', texto: '¿Qué tan claros y justos son los criterios que utiliza para observar, aceptar o rechazar un trabajo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p16', tipo: 'escala', texto: '¿Qué tan bien coordina las actividades para que el trabajo se ejecute de manera ordenada y sin interferencias entre frentes?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p17', tipo: 'escala', texto: '¿Qué tan bien verifica que los trabajos se ejecuten de acuerdo con los planos, especificaciones, alcances y estándares de calidad establecidos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p18', tipo: 'escala', texto: '¿Qué tan claros y consistentes son los criterios que utiliza para observar, aceptar o solicitar la corrección de un trabajo?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
 
     { id: 's5', tipo: 'seccion', texto: 'Trato y profesionalismo', icono: 'frioteam' },
     { id: 'p19', tipo: 'escala', texto: '¿Qué tan respetuoso, imparcial y profesional es su trato hacia el personal contratista?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
