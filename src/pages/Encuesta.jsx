@@ -143,6 +143,7 @@ export default function Encuesta() {
   const [enviando, setEnviando] = useState(false)
   const [error, setError] = useState(null)
   const [modalSeccion, setModalSeccion] = useState(null)
+  const [otroActivo, setOtroActivo] = useState({})
 
   if (!encuesta) {
     return (
@@ -471,24 +472,47 @@ export default function Encuesta() {
                   )}
 
                   {pregunta.tipo === 'lista_desplegable' && (
-                    <select
-                      style={s.select}
-                      value={respuestas[pregunta.id] || ''}
-                      onChange={(e) => handleChange(pregunta.id, e.target.value)}
-                    >
-                      <option value="" disabled>Selecciona una opción...</option>
-                      {pregunta.opcionesAgrupadas
-                        ? pregunta.opcionesAgrupadas.map((grupo) => (
-                          <optgroup key={grupo.proyecto} label={grupo.proyecto}>
-                            {grupo.nombres.map((op) => (
-                              <option key={op} value={op}>{op}</option>
-                            ))}
-                          </optgroup>
-                        ))
-                        : pregunta.opciones.map((op) => (
-                          <option key={op} value={op}>{op}</option>
-                        ))}
-                    </select>
+                    <div>
+                      <select
+                        style={s.select}
+                        value={otroActivo[pregunta.id] ? '__otro__' : (respuestas[pregunta.id] || '')}
+                        onChange={(e) => {
+                          const val = e.target.value
+                          if (val === '__otro__') {
+                            setOtroActivo((prev) => ({ ...prev, [pregunta.id]: true }))
+                            handleChange(pregunta.id, '')
+                          } else {
+                            setOtroActivo((prev) => ({ ...prev, [pregunta.id]: false }))
+                            handleChange(pregunta.id, val)
+                          }
+                        }}
+                      >
+                        <option value="" disabled>Selecciona una opción...</option>
+                        {pregunta.opcionesAgrupadas
+                          ? pregunta.opcionesAgrupadas.map((grupo) => (
+                            <optgroup key={grupo.proyecto} label={grupo.proyecto}>
+                              {grupo.nombres.map((op) => (
+                                <option key={op} value={op}>{op}</option>
+                              ))}
+                            </optgroup>
+                          ))
+                          : pregunta.opciones.map((op) => (
+                            <option key={op} value={op}>{op}</option>
+                          ))}
+                        {pregunta.opcionesAgrupadas && (
+                          <option value="__otro__">Otro (no está en la lista)</option>
+                        )}
+                      </select>
+                      {otroActivo[pregunta.id] && (
+                        <input type="text" style={{ ...s.input, marginTop: 8 }}
+                          value={respuestas[pregunta.id] || ''}
+                          onChange={(e) => handleChange(pregunta.id, e.target.value)}
+                          placeholder="Escribe el nombre del supervisor..."
+                          autoComplete="off" autoCorrect="off" spellCheck="false"
+                          autoFocus
+                        />
+                      )}
+                    </div>
                   )}
 
                   {pregunta.tipo === 'opcion_multiple' && (
