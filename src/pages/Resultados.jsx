@@ -34,7 +34,7 @@ const RANKING_GROUPS = [
     key: 'friopacking',
     titulo: 'Grupo Friopacking (por área)',
     modo: 'seccion',
-    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto'],
+    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto', 'contratistas-friopacking-septiembre'],
   },
   {
     key: 'contratistas',
