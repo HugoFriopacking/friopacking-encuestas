@@ -32,7 +32,11 @@
 }
 
 .pregunta-card-anim {
-  animation: encuestaFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  /* fill-mode "backwards" only (no "forwards"): once the animation ends the
+     element's transform reverts to none, so it doesn't keep creating a
+     stacking context that would trap dropdowns (e.g. the supervisor search)
+     behind later question cards. */
+  animation: encuestaFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
 
 .option-card {
