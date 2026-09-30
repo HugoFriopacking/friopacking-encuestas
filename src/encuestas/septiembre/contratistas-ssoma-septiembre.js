@@ -1,3 +1,5 @@
+import { supervisoresSsoma } from '../../lib/supervisoresSsoma.js'
+
 const encuesta = {
   id: 'contratistas-ssoma-septiembre',
   titulo: 'SSOMA (Septiembre)',
@@ -8,7 +10,7 @@ const encuesta = {
   campoEvaluado: 'supervisor',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
-    { id: 'supervisor', tipo: 'texto', texto: 'Supervisor SSOMA a evaluar', requerida: true },
+    { id: 'supervisor', tipo: 'combo_busqueda', texto: 'Supervisor SSOMA a evaluar', requerida: true, opciones: supervisoresSsoma },
     { id: 'obra', tipo: 'texto', texto: 'Obra', requerida: true },
 
     { id: 's1', tipo: 'seccion', texto: 'Comunicación y orientación preventiva', icono: 'operaciones' },

@@ -144,6 +144,8 @@ export default function Encuesta() {
   const [error, setError] = useState(null)
   const [modalSeccion, setModalSeccion] = useState(null)
   const [otroActivo, setOtroActivo] = useState({})
+  const [comboQuery, setComboQuery] = useState({})
+  const [comboOpen, setComboOpen] = useState({})
 
   if (!encuesta) {
     return (
@@ -515,6 +517,77 @@ export default function Encuesta() {
                     </div>
                   )}
 
+                  {pregunta.tipo === 'combo_busqueda' && (
+                    <div>
+                      {!otroActivo[pregunta.id] ? (
+                        <div style={{ position: 'relative' }}>
+                          <input
+                            type="text"
+                            style={s.input}
+                            value={comboQuery[pregunta.id] !== undefined ? comboQuery[pregunta.id] : (respuestas[pregunta.id] || '')}
+                            onChange={(e) => {
+                              const texto = e.target.value
+                              setComboQuery((prev) => ({ ...prev, [pregunta.id]: texto }))
+                              setComboOpen((prev) => ({ ...prev, [pregunta.id]: true }))
+                              handleChange(pregunta.id, '')
+                            }}
+                            onFocus={() => setComboOpen((prev) => ({ ...prev, [pregunta.id]: true }))}
+                            onBlur={() => setTimeout(() => setComboOpen((prev) => ({ ...prev, [pregunta.id]: false })), 150)}
+                            placeholder="Busca el nombre..."
+                            autoComplete="off" autoCorrect="off" spellCheck="false"
+                          />
+                          {comboOpen[pregunta.id] && (
+                            <div style={s.comboLista}>
+                              {pregunta.opciones
+                                .filter((op) => op.toLowerCase().includes((comboQuery[pregunta.id] || '').toLowerCase()))
+                                .slice(0, 30)
+                                .map((op) => (
+                                  <div key={op} style={s.comboItem}
+                                    onMouseDown={() => {
+                                      handleChange(pregunta.id, op)
+                                      setComboQuery((prev) => ({ ...prev, [pregunta.id]: op }))
+                                      setComboOpen((prev) => ({ ...prev, [pregunta.id]: false }))
+                                    }}
+                                  >
+                                    {op}
+                                  </div>
+                                ))}
+                              <div style={{ ...s.comboItem, ...s.comboItemOtro }}
+                                onMouseDown={() => {
+                                  setOtroActivo((prev) => ({ ...prev, [pregunta.id]: true }))
+                                  setComboQuery((prev) => ({ ...prev, [pregunta.id]: '' }))
+                                  handleChange(pregunta.id, '')
+                                  setComboOpen((prev) => ({ ...prev, [pregunta.id]: false }))
+                                }}
+                              >
+                                Otro (no está en la lista)
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div>
+                          <input type="text" style={s.input}
+                            value={respuestas[pregunta.id] || ''}
+                            onChange={(e) => handleChange(pregunta.id, e.target.value)}
+                            placeholder="Escribe el nombre del supervisor..."
+                            autoComplete="off" autoCorrect="off" spellCheck="false"
+                            autoFocus
+                          />
+                          <button type="button" style={s.comboVolver}
+                            onClick={() => {
+                              setOtroActivo((prev) => ({ ...prev, [pregunta.id]: false }))
+                              handleChange(pregunta.id, '')
+                              setComboQuery((prev) => ({ ...prev, [pregunta.id]: '' }))
+                            }}
+                          >
+                            ← Elegir de la lista
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {pregunta.tipo === 'opcion_multiple' && (
                     <div style={s.opcionesGrid}>
                       {pregunta.opciones.map((op) => {
@@ -785,6 +858,24 @@ const s = {
     padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
     outline: 'none', color: '#1e293b', fontWeight: 600,
     background: '#F5F7F8', minHeight: 48, cursor: 'pointer',
+  },
+  comboLista: {
+    position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 20,
+    background: 'white', border: '1.5px solid #D4DADF', borderRadius: 14,
+    boxShadow: '0 8px 24px rgba(55,107,158,0.16)',
+    maxHeight: 220, overflowY: 'auto', padding: 6,
+  },
+  comboItem: {
+    padding: '10px 12px', borderRadius: 10, cursor: 'pointer',
+    fontSize: 14, fontWeight: 600, color: '#1e293b',
+  },
+  comboItemOtro: {
+    color: '#376B9E', fontWeight: 800, borderTop: '1px solid #D4DADF', marginTop: 4, paddingTop: 12,
+  },
+  comboVolver: {
+    background: 'none', border: 'none', color: '#5C7C93', fontWeight: 700,
+    fontSize: 12, fontFamily: 'Manrope, sans-serif', cursor: 'pointer',
+    padding: '8px 2px', textDecoration: 'underline',
   },
 
   escalaRow: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(44px, 1fr))', gap: 6, marginBottom: 7 },
