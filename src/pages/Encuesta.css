@@ -3,6 +3,13 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* "clip" recorta los blobs sin crear un contenedor de scroll, así el header
+   sticky sigue funcionando; "hidden" queda como respaldo para navegadores viejos. */
+.encuesta-page {
+  overflow: hidden;
+  overflow: clip;
+}
+
 .encuesta-blob {
   position: absolute;
   border-radius: 50%;
@@ -50,18 +57,119 @@
   border-color: #5F8FBF;
   box-shadow: 0 10px 24px rgba(55, 107, 158, 0.14);
 }
+.option-card:focus-visible,
+.option-card:has(input:focus-visible) {
+  outline: 3px solid #376B9E;
+  outline-offset: 2px;
+}
 
 .submit-btn-anim {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
 }
-.submit-btn-anim:hover:not(:disabled) {
+.submit-btn-anim:hover:not(:disabled):not([aria-disabled="true"]) {
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(55, 107, 158, 0.32);
 }
 
-.escala-btn-anim {
-  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+/* ── Escala 1–10 ─────────────────────────────────────────────── */
+.escala-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 8px;
 }
-.escala-btn-anim:hover {
-  transform: translateY(-2px);
+/* Móvil: 2 filas de 5 (1–5 arriba, 6–10 abajo) */
+@media (max-width: 639.98px) {
+  .escala-grid {
+    grid-template-columns: repeat(5, minmax(44px, 1fr));
+    gap: 8px;
+  }
+}
+
+.escala-btn {
+  min-width: 44px;
+  min-height: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid #BFC5CC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #374151;
+  font: 800 15px Manrope, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, box-shadow 0.15s ease;
+}
+.escala-btn:hover {
+  border-color: #376B9E;
+  background: #F2F6FA;
+  color: #1F2937;
+}
+.escala-btn:focus-visible {
+  outline: 3px solid #376B9E;
+  outline-offset: 2px;
+}
+/* Solo el seleccionado toma color: fondo sólido, borde más grueso y texto de alto contraste */
+.escala-btn[aria-checked="true"] {
+  border-width: 3px;
+  box-shadow: 0 3px 10px rgba(31, 41, 55, 0.18);
+}
+.escala-btn[aria-checked="true"][data-tier="bajo"] {
+  background: #FCA5A5;
+  border-color: #B91C1C;
+  color: #7F1D1D;
+}
+.escala-btn[aria-checked="true"][data-tier="medio"] {
+  background: #FDE047;
+  border-color: #A16207;
+  color: #713F12;
+}
+.escala-btn[aria-checked="true"][data-tier="alto"] {
+  background: #86EFAC;
+  border-color: #15803D;
+  color: #14532D;
+}
+
+/* ── Campos y navegación ─────────────────────────────────────── */
+.encuesta-input::placeholder {
+  color: #5A6B7B;
+  opacity: 1;
+}
+.encuesta-input:focus {
+  box-shadow: 0 0 0 3px rgba(55, 107, 158, 0.35);
+}
+.encuesta-nav-btn:focus-visible {
+  outline: 3px solid #376B9E;
+  outline-offset: 3px;
+}
+.encuesta-nav-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+.encuesta-header-btn:hover {
+  text-decoration: underline;
+}
+.encuesta-header-btn:focus-visible {
+  outline: 3px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pregunta-card-anim { animation: none; }
+  .option-card,
+  .submit-btn-anim,
+  .escala-btn { transition: none; }
+  .option-card:hover,
+  .submit-btn-anim:hover:not(:disabled):not([aria-disabled="true"]) { transform: none; }
 }

@@ -1,26 +1,30 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import encuestas from '../encuestas/index.js'
 
 export default function Gracias() {
   const location = useLocation()
   const navigate = useNavigate()
-  const titulo = location.state?.titulo || 'la evaluación'
+  const encuesta = encuestas.find((e) => e.titulo === location.state?.titulo)
+  // Solo se afirma el anonimato si la encuesta no pide el nombre de quien responde.
+  const anonima = encuesta ? !encuesta.preguntas.some((p) => p.id === 'nombre') : false
 
   return (
     <div style={s.page}>
       <div style={s.bg} />
-      <div style={s.card}>
-        <div style={s.iconWrap}>
+      <main style={s.card}>
+        <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.logo} />
+        <div style={s.iconWrap} aria-hidden="true">
           <div style={s.iconRing} />
           <div style={s.icon}>✓</div>
         </div>
-        <h1 style={s.title}>¡Gracias por tu respuesta!</h1>
+        <h1 style={s.title}>¡Gracias por tu tiempo!</h1>
         <p style={s.msg}>
-          Tu evaluación <strong style={{ color: 'var(--navy)' }}>{titulo}</strong> fue registrada correctamente.
+          {anonima
+            ? 'Tus respuestas son anónimas y nos ayudarán a mejorar el servicio entre áreas.'
+            : 'Tus respuestas nos ayudarán a mejorar.'}
         </p>
-        <div style={s.divider} />
-        <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.logo} />
-        <button onClick={() => navigate('/')} style={s.btn}>Volver al inicio</button>
-      </div>
+        <button onClick={() => navigate('/')} style={s.btn} className="encuesta-nav-btn">Volver al inicio</button>
+      </main>
     </div>
   )
 }
@@ -41,12 +45,13 @@ const s = {
     pointerEvents: 'none',
   },
   card: {
-    background: 'white', borderRadius: 20, padding: '44px 28px',
+    background: 'white', borderRadius: 20, padding: '40px 28px',
     textAlign: 'center', maxWidth: 420, width: '100%',
     boxShadow: '0 24px 80px rgba(0,0,0,0.3)',
     position: 'relative',
   },
-  iconWrap: { position: 'relative', width: 72, height: 72, margin: '0 auto 24px' },
+  logo: { height: 40, objectFit: 'contain', marginBottom: 26, maxWidth: '100%' },
+  iconWrap: { position: 'relative', width: 72, height: 72, margin: '0 auto 22px' },
   iconRing: {
     position: 'absolute', inset: -6, borderRadius: '50%',
     border: '2px solid var(--teal)', opacity: 0.3,
@@ -59,11 +64,9 @@ const s = {
     boxShadow: '0 8px 24px rgba(55,107,158,0.4)',
   },
   title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: 'var(--navy)', marginBottom: 10, lineHeight: 1.2 },
-  msg: { color: 'var(--gray-500)', fontSize: 15, lineHeight: 1.7, marginBottom: 24, fontWeight: 600 },
-  divider: { height: 1, background: 'var(--gray-100)', marginBottom: 22 },
-  logo: { height: 36, objectFit: 'contain', marginBottom: 22, opacity: 0.85, maxWidth: '100%' },
+  msg: { color: '#4D6478', fontSize: 15, lineHeight: 1.7, marginBottom: 26, fontWeight: 600 },
   btn: {
-    background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%)',
+    background: 'var(--navy)',
     color: 'white', border: 'none', borderRadius: 12,
     padding: '16px 32px', fontSize: 16, fontWeight: 900,
     cursor: 'pointer', fontFamily: 'Manrope, sans-serif', width: '100%',
