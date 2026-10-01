@@ -22,16 +22,16 @@
   left: -140px;
   width: 360px;
   height: 360px;
-  background: #376B9E;
-  opacity: 0.14;
+  background: var(--color-brand);
+  opacity: 0.12;
 }
 .encuesta-blob-2 {
   bottom: -140px;
   right: -160px;
   width: 420px;
   height: 420px;
-  background: #B9DED8;
-  opacity: 0.22;
+  background: var(--color-accent);
+  opacity: 0.14;
 }
 @media (max-width: 480px) {
   .encuesta-blob-1 { width: 220px; height: 220px; top: -80px; left: -90px; }
@@ -54,21 +54,29 @@
 }
 .option-card:hover {
   transform: translateY(-4px);
-  border-color: #5F8FBF;
-  box-shadow: 0 10px 24px rgba(55, 107, 158, 0.14);
-}
-.option-card:focus-visible,
-.option-card:has(input:focus-visible) {
-  outline: 3px solid #376B9E;
-  outline-offset: 2px;
+  border-color: var(--color-brand);
+  box-shadow: var(--shadow-hover);
 }
 
 .submit-btn-anim {
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease,
+    background-color 0.15s ease;
 }
 .submit-btn-anim:hover:not(:disabled):not([aria-disabled="true"]) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(55, 107, 158, 0.32);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ── Foco visible: outline teal de 2 px + anillo exterior oscuro.
+   El teal solo no llega a 3:1 sobre blanco; el anillo oscuro lo garantiza. ── */
+.encuesta-page :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--color-brand-dark);
+}
+/* Sobre el header azul el anillo exterior va en blanco */
+.encuesta-page header :focus-visible {
+  box-shadow: 0 0 0 6px var(--color-on-brand);
 }
 
 /* ── Escala 1–10 ─────────────────────────────────────────────── */
@@ -86,71 +94,90 @@
   }
 }
 
+/* Sin seleccionar: neutro, sin color por valor */
 .escala-btn {
   min-width: 44px;
   min-height: 44px;
   height: 44px;
   padding: 0;
-  border: 2px solid #BFC5CC;
+  border: 2px solid var(--color-border);
   border-radius: 10px;
-  background: #FFFFFF;
-  color: #374151;
+  background: var(--color-surface);
+  color: var(--color-text);
   font: 800 15px Manrope, sans-serif;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease,
-    color 0.15s ease, box-shadow 0.15s ease;
+    color 0.15s ease, transform 0.15s ease;
 }
 .escala-btn:hover {
-  border-color: #376B9E;
-  background: #F2F6FA;
-  color: #1F2937;
+  border-color: var(--color-brand);
 }
-.escala-btn:focus-visible {
-  outline: 3px solid #376B9E;
-  outline-offset: 2px;
-}
-/* Solo el seleccionado toma color: fondo sólido, borde más grueso y texto de alto contraste */
+/* Seleccionado: color por rango + borde más oscuro + scale + ✓ (no depende solo del color) */
 .escala-btn[aria-checked="true"] {
-  border-width: 3px;
-  box-shadow: 0 3px 10px rgba(31, 41, 55, 0.18);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-raised);
+}
+.escala-btn[aria-checked="true"]::after {
+  content: "✓";
+  font-size: 11px;
+  margin-left: 2px;
 }
 .escala-btn[aria-checked="true"][data-tier="bajo"] {
-  background: #FCA5A5;
-  border-color: #B91C1C;
-  color: #7F1D1D;
+  background: var(--color-score-low);
+  border-color: var(--color-score-low-border);
+  color: var(--color-on-score);
 }
 .escala-btn[aria-checked="true"][data-tier="medio"] {
-  background: #FDE047;
-  border-color: #A16207;
-  color: #713F12;
+  background: var(--color-score-mid);
+  border-color: var(--color-score-mid-border);
+  color: var(--color-text);
 }
 .escala-btn[aria-checked="true"][data-tier="alto"] {
-  background: #86EFAC;
-  border-color: #15803D;
-  color: #14532D;
+  background: var(--color-score-high);
+  border-color: var(--color-score-high-border);
+  color: var(--color-on-score);
 }
 
-/* ── Campos y navegación ─────────────────────────────────────── */
-.encuesta-input::placeholder {
-  color: #5A6B7B;
-  opacity: 1;
+/* ── Botones de acción ───────────────────────────────────────── */
+.encuesta-btn-primary {
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-raised);
+  cursor: pointer;
 }
-.encuesta-input:focus {
-  box-shadow: 0 0 0 3px rgba(55, 107, 158, 0.35);
+.encuesta-btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-brand-dark);
 }
-.encuesta-nav-btn:focus-visible {
-  outline: 3px solid #376B9E;
-  outline-offset: 3px;
-}
-.encuesta-nav-btn[aria-disabled="true"] {
+.encuesta-btn-primary:disabled,
+.encuesta-btn-primary[aria-disabled="true"] {
+  background: var(--color-border);
+  color: var(--color-disabled-text);
+  box-shadow: none;
   cursor: not-allowed;
+}
+.encuesta-btn-secondary {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+}
+.encuesta-btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-brand);
+  color: var(--color-text);
+}
+.encuesta-btn-secondary:disabled {
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+/* ── Campos ──────────────────────────────────────────────────── */
+.encuesta-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
 }
 .encuesta-header-btn:hover {
   text-decoration: underline;
-}
-.encuesta-header-btn:focus-visible {
-  outline: 3px solid #FFFFFF;
-  outline-offset: 2px;
 }
 
 .visually-hidden {

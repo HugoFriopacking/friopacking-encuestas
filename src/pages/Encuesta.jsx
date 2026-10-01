@@ -52,7 +52,7 @@ const ICONOS = {
 }
 
 const ICONO_CHECK = (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style={{ color: 'var(--color-success)' }} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="20 6 9 17 4 12"/>
   </svg>
 )
@@ -73,9 +73,9 @@ function hayRespuestas(respuestas) {
 function LeyendaEscala({ encuesta }) {
   if (!encuesta.leyendaTiers && !encuesta.leyenda) return null
   const tiers = encuesta.leyendaTiers || [
-    { rango: '1', texto: 'Muy malo', bg: '#FEE2E2', color: '#991B1B' },
-    { rango: '5–6', texto: 'Regular', bg: '#FEF9C3', color: '#854D0E' },
-    { rango: '10', texto: 'Muy bueno', bg: '#DCFCE7', color: '#166534' },
+    { rango: '1', texto: 'Muy malo', bg: 'var(--color-score-low)', color: 'var(--color-on-score)' },
+    { rango: '5–6', texto: 'Regular', bg: 'var(--color-score-mid)', color: 'var(--color-text)' },
+    { rango: '10', texto: 'Muy bueno', bg: 'var(--color-score-high)', color: 'var(--color-on-score)' },
   ]
   return (
     <div style={s.leyenda}>
@@ -240,12 +240,12 @@ export default function Encuesta() {
       <div style={s.page} className="encuesta-page">
         <div style={s.notFound}>
           <div style={s.notFoundIcon}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#BFC5CC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" style={{ color: 'var(--color-text-muted)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </div>
-          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: '#376B9E', marginBottom: 12, fontWeight: 700 }}>Evaluación no encontrada</h2>
-          <button onClick={() => navigate('/')} style={s.btnSecondary}>← Volver al inicio</button>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: 'var(--color-brand-dark)', marginBottom: 12, fontWeight: 700 }}>Evaluación no encontrada</h2>
+          <button onClick={() => navigate('/')} style={s.btnSecondary} className="encuesta-btn-secondary">← Volver al inicio</button>
         </div>
       </div>
     )
@@ -256,15 +256,15 @@ export default function Encuesta() {
       <div style={s.page} className="encuesta-page">
         <div style={s.notFound}>
           <div style={s.notFoundIcon}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#BFC5CC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" style={{ color: 'var(--color-text-muted)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
           </div>
-          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: '#376B9E', marginBottom: 12, fontWeight: 700 }}>Esta evaluación ya no está disponible</h2>
-          <p style={{ color: '#4D6478', fontSize: 14, fontWeight: 600, marginBottom: 20, maxWidth: 320 }}>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: 'var(--color-brand-dark)', marginBottom: 12, fontWeight: 700 }}>Esta evaluación ya no está disponible</h2>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: 14, fontWeight: 600, marginBottom: 20, maxWidth: 320 }}>
             El período para responder "{encuesta.titulo}" ha finalizado.
           </p>
-          <button onClick={() => navigate('/')} style={s.btnSecondary}>← Volver al inicio</button>
+          <button onClick={() => navigate('/')} style={s.btnSecondary} className="encuesta-btn-secondary">← Volver al inicio</button>
         </div>
       </div>
     )
@@ -378,27 +378,27 @@ export default function Encuesta() {
               return (
                 <button key={sec.id} type="button" className="option-card" onClick={() => setModalSeccion(sec)} style={{
                   ...s.seccionCard,
-                  background: completa ? '#f0fdf9' : 'white',
-                  borderColor: completa ? '#34d399' : '#D4DADF',
-                  borderLeftColor: completa ? '#059669' : '#376B9E',
+                  background: completa ? 'var(--color-success-bg)' : 'var(--color-surface)',
+                  borderColor: completa ? 'var(--color-success-border)' : 'var(--color-border)',
+                  borderLeftColor: completa ? 'var(--color-success)' : 'var(--color-brand)',
                 }}>
                   <div style={{
                     ...s.seccionCardIconBox,
-                    background: completa ? '#d1fae5' : '#E7F1FA',
-                    color: completa ? '#059669' : '#376B9E',
+                    background: completa ? 'var(--color-success-bg)' : 'var(--color-brand-soft)',
+                    color: completa ? 'var(--color-success)' : 'var(--color-brand)',
                   }}>
                     {ICONOS[sec.icono] || ICONOS.operaciones}
                   </div>
                   <div style={{
                     ...s.seccionCardTitulo,
-                    color: completa ? '#065f46' : '#376B9E',
+                    color: completa ? 'var(--color-success)' : 'var(--color-brand-dark)',
                   }}>
                     {sec.texto}
                   </div>
                   <div style={s.seccionCardFooter}>
                     <span style={{
                       fontSize: 12, fontWeight: 700,
-                      color: completa ? '#047857' : '#4D6478',
+                      color: completa ? 'var(--color-success)' : 'var(--color-text-muted)',
                     }}>
                       {completa ? 'Completado' : `${resp} de ${total} preguntas`}
                     </span>
@@ -411,14 +411,10 @@ export default function Encuesta() {
 
           <button
             type="button"
-            className="submit-btn-anim"
+            className="submit-btn-anim encuesta-btn-primary"
             onClick={handleSubmit}
             disabled={!todasCompletas || enviando}
-            style={{
-              ...s.btnSubmit,
-              opacity: (!todasCompletas || enviando) ? 0.4 : 1,
-              cursor: (!todasCompletas || enviando) ? 'not-allowed' : 'pointer',
-            }}
+            style={s.btnSubmit}
           >
             {enviando ? 'Enviando...' : 'Enviar evaluación'}
           </button>
@@ -429,7 +425,7 @@ export default function Encuesta() {
           <div style={s.modalOverlay} onClick={() => setModalSeccion(null)}>
             <div style={s.modalBox} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="modal-seccion-titulo">
               <div style={s.modalHeader}>
-                <div style={{ ...s.seccionCardIconBox, background: '#E7F1FA', color: '#376B9E', flexShrink: 0 }}>
+                <div style={{ ...s.seccionCardIconBox, background: 'var(--color-brand-soft)', color: 'var(--color-brand)', flexShrink: 0 }}>
                   {ICONOS[modalSeccion.icono] || ICONOS.operaciones}
                 </div>
                 <h2 style={s.modalTitulo} id="modal-seccion-titulo">{modalSeccion.texto}</h2>
@@ -451,7 +447,7 @@ export default function Encuesta() {
                 ))}
               </div>
               <div style={s.modalFooter}>
-                <button type="button" onClick={() => setModalSeccion(null)} style={s.modalBtnCerrar}>
+                <button type="button" onClick={() => setModalSeccion(null)} style={s.modalBtnCerrar} className="encuesta-btn-primary">
                   Cerrar sección
                 </button>
               </div>
@@ -685,13 +681,13 @@ export default function Encuesta() {
               return (
                 <label key={op} className="option-card" style={{
                   ...s.opcionCard,
-                  background: activo ? '#E7F1FA' : 'white',
-                  borderColor: activo ? '#376B9E' : '#D4DADF',
+                  background: activo ? 'var(--color-brand-soft)' : 'var(--color-surface)',
+                  borderColor: activo ? 'var(--color-brand)' : 'var(--color-border)',
                 }}>
                   <input type="radio" name={pregunta.id} value={op}
                     checked={activo}
                     onChange={() => handleChange(pregunta.id, op)}
-                    style={{ accentColor: '#376B9E', width: 18, height: 18, flexShrink: 0 }}
+                    style={{ accentColor: 'var(--color-brand)', width: 18, height: 18, flexShrink: 0 }}
                   />
                   <span style={s.opcionTexto}>{op}</span>
                 </label>
@@ -707,13 +703,13 @@ export default function Encuesta() {
               return (
                 <label key={op} className="option-card" style={{
                   ...s.opcionCard,
-                  background: seleccionado ? '#EAF6F4' : 'white',
-                  borderColor: seleccionado ? '#3F7A70' : '#D4DADF',
+                  background: seleccionado ? 'var(--color-accent-soft)' : 'var(--color-surface)',
+                  borderColor: seleccionado ? 'var(--color-accent-text)' : 'var(--color-border)',
                 }}>
                   <input type="checkbox" name={pregunta.id} value={op}
                     checked={seleccionado}
                     onChange={() => handleToggleMulti(pregunta.id, op)}
-                    style={{ accentColor: '#3F7A70', width: 18, height: 18, flexShrink: 0 }}
+                    style={{ accentColor: 'var(--color-accent-text)', width: 18, height: 18, flexShrink: 0 }}
                   />
                   <span style={s.opcionTexto}>{op}</span>
                 </label>
@@ -727,9 +723,9 @@ export default function Encuesta() {
             {['Sí', 'No'].map((op) => (
               <label key={op} style={{
                 ...s.siNoBtn,
-                background: respuestas[pregunta.id] === op ? '#376B9E' : 'white',
-                color: respuestas[pregunta.id] === op ? 'white' : '#376B9E',
-                borderColor: respuestas[pregunta.id] === op ? '#376B9E' : '#D4DADF',
+                background: respuestas[pregunta.id] === op ? 'var(--color-brand)' : 'var(--color-surface)',
+                color: respuestas[pregunta.id] === op ? 'var(--color-on-brand)' : 'var(--color-brand)',
+                borderColor: respuestas[pregunta.id] === op ? 'var(--color-brand)' : 'var(--color-border)',
               }}>
                 <input type="radio" name={pregunta.id} value={op}
                   checked={respuestas[pregunta.id] === op}
@@ -794,21 +790,21 @@ export default function Encuesta() {
 
           <div style={s.navEncuesta}>
             {pagina > 0 && (
-              <button type="button" onClick={irAnterior} style={s.btnAnterior} className="encuesta-nav-btn" disabled={enviando}>
+              <button type="button" onClick={irAnterior} style={s.btnAnterior} className="encuesta-nav-btn encuesta-btn-secondary" disabled={enviando}>
                 Anterior
               </button>
             )}
             {!esUltima ? (
-              <button type="button" onClick={irSiguiente} className="encuesta-nav-btn submit-btn-anim"
+              <button type="button" onClick={irSiguiente} className="encuesta-nav-btn submit-btn-anim encuesta-btn-primary"
                 aria-disabled={faltantesPagina.length > 0}
-                style={{ ...s.btnSiguiente, ...(faltantesPagina.length > 0 ? s.btnIncompleto : {}) }}>
+                style={s.btnSiguiente}>
                 Siguiente
               </button>
             ) : (
-              <button type="button" onClick={enviar} className="encuesta-nav-btn submit-btn-anim"
+              <button type="button" onClick={enviar} className="encuesta-nav-btn submit-btn-anim encuesta-btn-primary"
                 disabled={enviando}
                 aria-disabled={faltantesPagina.length > 0}
-                style={{ ...s.btnSiguiente, ...(faltantesPagina.length > 0 && !enviando ? s.btnIncompleto : {}), opacity: enviando ? 0.7 : 1 }}>
+                style={s.btnSiguiente}>
                 {enviando ? 'Enviando...' : 'Enviar evaluación'}
               </button>
             )}
@@ -820,11 +816,11 @@ export default function Encuesta() {
 }
 
 const s = {
-  page: { minHeight: '100vh', minHeight: '100dvh', background: '#EEF1F3', position: 'relative' },
+  page: { minHeight: '100vh', minHeight: '100dvh', background: 'var(--color-bg)', position: 'relative' },
 
   header: {
-    background: '#376B9E', position: 'sticky', top: 0, zIndex: 100,
-    boxShadow: '0 2px 16px rgba(0,0,0,0.18)',
+    background: 'var(--color-brand)', position: 'sticky', top: 0, zIndex: 100,
+    boxShadow: 'var(--shadow-header)',
     paddingTop: 'env(safe-area-inset-top)',
   },
   headerInner: {
@@ -833,24 +829,28 @@ const s = {
   },
   backBtn: {
     background: 'none', border: 'none',
-    color: 'white', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+    color: 'var(--color-on-brand)', cursor: 'pointer', fontSize: 14, fontWeight: 700,
     fontFamily: 'Manrope, sans-serif', padding: '10px 6px', borderRadius: 8,
     display: 'flex', alignItems: 'center', gap: 6, minHeight: 44, minWidth: 44,
   },
   logo: { height: 34, objectFit: 'contain', maxWidth: 160 },
+  // Franja blanca a todo el ancho bajo el header: la sombra extiende el fondo y clip-path recorta arriba/abajo
   progressWrap: {
-    maxWidth: 820, margin: '0 auto', padding: '0 20px 12px',
+    maxWidth: 820, margin: '0 auto', padding: '10px 20px',
     display: 'flex', alignItems: 'center', gap: 12,
+    background: 'var(--color-surface)',
+    boxShadow: '0 0 0 100vmax var(--color-surface)',
+    clipPath: 'inset(0 -100vmax)',
   },
   progressInner: {
-    flex: 1, height: 7, background: 'rgba(255,255,255,0.18)',
+    flex: 1, height: 7, background: 'var(--color-border)',
     borderRadius: 4, overflow: 'hidden',
   },
   progressBar: {
-    height: '100%', background: '#B9DED8',
+    height: '100%', background: 'var(--color-accent)',
     borderRadius: 4, transition: 'width 0.35s ease',
   },
-  progressLabel: { fontSize: 12, color: 'white', fontWeight: 700, whiteSpace: 'nowrap' },
+  progressLabel: { fontSize: 12, color: 'var(--color-text-muted)', fontWeight: 700, whiteSpace: 'nowrap' },
 
   main: {
     maxWidth: 820, margin: '0 auto',
@@ -860,31 +860,31 @@ const s = {
   },
 
   encuestaHeader: {
-    background: 'white', borderRadius: 22, padding: '24px 22px',
-    marginBottom: 20, boxShadow: '0 4px 20px rgba(55,107,158,0.08)',
-    border: '1px solid #D4DADF',
-    borderLeft: '4px solid #B9DED8',
+    background: 'var(--color-surface)', borderRadius: 22, padding: '24px 22px',
+    marginBottom: 20, boxShadow: 'var(--shadow-card)',
+    border: '1px solid var(--color-border)',
+    borderLeft: '4px solid var(--color-accent)',
   },
   encuestaTag: {
     display: 'inline-block',
-    background: '#376B9E', color: 'white',
+    background: 'var(--color-brand)', color: 'var(--color-on-brand)',
     fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4,
     letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 12,
   },
-  title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: '#376B9E', marginBottom: 6, lineHeight: 1.2, letterSpacing: '-0.01em' },
-  desc: { color: '#4D6478', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
+  title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: 'var(--color-brand-dark)', marginBottom: 6, lineHeight: 1.2, letterSpacing: '-0.01em' },
+  desc: { color: 'var(--color-text-muted)', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
   leyenda: {
-    background: '#F5F7F8', borderRadius: 8, padding: '12px 14px',
-    border: '1px solid #D4DADF', marginTop: 10,
+    background: 'var(--color-surface-muted)', borderRadius: 8, padding: '12px 14px',
+    border: '1px solid var(--color-border)', marginTop: 10,
   },
   leyendaTitle: {
-    fontSize: 10, fontWeight: 800, color: '#4D6478',
+    fontSize: 10, fontWeight: 800, color: 'var(--color-text-muted)',
     textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10,
   },
   leyendaItems: { display: 'flex', gap: 16, flexWrap: 'wrap' },
   leyendaItem: {
     display: 'flex', alignItems: 'center', gap: 7,
-    fontSize: 13, fontWeight: 700, color: '#334155',
+    fontSize: 13, fontWeight: 700, color: 'var(--color-text)',
   },
   leyendaBadge: {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
@@ -906,7 +906,7 @@ const s = {
     gap: 10, cursor: 'pointer',
     fontFamily: 'Manrope, sans-serif',
     textAlign: 'left',
-    boxShadow: '0 2px 8px rgba(55,107,158,0.06)',
+    boxShadow: 'var(--shadow-card)',
   },
   seccionCardIconBox: {
     width: 42, height: 42, borderRadius: 10,
@@ -924,34 +924,34 @@ const s = {
   // ── Modal ──
   modalOverlay: {
     position: 'fixed', inset: 0, zIndex: 200,
-    background: 'rgba(10,18,40,0.6)',
+    background: 'var(--color-overlay)',
     display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
     backdropFilter: 'blur(4px)',
   },
   modalBox: {
-    background: 'white',
+    background: 'var(--color-surface)',
     borderRadius: '18px 18px 0 0',
     width: '100%', maxWidth: 680,
     maxHeight: '92vh',
     display: 'flex', flexDirection: 'column',
     overflow: 'hidden',
-    boxShadow: '0 -8px 40px rgba(10,18,40,0.25)',
+    boxShadow: 'var(--shadow-modal)',
   },
   modalHeader: {
     display: 'flex', alignItems: 'center', gap: 12,
     padding: '16px 18px',
-    borderBottom: '1px solid #D4DADF',
+    borderBottom: '1px solid var(--color-border)',
     flexShrink: 0,
   },
   modalTitulo: {
-    fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: 700, color: '#376B9E',
+    fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-brand-dark)',
     flex: 1, lineHeight: 1.3,
   },
   modalClose: {
-    background: '#f1f5f9', border: 'none', borderRadius: 7,
+    background: 'var(--color-bg)', border: 'none', borderRadius: 7,
     width: 44, height: 44, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    flexShrink: 0, color: '#4D6478', fontFamily: 'Manrope, sans-serif',
+    flexShrink: 0, color: 'var(--color-text-muted)', fontFamily: 'Manrope, sans-serif',
   },
   modalBody: {
     overflowY: 'auto', flex: 1,
@@ -961,83 +961,85 @@ const s = {
   modalFooter: {
     padding: '14px 16px',
     paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
-    borderTop: '1px solid #D4DADF',
+    borderTop: '1px solid var(--color-border)',
     flexShrink: 0,
   },
+  // Colores en Encuesta.css (.encuesta-btn-primary)
   modalBtnCerrar: {
-    background: '#376B9E',
-    color: 'white', border: 'none', borderRadius: 10,
+    borderRadius: 10,
     padding: '15px', fontSize: 15, fontWeight: 800,
-    cursor: 'pointer', width: '100%',
+    width: '100%',
     fontFamily: 'Manrope, sans-serif', minHeight: 50,
     letterSpacing: '0.01em',
   },
 
   // ── Encabezado de área ──
   areaHeader: {
-    background: '#376B9E', borderRadius: 18, padding: '14px 18px',
+    background: 'var(--color-brand)', borderRadius: 18, padding: '14px 18px',
     margin: '8px 0 12px',
   },
   areaTitulo: {
-    fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, color: 'white',
+    fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-on-brand)',
     textTransform: 'uppercase', letterSpacing: '0.06em', lineHeight: 1.35, margin: 0,
   },
-  areaDesc: { color: 'rgba(255,255,255,0.92)', fontSize: 12, fontWeight: 600, lineHeight: 1.5, marginTop: 4 },
+  areaDesc: { color: 'var(--color-on-brand)', opacity: 0.92, fontSize: 12, fontWeight: 600, lineHeight: 1.5, marginTop: 4 },
 
   preguntaCard: {
-    background: 'white', borderRadius: 18, padding: '20px 18px',
-    marginBottom: 12, boxShadow: '0 2px 10px rgba(55,107,158,0.06)',
-    border: '1px solid #D4DADF',
+    background: 'var(--color-surface)', borderRadius: 18, padding: '20px 18px',
+    marginBottom: 12, boxShadow: 'var(--shadow-card)',
+    border: '1px solid var(--color-border)',
+    borderLeft: '4px solid var(--color-accent)',
     scrollMarginTop: 120,
   },
   preguntaPendiente: {
-    border: '2px solid #DC2626',
-    boxShadow: '0 0 0 4px rgba(220,38,38,0.12)',
+    border: '2px solid var(--color-required)',
+    borderLeft: '4px solid var(--color-required)',
+    boxShadow: '0 0 0 4px var(--color-error-border)',
   },
-  pendienteMsg: { color: '#B91C1C', fontSize: 13, fontWeight: 700, marginTop: 10 },
+  pendienteMsg: { color: 'var(--color-error-text)', fontSize: 13, fontWeight: 700, marginTop: 10 },
   preguntaHeader: { display: 'flex', gap: 11, alignItems: 'flex-start', marginBottom: 14 },
   preguntaNum: {
-    minWidth: 26, height: 26, background: '#376B9E', color: 'white',
+    minWidth: 26, height: 26, background: 'var(--color-brand)', color: 'var(--color-on-brand)',
     borderRadius: 6, fontSize: 12, fontWeight: 900,
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
   },
-  preguntaLabel: { fontWeight: 700, color: '#334155', fontSize: 14, lineHeight: 1.55, flex: 1 },
-  requerida: { color: '#DC2626', fontWeight: 900 },
+  preguntaLabel: { fontWeight: 700, color: 'var(--color-text)', fontSize: 14, lineHeight: 1.55, flex: 1 },
+  requerida: { color: 'var(--color-required)', fontWeight: 900 },
 
   input: {
-    width: '100%', border: '1.5px solid #D4DADF', borderRadius: 14,
+    width: '100%', border: '1.5px solid var(--color-border)', borderRadius: 14,
     padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
-    outline: 'none', color: '#1e293b', fontWeight: 600,
-    background: '#F5F7F8', WebkitAppearance: 'none',
+    color: 'var(--color-text)', fontWeight: 600,
+    background: 'var(--color-surface-muted)', WebkitAppearance: 'none',
   },
   select: {
-    width: '100%', border: '1.5px solid #D4DADF', borderRadius: 14,
+    width: '100%', border: '1.5px solid var(--color-border)', borderRadius: 14,
     padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
-    outline: 'none', color: '#1e293b', fontWeight: 600,
-    background: '#F5F7F8', minHeight: 48, cursor: 'pointer',
+    color: 'var(--color-text)', fontWeight: 600,
+    background: 'var(--color-surface-muted)', minHeight: 48, cursor: 'pointer',
   },
   comboLista: {
     position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 20,
-    background: 'white', border: '1.5px solid #D4DADF', borderRadius: 14,
-    boxShadow: '0 8px 24px rgba(55,107,158,0.16)',
+    background: 'var(--color-surface)', border: '1.5px solid var(--color-border)', borderRadius: 14,
+    boxShadow: 'var(--shadow-hover)',
     maxHeight: 220, overflowY: 'auto', padding: 6,
   },
   comboItem: {
     padding: '10px 12px', borderRadius: 10, cursor: 'pointer',
-    fontSize: 14, fontWeight: 600, color: '#1e293b',
+    fontSize: 14, fontWeight: 600, color: 'var(--color-text)',
   },
   comboItemOtro: {
-    color: '#376B9E', fontWeight: 800, borderTop: '1px solid #D4DADF', marginTop: 4, paddingTop: 12,
+    color: 'var(--color-brand)', fontWeight: 800, borderTop: '1px solid var(--color-border)', marginTop: 4, paddingTop: 12,
   },
   comboVolver: {
-    background: 'none', border: 'none', color: '#4D6478', fontWeight: 700,
+    background: 'none', border: 'none', color: 'var(--color-text-muted)', fontWeight: 700,
     fontSize: 13, fontFamily: 'Manrope, sans-serif', cursor: 'pointer',
     padding: '10px 2px', minHeight: 44, textDecoration: 'underline',
   },
 
   escalaEtiquetas: {
     display: 'flex', justifyContent: 'space-between',
-    fontSize: 12, color: '#334155', fontWeight: 700,
+    fontSize: 12, color: 'var(--color-text-muted)', fontWeight: 700,
   },
 
   opcionesGrid: {
@@ -1048,7 +1050,7 @@ const s = {
     padding: '12px 14px', borderRadius: 18, border: '1.5px solid',
     cursor: 'pointer', minHeight: 56,
   },
-  opcionTexto: { fontSize: 14, fontWeight: 700, color: '#2C3E50', lineHeight: 1.35 },
+  opcionTexto: { fontSize: 14, fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.35 },
 
   siNoWrap: { display: 'flex', gap: 10 },
   siNoBtn: {
@@ -1059,50 +1061,43 @@ const s = {
   },
 
   errorMsg: {
-    background: '#fef2f2', color: '#B91C1C', border: '1.5px solid #fecaca',
+    background: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: '1.5px solid var(--color-error-border)',
     borderRadius: 8, padding: '13px 14px', fontSize: 14, marginBottom: 16, fontWeight: 700,
   },
   errorEnvio: {
     display: 'flex', flexDirection: 'column', gap: 4,
-    background: '#fef2f2', color: '#991B1B', border: '1.5px solid #fecaca',
+    background: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: '1.5px solid var(--color-error-border)',
     borderRadius: 14, padding: '14px 16px', fontSize: 14, fontWeight: 600, lineHeight: 1.5,
     margin: '8px 0 4px',
   },
   errorEnvioTitulo: { fontWeight: 800, fontSize: 15 },
   navEncuesta: { display: 'flex', gap: 10, marginTop: 12 },
+  // Los colores, bordes, cursor y estado desactivado de los botones viven en
+  // Encuesta.css (.encuesta-btn-primary / .encuesta-btn-secondary).
   btnSiguiente: {
     flex: 1,
-    background: '#376B9E',
-    color: 'white', border: 'none', borderRadius: 16,
+    borderRadius: 16,
     padding: '16px 24px', fontSize: 16, fontWeight: 900,
-    fontFamily: 'Manrope, sans-serif', cursor: 'pointer',
-    boxShadow: '0 4px 14px rgba(55,107,158,0.28)',
+    fontFamily: 'Manrope, sans-serif',
     minHeight: 54, letterSpacing: '0.01em',
-  },
-  btnIncompleto: {
-    background: '#E8EEF4', color: '#4D6478', boxShadow: 'none',
-    border: '2px solid #BFC5CC',
   },
   btnAnterior: {
     flex: '0 0 auto',
-    background: 'white', color: '#376B9E', border: '2px solid #376B9E', borderRadius: 16,
+    borderRadius: 16,
     padding: '16px 18px', fontSize: 16, fontWeight: 800,
-    fontFamily: 'Manrope, sans-serif', cursor: 'pointer',
+    fontFamily: 'Manrope, sans-serif',
     minHeight: 54,
   },
   btnSubmit: {
-    background: '#376B9E',
-    color: 'white', border: 'none', borderRadius: 16,
+    borderRadius: 16,
     padding: '17px 32px', fontSize: 16, fontWeight: 900,
     width: '100%', marginTop: 8,
     fontFamily: 'Manrope, sans-serif',
-    boxShadow: '0 4px 14px rgba(55,107,158,0.28)',
     minHeight: 54, letterSpacing: '0.01em',
   },
   btnSecondary: {
-    background: 'none', border: '1.5px solid #D4DADF',
-    borderRadius: 8, padding: '11px 22px', cursor: 'pointer',
-    fontSize: 14, color: '#475569', fontWeight: 700,
+    borderRadius: 8, padding: '11px 22px',
+    fontSize: 14, fontWeight: 700,
     fontFamily: 'Manrope, sans-serif', minHeight: 44,
   },
   notFound: { textAlign: 'center', padding: '60px 20px' },

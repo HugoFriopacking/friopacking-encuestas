@@ -22,6 +22,44 @@
   --radius-sm: 8px;
   --shadow: 0 4px 20px rgba(55,107,158,0.10);
   --shadow-lg: 0 8px 40px rgba(55,107,158,0.16);
+
+  /* ── Paleta de la encuesta (/encuesta/:id y pantalla final) ── */
+  --color-bg:            #F4F6F9;   /* fondo de la página */
+  --color-surface:       #FFFFFF;   /* tarjetas */
+  --color-surface-muted: #F8FAFC;   /* campos de texto, leyenda */
+  --color-border:        #E2E8F0;   /* bordes y separadores */
+  --color-text:          #1E293B;   /* texto principal, preguntas */
+  --color-text-muted:    #475569;   /* texto secundario, etiquetas Muy malo / Muy bueno */
+  --color-disabled-text: #94A3B8;   /* texto de botones desactivados */
+  --color-brand:         #376B9E;   /* azul de marca */
+  --color-brand-dark:    #1E3A5F;   /* títulos */
+  --color-brand-soft:    #E7F1FA;   /* fondo de opción seleccionada */
+  --color-on-brand:      #FFFFFF;   /* texto sobre azul */
+  --color-accent:        #3EC6AC;   /* teal: solo rellenos */
+  --color-accent-text:   #187A68;   /* teal oscuro: textos e íconos en teal */
+  --color-accent-soft:   #E6F6F2;   /* fondo de selección múltiple marcada */
+  --color-accent-glow:   rgba(62, 198, 172, 0.22);
+  --color-score-low:          #DC2626;   /* notas 1–4 */
+  --color-score-low-border:   #991B1B;
+  --color-score-mid:          #F59E0B;   /* notas 5–6 */
+  --color-score-mid-border:   #B45309;
+  --color-score-high:         #15803D;   /* notas 7–10 (más oscuro que #16A34A para 4.5:1 con blanco) */
+  --color-score-high-border:  #14532D;
+  --color-on-score:           #FFFFFF;
+  --color-required:      #DC2626;   /* asterisco de obligatoria */
+  --color-error-text:    #B91C1C;
+  --color-error-bg:      #FEF2F2;
+  --color-error-border:  #FECACA;
+  --color-success:       #047857;
+  --color-success-bg:    #ECFDF5;
+  --color-success-border:#6EE7B7;
+  --color-overlay:       rgba(15, 23, 42, 0.6);
+  --shadow-card:   0 2px 10px rgba(30, 41, 59, 0.06);
+  --shadow-header: 0 2px 16px rgba(15, 23, 42, 0.18);
+  --shadow-raised: 0 3px 10px rgba(30, 41, 59, 0.18);
+  --shadow-hover:  0 10px 24px rgba(55, 107, 158, 0.14);
+  --shadow-modal:  0 -8px 40px rgba(15, 23, 42, 0.25);
+  --shadow-dialog: 0 24px 80px rgba(15, 23, 42, 0.3);
 }
 
 body {
