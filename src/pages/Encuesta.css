@@ -1,142 +1,421 @@
+/* ════════════════════════════════════════════════════════════════
+   Encuesta — estilos de presentación (móvil primero).
+   Los colores salen de las variables de src/index.css; el modo noche
+   las redefine dentro de .encuesta-page según la preferencia del sistema.
+   ════════════════════════════════════════════════════════════════ */
+
 @keyframes encuestaFadeUp {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* "clip" recorta los blobs sin crear un contenedor de scroll, así el header
-   sticky sigue funcionando; "hidden" queda como respaldo para navegadores viejos. */
+/* "clip" recorta sin crear un contenedor de scroll, así el header sticky sigue funcionando. */
 .encuesta-page {
+  background: var(--color-bg);
+  color: var(--color-text);
   overflow: hidden;
   overflow: clip;
 }
 
-.encuesta-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
+/* ── Cabecera compacta ───────────────────────────────────────── */
+.enc-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-top: env(safe-area-inset-top);
+  background: var(--color-header-bg);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-header);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  backdrop-filter: saturate(160%) blur(12px);
 }
-.encuesta-blob-1 {
-  top: -120px;
-  left: -140px;
-  width: 360px;
-  height: 360px;
-  background: var(--color-brand);
-  opacity: 0.12;
+.enc-header-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2px max(12px, env(safe-area-inset-right)) 2px max(12px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
-.encuesta-blob-2 {
-  bottom: -140px;
-  right: -160px;
-  width: 420px;
-  height: 420px;
-  background: var(--color-accent);
-  opacity: 0.14;
+.enc-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 8px;
+  margin-left: -8px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--color-link);
+  font: 700 14px Manrope, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
 }
-@media (max-width: 480px) {
-  .encuesta-blob-1 { width: 220px; height: 220px; top: -80px; left: -90px; }
-  .encuesta-blob-2 { width: 260px; height: 260px; bottom: -90px; right: -100px; }
+.enc-back:active { background: var(--color-highlight-soft); }
+.enc-logo { display: block; height: 24px; width: auto; max-width: 140px; object-fit: contain; }
+
+/* Progreso: barra fina + texto con el cálculo existente */
+.enc-progress {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 max(12px, env(safe-area-inset-right)) 8px max(12px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.enc-progress-track {
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.enc-progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-highlight);
+  transition: width 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+.enc-progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Contenido ───────────────────────────────────────────────── */
+.enc-main {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px max(12px, env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+
+.enc-intro {
+  padding: 18px 16px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+.enc-tag {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-highlight-soft);
+  color: var(--color-highlight-text);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.enc-title {
+  font-family: Inter, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--color-heading);
+  text-wrap: balance;
+}
+.enc-desc {
+  margin-top: 8px;
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+/* Leyenda: todas las notas con el mismo peso visual */
+.enc-legend {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+.enc-legend-title {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.enc-legend-items { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.enc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.enc-legend-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+  font-size: 11.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Encabezado de área */
+.enc-area {
+  margin: 4px 0 12px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--color-area-bg);
+}
+.enc-area-title {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-area-text);
+}
+.enc-area-desc {
+  margin-top: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-area-text);
+  opacity: 0.9;
+}
+
+/* ── Sección de cada pregunta ────────────────────────────────── */
+.enc-q {
+  padding: 16px 14px;
+  margin-bottom: 12px;
+  border-radius: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  scroll-margin-top: 96px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.enc-q--pendiente {
+  border-color: var(--color-required);
+  box-shadow: 0 0 0 3px var(--color-error-border);
+}
+.enc-q-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.enc-q-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: var(--color-highlight-soft);
+  color: var(--color-highlight-text);
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.enc-q-label {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+.enc-req { color: var(--color-required); font-weight: 900; }
+.enc-pendiente-msg {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-error-text);
 }
 
 .pregunta-card-anim {
-  /* fill-mode "backwards" only (no "forwards"): once the animation ends the
-     element's transform reverts to none, so it doesn't keep creating a
-     stacking context that would trap dropdowns (e.g. the supervisor search)
-     behind later question cards. */
-  animation: encuestaFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
-}
-
-.option-card {
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.2s ease;
-}
-.option-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-brand);
-  box-shadow: var(--shadow-hover);
-}
-
-.submit-btn-anim {
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease,
-    background-color 0.15s ease;
-}
-.submit-btn-anim:hover:not(:disabled):not([aria-disabled="true"]) {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-
-/* ── Foco visible: outline teal de 2 px + anillo exterior oscuro.
-   El teal solo no llega a 3:1 sobre blanco; el anillo oscuro lo garantiza. ── */
-.encuesta-page :focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 6px var(--color-brand-dark);
-}
-/* Sobre el header azul el anillo exterior va en blanco */
-.encuesta-page header :focus-visible {
-  box-shadow: 0 0 0 6px var(--color-on-brand);
+  /* Solo "backwards": al terminar no deja un transform que atrape las listas desplegables. */
+  animation: encuestaFadeUp 0.22s cubic-bezier(0.2, 0, 0, 1) backwards;
 }
 
 /* ── Escala 1–10 ─────────────────────────────────────────────── */
 .escala-grid {
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 6px;
-  margin-bottom: 8px;
+  grid-template-columns: repeat(5, minmax(44px, 1fr));   /* móvil: 1–5 arriba, 6–10 abajo */
+  gap: 8px;
 }
-/* Móvil: 2 filas de 5 (1–5 arriba, 6–10 abajo) */
-@media (max-width: 639.98px) {
-  .escala-grid {
-    grid-template-columns: repeat(5, minmax(44px, 1fr));
-    gap: 8px;
-  }
+@media (min-width: 640px) {
+  .escala-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
 }
 
-/* Sin seleccionar: neutro, sin color por valor */
 .escala-btn {
+  position: relative;
   min-width: 44px;
-  min-height: 44px;
-  height: 44px;
+  height: 48px;
   padding: 0;
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 12px;
   background: var(--color-surface);
   color: var(--color-text);
-  font: 800 15px Manrope, sans-serif;
+  font: 800 16px Manrope, sans-serif;
+  font-variant-numeric: tabular-nums;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease,
-    color 0.15s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.12s ease;
 }
-.escala-btn:hover {
-  border-color: var(--color-brand);
+@media (hover: hover) {
+  .escala-btn:hover { border-color: var(--color-highlight); }
 }
-/* Seleccionado: color por rango + borde más oscuro + scale + ✓ (no depende solo del color) */
+/* Reacción táctil al pulsar */
+.escala-btn:active { transform: scale(0.94); }
+/* Seleccionado: igual para todas las notas (no se premian las altas) + ✓ para no depender del color */
 .escala-btn[aria-checked="true"] {
-  transform: scale(1.05);
+  background: var(--color-highlight);
+  border-color: var(--color-highlight-strong);
+  color: var(--color-on-highlight);
   box-shadow: var(--shadow-raised);
 }
 .escala-btn[aria-checked="true"]::after {
   content: "✓";
-  font-size: 11px;
   margin-left: 2px;
+  font-size: 11px;
 }
-.escala-btn[aria-checked="true"][data-tier="bajo"] {
-  background: var(--color-score-low);
-  border-color: var(--color-score-low-border);
-  color: var(--color-on-score);
+
+.enc-scale-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text-muted);
 }
-.escala-btn[aria-checked="true"][data-tier="medio"] {
-  background: var(--color-score-mid);
-  border-color: var(--color-score-mid-border);
+.enc-scale-ends span { max-width: 48%; }
+.enc-scale-ends span:last-child { text-align: right; }
+
+/* ── Campos de texto y listas ────────────────────────────────── */
+.encuesta-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 12px;
+  background: var(--color-surface-muted);
   color: var(--color-text);
+  font: 600 15px Manrope, sans-serif;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
-.escala-btn[aria-checked="true"][data-tier="alto"] {
-  background: var(--color-score-high);
-  border-color: var(--color-score-high-border);
-  color: var(--color-on-score);
+select.encuesta-input {
+  cursor: pointer;
+  padding-right: 40px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text-muted) 50%),
+    linear-gradient(135deg, var(--color-text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
 }
+.encuesta-input:focus { border-color: var(--color-highlight); }
+.encuesta-input::placeholder { color: var(--color-text-muted); opacity: 1; }
+
+/* ── Opciones (única, múltiple, sí/no) ───────────────────────── */
+.enc-options { display: flex; flex-direction: column; gap: 8px; }
+.enc-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 12px;
+  background: var(--color-surface);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+.enc-option input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--color-highlight); }
+.enc-option:active { transform: scale(0.985); }
+.enc-option[data-selected] {
+  background: var(--color-highlight-soft);
+  border-color: var(--color-highlight);
+}
+@media (hover: hover) {
+  .enc-option:hover { border-color: var(--color-highlight); }
+}
+.enc-option-text { font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--color-text); }
+
+.enc-sino { display: flex; gap: 10px; }
+.enc-sino-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: 800 15px Manrope, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+.enc-sino-btn:active { transform: scale(0.97); }
+.enc-sino-btn[data-selected] {
+  background: var(--color-highlight);
+  border-color: var(--color-highlight-strong);
+  color: var(--color-on-highlight);
+}
+.enc-sino-btn:focus-within { outline: 2px solid var(--color-highlight); outline-offset: 2px; }
+
+/* ── Mensajes ────────────────────────────────────────────────── */
+.enc-alert {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: var(--color-error-bg);
+  border: 1.5px solid var(--color-error-border);
+  color: var(--color-error-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.enc-alert strong { font-size: 15px; font-weight: 800; }
+
+/* ── Navegación entre áreas ──────────────────────────────────── */
+.enc-nav { display: flex; gap: 10px; margin-top: 16px; }
+.enc-btn-next,
+.enc-btn-prev {
+  min-height: 52px;
+  border-radius: 14px;
+  font: 800 16px Manrope, sans-serif;
+  letter-spacing: 0.01em;
+}
+.enc-btn-next { flex: 1; padding: 14px 20px; }
+.enc-btn-prev { flex: 0 0 auto; padding: 14px 18px; }
 
 /* ── Botones de acción ───────────────────────────────────────── */
 .encuesta-btn-primary {
@@ -145,13 +424,15 @@
   border: 2px solid transparent;
   box-shadow: var(--shadow-raised);
   cursor: pointer;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
 }
-.encuesta-btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--color-brand-dark);
+@media (hover: hover) {
+  .encuesta-btn-primary:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--color-brand-dark); }
 }
+.encuesta-btn-primary:active:not(:disabled) { transform: scale(0.98); }
 .encuesta-btn-primary:disabled,
 .encuesta-btn-primary[aria-disabled="true"] {
-  background: var(--color-border);
+  background: var(--color-btn-disabled-bg);
   color: var(--color-disabled-text);
   box-shadow: none;
   cursor: not-allowed;
@@ -159,26 +440,30 @@
 .encuesta-btn-secondary {
   background: transparent;
   color: var(--color-text-muted);
-  border: 2px solid var(--color-border);
+  border: 1.5px solid var(--color-border-strong);
   cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
 }
-.encuesta-btn-secondary:hover:not(:disabled) {
-  border-color: var(--color-brand);
-  color: var(--color-text);
+@media (hover: hover) {
+  .encuesta-btn-secondary:hover:not(:disabled) { border-color: var(--color-highlight); color: var(--color-text); }
 }
-.encuesta-btn-secondary:disabled {
-  color: var(--color-disabled-text);
-  cursor: not-allowed;
+.encuesta-btn-secondary:active:not(:disabled) { transform: scale(0.98); }
+.encuesta-btn-secondary:disabled { color: var(--color-disabled-text); cursor: not-allowed; }
+
+/* Tarjetas de sección del modo antiguo (Junio) */
+.option-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+@media (hover: hover) {
+  .option-card:hover { border-color: var(--color-highlight); box-shadow: var(--shadow-hover); }
 }
 
-/* ── Campos ──────────────────────────────────────────────────── */
-.encuesta-input::placeholder {
-  color: var(--color-text-muted);
-  opacity: 1;
+/* ── Foco visible (teclado) ──────────────────────────────────── */
+.encuesta-page :focus-visible {
+  outline: 2px solid var(--color-highlight);
+  outline-offset: 2px;
 }
-.encuesta-header-btn:hover {
-  text-decoration: underline;
-}
+.encuesta-page .escala-btn:focus-visible { outline-offset: 3px; }
 
 .visually-hidden {
   position: absolute;
@@ -192,11 +477,26 @@
   border: 0;
 }
 
+/* ── Tablet y escritorio ─────────────────────────────────────── */
+@media (min-width: 640px) {
+  .enc-header-inner { padding-top: 4px; padding-bottom: 4px; padding-left: 20px; padding-right: 20px; }
+  .enc-progress { padding-left: 20px; padding-right: 20px; }
+  .enc-logo { height: 28px; }
+  .enc-main { padding: 24px 20px 64px; }
+  .enc-intro { padding: 24px 24px; margin-bottom: 20px; }
+  .enc-title { font-size: 26px; }
+  .enc-q { padding: 22px 22px; }
+  .enc-q-head { flex-direction: row; align-items: flex-start; gap: 12px; }
+  .enc-q-num { margin-top: 1px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pregunta-card-anim { animation: none; }
-  .option-card,
-  .submit-btn-anim,
-  .escala-btn { transition: none; }
-  .option-card:hover,
-  .submit-btn-anim:hover:not(:disabled):not([aria-disabled="true"]) { transform: none; }
+  .encuesta-page *,
+  .encuesta-page *::after { transition-duration: 0.01ms !important; }
+  .escala-btn:active,
+  .enc-option:active,
+  .enc-sino-btn:active,
+  .encuesta-btn-primary:active,
+  .encuesta-btn-secondary:active { transform: none; }
 }

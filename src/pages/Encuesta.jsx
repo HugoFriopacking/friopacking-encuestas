@@ -57,14 +57,14 @@ const ICONO_CHECK = (
   </svg>
 )
 
-const MENSAJE_SALIR = '¿Seguro que quieres salir? Se perderán tus respuestas.'
+const logoHeader = (
+  <picture>
+    <source srcSet="/logo-oscuro.png" media="(prefers-color-scheme: dark)" />
+    <img src="/logo-claro.png" alt="Grupo Friopacking" className="enc-logo" />
+  </picture>
+)
 
-// Solo afecta el color del botón seleccionado; el valor guardado sigue siendo el número.
-function tierEscala(val) {
-  if (val <= 4) return 'bajo'
-  if (val <= 6) return 'medio'
-  return 'alto'
-}
+const MENSAJE_SALIR = '¿Seguro que quieres salir? Se perderán tus respuestas.'
 
 function hayRespuestas(respuestas) {
   return Object.values(respuestas).some((v) => (Array.isArray(v) ? v.length > 0 : v !== '' && v != null))
@@ -78,12 +78,12 @@ function LeyendaEscala({ encuesta }) {
     { rango: '10', texto: 'Muy bueno', bg: 'var(--color-score-high)', color: 'var(--color-on-score)' },
   ]
   return (
-    <div style={s.leyenda}>
-      <div style={s.leyendaTitle}>Escala de calificación</div>
-      <div style={s.leyendaItems}>
+    <div className="enc-legend">
+      <div className="enc-legend-title">Escala de calificación</div>
+      <div className="enc-legend-items">
         {tiers.map((t) => (
-          <div key={t.rango} style={s.leyendaItem}>
-            <span style={{ ...s.leyendaBadge, background: t.bg, color: t.color }}>{t.rango}</span>
+          <div key={t.rango} className="enc-legend-item">
+            <span className="enc-legend-badge">{t.rango}</span>
             {t.texto}
           </div>
         ))}
@@ -154,7 +154,7 @@ function BotonesEscala({ pregunta, valor, onSelect, labelId }) {
           <button key={val} type="button" role="radio" aria-checked={activo}
             aria-label={extremo ? `${val}, ${extremo}` : String(val)}
             tabIndex={activo || (!tieneValor && val === pregunta.min) ? 0 : -1}
-            className="escala-btn" data-valor={val} data-tier={tierEscala(val)}
+            className="escala-btn" data-valor={val}
             onClick={() => onSelect(val)}
             onKeyDown={(e) => onKeyDown(e, val)}
           >
@@ -168,7 +168,7 @@ function BotonesEscala({ pregunta, valor, onSelect, labelId }) {
 
 function EtiquetasEscala({ pregunta }) {
   return (
-    <div style={s.escalaEtiquetas} aria-hidden="true">
+    <div className="enc-scale-ends" aria-hidden="true">
       <span>{pregunta.etiquetas[pregunta.min]}</span>
       <span>{pregunta.etiquetas[pregunta.max]}</span>
     </div>
@@ -176,16 +176,16 @@ function EtiquetasEscala({ pregunta }) {
 }
 
 function Asterisco() {
-  return <span style={s.requerida} aria-hidden="true"> *</span>
+  return <span className="enc-req" aria-hidden="true"> *</span>
 }
 
 function PreguntaEscala({ pregunta, num, respuestas, handleChange }) {
   const labelId = `lbl-${pregunta.id}`
   return (
-    <div style={s.preguntaCard}>
-      <div style={s.preguntaHeader}>
-        <div style={s.preguntaNum}>{num}</div>
-        <div style={s.preguntaLabel} id={labelId}>
+    <div className="enc-q">
+      <div className="enc-q-head">
+        <div className="enc-q-num">{num}</div>
+        <div className="enc-q-label" id={labelId}>
           {pregunta.texto}
           {pregunta.requerida && <Asterisco />}
         </div>
@@ -199,9 +199,9 @@ function PreguntaEscala({ pregunta, num, respuestas, handleChange }) {
 
 function EncabezadoArea({ seccion }) {
   return (
-    <div style={s.areaHeader}>
-      <h2 style={s.areaTitulo}>{seccion.texto}</h2>
-      {seccion.descripcion && <p style={s.areaDesc}>{seccion.descripcion}</p>}
+    <div className="enc-area">
+      <h2 className="enc-area-title">{seccion.texto}</h2>
+      {seccion.descripcion && <p className="enc-area-desc">{seccion.descripcion}</p>}
     </div>
   )
 }
@@ -244,7 +244,7 @@ export default function Encuesta() {
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </div>
-          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: 'var(--color-brand-dark)', marginBottom: 12, fontWeight: 700 }}>Evaluación no encontrada</h2>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: 'var(--color-heading)', marginBottom: 12, fontWeight: 700 }}>Evaluación no encontrada</h2>
           <button onClick={() => navigate('/')} style={s.btnSecondary} className="encuesta-btn-secondary">← Volver al inicio</button>
         </div>
       </div>
@@ -260,7 +260,7 @@ export default function Encuesta() {
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
           </div>
-          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: 'var(--color-brand-dark)', marginBottom: 12, fontWeight: 700 }}>Esta evaluación ya no está disponible</h2>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: 'var(--color-heading)', marginBottom: 12, fontWeight: 700 }}>Esta evaluación ya no está disponible</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: 14, fontWeight: 600, marginBottom: 20, maxWidth: 320 }}>
             El período para responder "{encuesta.titulo}" ha finalizado.
           </p>
@@ -320,7 +320,7 @@ export default function Encuesta() {
   }
 
   const botonInicio = (
-    <button type="button" onClick={irAInicio} style={s.backBtn} className="encuesta-header-btn">
+    <button type="button" onClick={irAInicio} className="enc-back">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M19 12H5M12 19l-7-7 7-7"/>
       </svg>
@@ -345,30 +345,28 @@ export default function Encuesta() {
 
     return (
       <div style={s.page} className="encuesta-page">
-        <div className="encuesta-blob encuesta-blob-1" />
-        <div className="encuesta-blob encuesta-blob-2" />
-        <header style={s.header}>
-          <div style={s.headerInner}>
+        <header className="enc-header">
+          <div className="enc-header-inner">
             {botonInicio}
-            <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.logo} />
+            {logoHeader}
           </div>
-          <div style={s.progressWrap}>
-            <div style={s.progressInner} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progreso} aria-label="Progreso de la evaluación">
-              <div style={{ ...s.progressBar, width: `${progreso}%` }} />
+          <div className="enc-progress">
+            <div className="enc-progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progreso} aria-label="Progreso de la evaluación">
+              <div className="enc-progress-bar" style={{ width: `${progreso}%` }} />
             </div>
-            <span style={s.progressLabel}>{progreso}%</span>
+            <span className="enc-progress-label">{progreso}%</span>
           </div>
         </header>
 
-        <main style={s.main}>
-          <div style={s.encuestaHeader}>
-            <span style={s.encuestaTag}>Contratistas</span>
-            <h1 style={s.title}>{encuesta.titulo}</h1>
-            {encuesta.descripcion && <p style={s.desc}>{encuesta.descripcion}</p>}
+        <main className="enc-main">
+          <div className="enc-intro">
+            <span className="enc-tag">Contratistas</span>
+            <h1 className="enc-title">{encuesta.titulo}</h1>
+            {encuesta.descripcion && <p className="enc-desc">{encuesta.descripcion}</p>}
             <LeyendaEscala encuesta={encuesta} />
           </div>
 
-          {error && <div style={s.errorMsg} role="alert">{error}</div>}
+          {error && <div className="enc-alert" role="alert">{error}</div>}
 
           <div style={s.seccionesGrid}>
             {secciones.map(sec => {
@@ -380,18 +378,18 @@ export default function Encuesta() {
                   ...s.seccionCard,
                   background: completa ? 'var(--color-success-bg)' : 'var(--color-surface)',
                   borderColor: completa ? 'var(--color-success-border)' : 'var(--color-border)',
-                  borderLeftColor: completa ? 'var(--color-success)' : 'var(--color-brand)',
+                  borderLeftColor: completa ? 'var(--color-success)' : 'var(--color-highlight)',
                 }}>
                   <div style={{
                     ...s.seccionCardIconBox,
-                    background: completa ? 'var(--color-success-bg)' : 'var(--color-brand-soft)',
-                    color: completa ? 'var(--color-success)' : 'var(--color-brand)',
+                    background: completa ? 'var(--color-success-bg)' : 'var(--color-highlight-soft)',
+                    color: completa ? 'var(--color-success)' : 'var(--color-highlight-text)',
                   }}>
                     {ICONOS[sec.icono] || ICONOS.operaciones}
                   </div>
                   <div style={{
                     ...s.seccionCardTitulo,
-                    color: completa ? 'var(--color-success)' : 'var(--color-brand-dark)',
+                    color: completa ? 'var(--color-success)' : 'var(--color-heading)',
                   }}>
                     {sec.texto}
                   </div>
@@ -411,7 +409,7 @@ export default function Encuesta() {
 
           <button
             type="button"
-            className="submit-btn-anim encuesta-btn-primary"
+            className="encuesta-btn-primary"
             onClick={handleSubmit}
             disabled={!todasCompletas || enviando}
             style={s.btnSubmit}
@@ -425,7 +423,7 @@ export default function Encuesta() {
           <div style={s.modalOverlay} onClick={() => setModalSeccion(null)}>
             <div style={s.modalBox} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="modal-seccion-titulo">
               <div style={s.modalHeader}>
-                <div style={{ ...s.seccionCardIconBox, background: 'var(--color-brand-soft)', color: 'var(--color-brand)', flexShrink: 0 }}>
+                <div style={{ ...s.seccionCardIconBox, background: 'var(--color-highlight-soft)', color: 'var(--color-highlight-text)', flexShrink: 0 }}>
                   {ICONOS[modalSeccion.icono] || ICONOS.operaciones}
                 </div>
                 <h2 style={s.modalTitulo} id="modal-seccion-titulo">{modalSeccion.texto}</h2>
@@ -506,30 +504,29 @@ export default function Encuesta() {
 
   const errorEnvio = error && !error.startsWith('Faltan')
 
-  function renderPregunta(pregunta) {
+  function renderPregunta(pregunta, idx = 0) {
     const num = numeros[pregunta.id]
     const labelId = `lbl-${pregunta.id}`
     const pendiente = pendientes.includes(pregunta.id) && !preguntaRespondida(pregunta)
     return (
-      <div key={pregunta.id} id={`pregunta-${pregunta.id}`} className="pregunta-card-anim"
+      <div key={pregunta.id} id={`pregunta-${pregunta.id}`}
+        className={`pregunta-card-anim enc-q${pendiente ? ' enc-q--pendiente' : ''}`}
         style={{
-          ...s.preguntaCard,
-          ...(pendiente ? s.preguntaPendiente : {}),
           // La tarjeta con el buscador abierto sube de capa para que su lista no quede
           // debajo de la tarjeta siguiente (incluso mientras corre la animación de entrada).
           ...(comboOpen[pregunta.id] ? { position: 'relative', zIndex: 30 } : {}),
-          animationDelay: `${Math.min(num, 12) * 0.05}s`,
+          animationDelay: `${Math.min(idx, 8) * 0.03}s`,
         }}>
-        <div style={s.preguntaHeader}>
-          <div style={s.preguntaNum}>{num}</div>
-          <div style={s.preguntaLabel} id={labelId}>
+        <div className="enc-q-head">
+          <div className="enc-q-num">{num}</div>
+          <div className="enc-q-label" id={labelId}>
             {pregunta.texto}
             {pregunta.requerida && <Asterisco />}
           </div>
         </div>
 
         {pregunta.tipo === 'texto' && (
-          <input type="text" style={s.input} className="encuesta-input"
+          <input type="text" className="encuesta-input"
             aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}
             value={respuestas[pregunta.id] || ''}
             onChange={(e) => handleChange(pregunta.id, e.target.value)}
@@ -549,7 +546,6 @@ export default function Encuesta() {
         {pregunta.tipo === 'lista_desplegable' && (
           <div>
             <select
-              style={s.select}
               className="encuesta-input"
               aria-labelledby={labelId}
               aria-required={pregunta.requerida || undefined}
@@ -582,7 +578,7 @@ export default function Encuesta() {
               )}
             </select>
             {otroActivo[pregunta.id] && (
-              <input type="text" style={{ ...s.input, marginTop: 8 }} className="encuesta-input"
+              <input type="text" style={{ marginTop: 8 }} className="encuesta-input"
                 aria-label="Nombre del supervisor"
                 value={respuestas[pregunta.id] || ''}
                 onChange={(e) => handleChange(pregunta.id, e.target.value)}
@@ -600,7 +596,6 @@ export default function Encuesta() {
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
-                  style={s.input}
                   className="encuesta-input"
                   role="combobox"
                   aria-labelledby={labelId}
@@ -651,7 +646,7 @@ export default function Encuesta() {
               </div>
             ) : (
               <div>
-                <input type="text" style={s.input} className="encuesta-input"
+                <input type="text" className="encuesta-input"
                   aria-labelledby={labelId}
                   aria-required={pregunta.requerida || undefined}
                   value={respuestas[pregunta.id] || ''}
@@ -675,21 +670,16 @@ export default function Encuesta() {
         )}
 
         {pregunta.tipo === 'opcion_multiple' && (
-          <div style={s.opcionesGrid} role="radiogroup" aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}>
+          <div className="enc-options" role="radiogroup" aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}>
             {pregunta.opciones.map((op) => {
               const activo = respuestas[pregunta.id] === op
               return (
-                <label key={op} className="option-card" style={{
-                  ...s.opcionCard,
-                  background: activo ? 'var(--color-brand-soft)' : 'var(--color-surface)',
-                  borderColor: activo ? 'var(--color-brand)' : 'var(--color-border)',
-                }}>
+                <label key={op} className="enc-option" data-selected={activo || undefined}>
                   <input type="radio" name={pregunta.id} value={op}
                     checked={activo}
                     onChange={() => handleChange(pregunta.id, op)}
-                    style={{ accentColor: 'var(--color-brand)', width: 18, height: 18, flexShrink: 0 }}
                   />
-                  <span style={s.opcionTexto}>{op}</span>
+                  <span className="enc-option-text">{op}</span>
                 </label>
               )
             })}
@@ -697,21 +687,16 @@ export default function Encuesta() {
         )}
 
         {pregunta.tipo === 'seleccion_multiple' && (
-          <div style={s.opcionesGrid} role="group" aria-labelledby={labelId}>
+          <div className="enc-options" role="group" aria-labelledby={labelId}>
             {pregunta.opciones.map((op) => {
               const seleccionado = Array.isArray(respuestas[pregunta.id]) && respuestas[pregunta.id].includes(op)
               return (
-                <label key={op} className="option-card" style={{
-                  ...s.opcionCard,
-                  background: seleccionado ? 'var(--color-accent-soft)' : 'var(--color-surface)',
-                  borderColor: seleccionado ? 'var(--color-accent-text)' : 'var(--color-border)',
-                }}>
+                <label key={op} className="enc-option" data-selected={seleccionado || undefined}>
                   <input type="checkbox" name={pregunta.id} value={op}
                     checked={seleccionado}
                     onChange={() => handleToggleMulti(pregunta.id, op)}
-                    style={{ accentColor: 'var(--color-accent-text)', width: 18, height: 18, flexShrink: 0 }}
                   />
-                  <span style={s.opcionTexto}>{op}</span>
+                  <span className="enc-option-text">{op}</span>
                 </label>
               )
             })}
@@ -719,14 +704,9 @@ export default function Encuesta() {
         )}
 
         {pregunta.tipo === 'si_no' && (
-          <div style={s.siNoWrap} role="radiogroup" aria-labelledby={labelId}>
+          <div className="enc-sino" role="radiogroup" aria-labelledby={labelId}>
             {['Sí', 'No'].map((op) => (
-              <label key={op} style={{
-                ...s.siNoBtn,
-                background: respuestas[pregunta.id] === op ? 'var(--color-brand)' : 'var(--color-surface)',
-                color: respuestas[pregunta.id] === op ? 'var(--color-on-brand)' : 'var(--color-brand)',
-                borderColor: respuestas[pregunta.id] === op ? 'var(--color-brand)' : 'var(--color-border)',
-              }}>
+              <label key={op} className="enc-sino-btn" data-selected={respuestas[pregunta.id] === op || undefined}>
                 <input type="radio" name={pregunta.id} value={op}
                   checked={respuestas[pregunta.id] === op}
                   onChange={() => handleChange(pregunta.id, op)}
@@ -738,43 +718,41 @@ export default function Encuesta() {
           </div>
         )}
 
-        {pendiente && <p style={s.pendienteMsg}>Responde esta pregunta para continuar.</p>}
+        {pendiente && <p className="enc-pendiente-msg">Responde esta pregunta para continuar.</p>}
       </div>
     )
   }
 
   return (
     <div style={s.page} className="encuesta-page">
-      <div className="encuesta-blob encuesta-blob-1" />
-      <div className="encuesta-blob encuesta-blob-2" />
-      <header style={s.header}>
-        <div style={s.headerInner}>
+      <header className="enc-header">
+        <div className="enc-header-inner">
           {botonInicio}
-          <img src="/logo-oscuro.png" alt="Grupo Friopacking" style={s.logo} />
+          {logoHeader}
         </div>
         {totalPreguntas > 0 && (
-          <div style={s.progressWrap}>
-            <div style={s.progressInner} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progreso} aria-label="Progreso de la evaluación">
-              <div style={{ ...s.progressBar, width: `${progreso}%` }} />
+          <div className="enc-progress">
+            <div className="enc-progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progreso} aria-label="Progreso de la evaluación">
+              <div className="enc-progress-bar" style={{ width: `${progreso}%` }} />
             </div>
-            <span style={s.progressLabel}>
+            <span className="enc-progress-label">
               {tieneAreas && `Área ${pagina + 1} de ${paginas.length} · `}{progreso}%
             </span>
           </div>
         )}
       </header>
 
-      <main style={s.main}>
-        <div style={s.encuestaHeader}>
-          <span style={s.encuestaTag}>
+      <main className="enc-main">
+        <div className="enc-intro">
+          <span className="enc-tag">
             {encuesta.respondedor === 'interno' ? 'Personal interno' : 'Contratistas'}
           </span>
-          <h1 style={s.title}>{encuesta.titulo}</h1>
-          {pagina === 0 && encuesta.descripcion && <p style={s.desc}>{encuesta.descripcion}</p>}
+          <h1 className="enc-title">{encuesta.titulo}</h1>
+          {pagina === 0 && encuesta.descripcion && <p className="enc-desc">{encuesta.descripcion}</p>}
           <LeyendaEscala encuesta={encuesta} />
         </div>
 
-        {error && !errorEnvio && <div style={s.errorMsg} role="alert">{error}</div>}
+        {error && !errorEnvio && <div className="enc-alert" role="alert">{error}</div>}
 
         <form onSubmit={(e) => e.preventDefault()} noValidate>
           {paginaActual.preambulo.map(renderPregunta)}
@@ -782,29 +760,27 @@ export default function Encuesta() {
           {paginaActual.preguntas.map(renderPregunta)}
 
           {errorEnvio && (
-            <div style={s.errorEnvio} role="alert">
-              <strong style={s.errorEnvioTitulo}>No pudimos enviar tus respuestas.</strong>
+            <div className="enc-alert" role="alert">
+              <strong>No pudimos enviar tus respuestas.</strong>
               <span>Revisa tu conexión e inténtalo de nuevo. Tus respuestas siguen guardadas en esta página.</span>
             </div>
           )}
 
-          <div style={s.navEncuesta}>
+          <div className="enc-nav">
             {pagina > 0 && (
-              <button type="button" onClick={irAnterior} style={s.btnAnterior} className="encuesta-nav-btn encuesta-btn-secondary" disabled={enviando}>
+              <button type="button" onClick={irAnterior} className="enc-btn-prev encuesta-btn-secondary" disabled={enviando}>
                 Anterior
               </button>
             )}
             {!esUltima ? (
-              <button type="button" onClick={irSiguiente} className="encuesta-nav-btn submit-btn-anim encuesta-btn-primary"
-                aria-disabled={faltantesPagina.length > 0}
-                style={s.btnSiguiente}>
+              <button type="button" onClick={irSiguiente} className="enc-btn-next encuesta-btn-primary"
+                aria-disabled={faltantesPagina.length > 0}>
                 Siguiente
               </button>
             ) : (
-              <button type="button" onClick={enviar} className="encuesta-nav-btn submit-btn-anim encuesta-btn-primary"
+              <button type="button" onClick={enviar} className="enc-btn-next encuesta-btn-primary"
                 disabled={enviando}
-                aria-disabled={faltantesPagina.length > 0}
-                style={s.btnSiguiente}>
+                aria-disabled={faltantesPagina.length > 0}>
                 {enviando ? 'Enviando...' : 'Enviar evaluación'}
               </button>
             )}
@@ -816,82 +792,8 @@ export default function Encuesta() {
 }
 
 const s = {
-  page: { minHeight: '100vh', minHeight: '100dvh', background: 'var(--color-bg)', position: 'relative' },
-
-  header: {
-    background: 'var(--color-brand)', position: 'sticky', top: 0, zIndex: 100,
-    boxShadow: 'var(--shadow-header)',
-    paddingTop: 'env(safe-area-inset-top)',
-  },
-  headerInner: {
-    maxWidth: 820, margin: '0 auto', padding: '10px 20px',
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-  },
-  backBtn: {
-    background: 'none', border: 'none',
-    color: 'var(--color-on-brand)', cursor: 'pointer', fontSize: 14, fontWeight: 700,
-    fontFamily: 'Manrope, sans-serif', padding: '10px 6px', borderRadius: 8,
-    display: 'flex', alignItems: 'center', gap: 6, minHeight: 44, minWidth: 44,
-  },
-  logo: { height: 34, objectFit: 'contain', maxWidth: 160 },
-  // Franja blanca a todo el ancho bajo el header: la sombra extiende el fondo y clip-path recorta arriba/abajo
-  progressWrap: {
-    maxWidth: 820, margin: '0 auto', padding: '10px 20px',
-    display: 'flex', alignItems: 'center', gap: 12,
-    background: 'var(--color-surface)',
-    boxShadow: '0 0 0 100vmax var(--color-surface)',
-    clipPath: 'inset(0 -100vmax)',
-  },
-  progressInner: {
-    flex: 1, height: 7, background: 'var(--color-border)',
-    borderRadius: 4, overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%', background: 'var(--color-accent)',
-    borderRadius: 4, transition: 'width 0.35s ease',
-  },
-  progressLabel: { fontSize: 12, color: 'var(--color-text-muted)', fontWeight: 700, whiteSpace: 'nowrap' },
-
-  main: {
-    maxWidth: 820, margin: '0 auto',
-    padding: '24px 16px',
-    paddingBottom: 'calc(80px + env(safe-area-inset-bottom))',
-    position: 'relative', zIndex: 1,
-  },
-
-  encuestaHeader: {
-    background: 'var(--color-surface)', borderRadius: 22, padding: '24px 22px',
-    marginBottom: 20, boxShadow: 'var(--shadow-card)',
-    border: '1px solid var(--color-border)',
-    borderLeft: '4px solid var(--color-accent)',
-  },
-  encuestaTag: {
-    display: 'inline-block',
-    background: 'var(--color-brand)', color: 'var(--color-on-brand)',
-    fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 4,
-    letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 12,
-  },
-  title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: 'var(--color-brand-dark)', marginBottom: 6, lineHeight: 1.2, letterSpacing: '-0.01em' },
-  desc: { color: 'var(--color-text-muted)', fontSize: 14, fontWeight: 600, lineHeight: 1.6, marginBottom: 14 },
-  leyenda: {
-    background: 'var(--color-surface-muted)', borderRadius: 8, padding: '12px 14px',
-    border: '1px solid var(--color-border)', marginTop: 10,
-  },
-  leyendaTitle: {
-    fontSize: 10, fontWeight: 800, color: 'var(--color-text-muted)',
-    textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10,
-  },
-  leyendaItems: { display: 'flex', gap: 16, flexWrap: 'wrap' },
-  leyendaItem: {
-    display: 'flex', alignItems: 'center', gap: 7,
-    fontSize: 13, fontWeight: 700, color: 'var(--color-text)',
-  },
-  leyendaBadge: {
-    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-    minWidth: 24, height: 24, padding: '0 6px', borderRadius: 5, fontWeight: 900, fontSize: 11, flexShrink: 0,
-  },
-
-  // ── Sección cards ──
+  // Fondo y color de texto en Encuesta.css (.encuesta-page), según el tema.
+  page: { minHeight: '100vh', minHeight: '100dvh', position: 'relative' },
   seccionesGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
@@ -920,8 +822,6 @@ const s = {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     marginTop: 2,
   },
-
-  // ── Modal ──
   modalOverlay: {
     position: 'fixed', inset: 0, zIndex: 200,
     background: 'var(--color-overlay)',
@@ -944,7 +844,7 @@ const s = {
     flexShrink: 0,
   },
   modalTitulo: {
-    fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-brand-dark)',
+    fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-heading)',
     flex: 1, lineHeight: 1.3,
   },
   modalClose: {
@@ -964,59 +864,12 @@ const s = {
     borderTop: '1px solid var(--color-border)',
     flexShrink: 0,
   },
-  // Colores en Encuesta.css (.encuesta-btn-primary)
   modalBtnCerrar: {
     borderRadius: 10,
     padding: '15px', fontSize: 15, fontWeight: 800,
     width: '100%',
     fontFamily: 'Manrope, sans-serif', minHeight: 50,
     letterSpacing: '0.01em',
-  },
-
-  // ── Encabezado de área ──
-  areaHeader: {
-    background: 'var(--color-brand)', borderRadius: 18, padding: '14px 18px',
-    margin: '8px 0 12px',
-  },
-  areaTitulo: {
-    fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-on-brand)',
-    textTransform: 'uppercase', letterSpacing: '0.06em', lineHeight: 1.35, margin: 0,
-  },
-  areaDesc: { color: 'var(--color-on-brand)', opacity: 0.92, fontSize: 12, fontWeight: 600, lineHeight: 1.5, marginTop: 4 },
-
-  preguntaCard: {
-    background: 'var(--color-surface)', borderRadius: 18, padding: '20px 18px',
-    marginBottom: 12, boxShadow: 'var(--shadow-card)',
-    border: '1px solid var(--color-border)',
-    borderLeft: '4px solid var(--color-accent)',
-    scrollMarginTop: 120,
-  },
-  preguntaPendiente: {
-    border: '2px solid var(--color-required)',
-    borderLeft: '4px solid var(--color-required)',
-    boxShadow: '0 0 0 4px var(--color-error-border)',
-  },
-  pendienteMsg: { color: 'var(--color-error-text)', fontSize: 13, fontWeight: 700, marginTop: 10 },
-  preguntaHeader: { display: 'flex', gap: 11, alignItems: 'flex-start', marginBottom: 14 },
-  preguntaNum: {
-    minWidth: 26, height: 26, background: 'var(--color-brand)', color: 'var(--color-on-brand)',
-    borderRadius: 6, fontSize: 12, fontWeight: 900,
-    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-  },
-  preguntaLabel: { fontWeight: 700, color: 'var(--color-text)', fontSize: 14, lineHeight: 1.55, flex: 1 },
-  requerida: { color: 'var(--color-required)', fontWeight: 900 },
-
-  input: {
-    width: '100%', border: '1.5px solid var(--color-border)', borderRadius: 14,
-    padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
-    color: 'var(--color-text)', fontWeight: 600,
-    background: 'var(--color-surface-muted)', WebkitAppearance: 'none',
-  },
-  select: {
-    width: '100%', border: '1.5px solid var(--color-border)', borderRadius: 14,
-    padding: '13px 14px', fontSize: 15, fontFamily: 'Manrope, sans-serif',
-    color: 'var(--color-text)', fontWeight: 600,
-    background: 'var(--color-surface-muted)', minHeight: 48, cursor: 'pointer',
   },
   comboLista: {
     position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 20,
@@ -1029,64 +882,12 @@ const s = {
     fontSize: 14, fontWeight: 600, color: 'var(--color-text)',
   },
   comboItemOtro: {
-    color: 'var(--color-brand)', fontWeight: 800, borderTop: '1px solid var(--color-border)', marginTop: 4, paddingTop: 12,
+    color: 'var(--color-link)', fontWeight: 800, borderTop: '1px solid var(--color-border)', marginTop: 4, paddingTop: 12,
   },
   comboVolver: {
     background: 'none', border: 'none', color: 'var(--color-text-muted)', fontWeight: 700,
     fontSize: 13, fontFamily: 'Manrope, sans-serif', cursor: 'pointer',
     padding: '10px 2px', minHeight: 44, textDecoration: 'underline',
-  },
-
-  escalaEtiquetas: {
-    display: 'flex', justifyContent: 'space-between',
-    fontSize: 12, color: 'var(--color-text-muted)', fontWeight: 700,
-  },
-
-  opcionesGrid: {
-    display: 'flex', flexDirection: 'column', gap: 10,
-  },
-  opcionCard: {
-    display: 'flex', alignItems: 'center', gap: 10,
-    padding: '12px 14px', borderRadius: 18, border: '1.5px solid',
-    cursor: 'pointer', minHeight: 56,
-  },
-  opcionTexto: { fontSize: 14, fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.35 },
-
-  siNoWrap: { display: 'flex', gap: 10 },
-  siNoBtn: {
-    flex: 1, padding: '13px', border: '1.5px solid', borderRadius: 16,
-    cursor: 'pointer', fontSize: 15, fontWeight: 800,
-    fontFamily: 'Manrope, sans-serif', textAlign: 'center',
-    transition: 'all 0.12s', minHeight: 48,
-  },
-
-  errorMsg: {
-    background: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: '1.5px solid var(--color-error-border)',
-    borderRadius: 8, padding: '13px 14px', fontSize: 14, marginBottom: 16, fontWeight: 700,
-  },
-  errorEnvio: {
-    display: 'flex', flexDirection: 'column', gap: 4,
-    background: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: '1.5px solid var(--color-error-border)',
-    borderRadius: 14, padding: '14px 16px', fontSize: 14, fontWeight: 600, lineHeight: 1.5,
-    margin: '8px 0 4px',
-  },
-  errorEnvioTitulo: { fontWeight: 800, fontSize: 15 },
-  navEncuesta: { display: 'flex', gap: 10, marginTop: 12 },
-  // Los colores, bordes, cursor y estado desactivado de los botones viven en
-  // Encuesta.css (.encuesta-btn-primary / .encuesta-btn-secondary).
-  btnSiguiente: {
-    flex: 1,
-    borderRadius: 16,
-    padding: '16px 24px', fontSize: 16, fontWeight: 900,
-    fontFamily: 'Manrope, sans-serif',
-    minHeight: 54, letterSpacing: '0.01em',
-  },
-  btnAnterior: {
-    flex: '0 0 auto',
-    borderRadius: 16,
-    padding: '16px 18px', fontSize: 16, fontWeight: 800,
-    fontFamily: 'Manrope, sans-serif',
-    minHeight: 54,
   },
   btnSubmit: {
     borderRadius: 16,

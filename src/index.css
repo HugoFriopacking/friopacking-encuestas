@@ -60,6 +60,78 @@
   --shadow-hover:  0 10px 24px rgba(55, 107, 158, 0.14);
   --shadow-modal:  0 -8px 40px rgba(15, 23, 42, 0.25);
   --shadow-dialog: 0 24px 80px rgba(15, 23, 42, 0.3);
+
+  /* ── Roles semánticos de la encuesta (modo día) ──
+     En el día no se usa turquesa en la interfaz: selección, progreso y foco van en azul. */
+  --color-heading:          #1E3A5F;   /* títulos */
+  --color-border-strong:    #CBD5E1;   /* borde de controles sin seleccionar */
+  --color-header-bg:        rgba(255, 255, 255, 0.92);
+  --color-area-bg:          #376B9E;   /* encabezado de área */
+  --color-area-text:        #FFFFFF;
+  --color-highlight:        #376B9E;   /* selección, progreso, foco */
+  --color-highlight-strong: #1E3A5F;   /* borde de la opción seleccionada */
+  --color-on-highlight:     #FFFFFF;
+  --color-highlight-soft:   #E7F1FA;   /* fondo suave de opción marcada */
+  --color-highlight-text:   #2B5986;   /* texto sobre fondo suave */
+  --color-link:             #2B5986;
+  --color-btn-disabled-bg:  #E2E8F0;
+  --color-hero-from:        #1E3A5F;   /* fondo de la pantalla final */
+  --color-hero-to:          #376B9E;
+  --color-hero-glow:        rgba(255, 255, 255, 0.1);
+}
+
+/* ── Modo noche de la encuesta: sigue la preferencia del sistema operativo.
+   Solo redefine variables dentro de la encuesta y la pantalla final; Inicio y Resultados no cambian. ── */
+@media (prefers-color-scheme: dark) {
+  .encuesta-page {
+    color-scheme: dark;
+    --color-bg:               #0A1628;   /* azul profundo */
+    --color-surface:          #11223A;
+    --color-surface-muted:    #172C48;
+    --color-border:           #22395A;
+    --color-border-strong:    #35527A;
+    --color-text:             #E7EEF6;
+    --color-text-muted:       #A9B8CB;
+    --color-disabled-text:    #7C8FA8;
+    --color-heading:          #F1F6FB;
+    --color-header-bg:        rgba(10, 22, 40, 0.9);
+    --color-area-bg:          #18304F;
+    --color-area-text:        #F1F6FB;
+    --color-brand:            #376B9E;   /* botón principal: blanco sobre azul 5.6:1 */
+    --color-brand-dark:       #2B5986;
+    --color-brand-soft:       rgba(62, 198, 172, 0.12);
+    --color-highlight:        #3EC6AC;   /* turquesa: selección, progreso, detalles */
+    --color-highlight-strong: #8BE3D1;
+    --color-on-highlight:     #052620;
+    --color-highlight-soft:   rgba(62, 198, 172, 0.12);
+    --color-highlight-text:   #8BE3D1;
+    --color-accent:           #3EC6AC;
+    --color-accent-text:      #8BE3D1;
+    --color-accent-soft:      rgba(62, 198, 172, 0.12);
+    --color-accent-glow:      rgba(62, 198, 172, 0.16);
+    --color-link:             #8FB8E6;
+    --color-btn-disabled-bg:  #1C3150;
+    --color-hero-from:        #07111F;
+    --color-hero-to:          #14304F;
+    --color-hero-glow:        rgba(62, 198, 172, 0.14);
+    --color-required:         #F87171;
+    --color-error-text:       #FCA5A5;
+    --color-error-bg:         rgba(248, 113, 113, 0.1);
+    --color-error-border:     rgba(248, 113, 113, 0.45);
+    --color-success:          #34D399;
+    --color-success-bg:       rgba(52, 211, 153, 0.1);
+    --color-success-border:   rgba(52, 211, 153, 0.45);
+    --color-overlay:          rgba(2, 6, 15, 0.72);
+    --shadow-card:   0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-header: 0 1px 0 rgba(255, 255, 255, 0.04);
+    --shadow-raised: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-hover:  0 8px 20px rgba(0, 0, 0, 0.35);
+    --shadow-modal:  0 -8px 40px rgba(0, 0, 0, 0.5);
+    --shadow-dialog: 0 24px 80px rgba(0, 0, 0, 0.5);
+  }
+  /* Fondo del lienzo al estirar el scroll en el celular */
+  html:has(.encuesta-page),
+  html:has(.encuesta-page) body { background: #0A1628; }
 }
 
 body {

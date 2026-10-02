@@ -12,7 +12,10 @@ export default function Gracias() {
     <div style={s.page} className="encuesta-page">
       <div style={s.bg} />
       <main style={s.card}>
-        <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.logo} />
+        <picture>
+          <source srcSet="/logo-oscuro.png" media="(prefers-color-scheme: dark)" />
+          <img src="/logo-claro.png" alt="Grupo Friopacking" style={s.logo} />
+        </picture>
         <div style={s.iconWrap} aria-hidden="true">
           <div style={s.iconRing} />
           <div style={s.icon}>✓</div>
@@ -32,7 +35,7 @@ export default function Gracias() {
 const s = {
   page: {
     minHeight: '100vh', minHeight: '100dvh',
-    background: 'linear-gradient(135deg, var(--color-brand-dark) 0%, var(--color-brand) 100%)',
+    background: 'linear-gradient(135deg, var(--color-hero-from) 0%, var(--color-hero-to) 100%)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     padding: '24px 20px',
     position: 'relative', overflow: 'hidden',
@@ -41,7 +44,7 @@ const s = {
   },
   bg: {
     position: 'absolute', inset: 0,
-    background: 'radial-gradient(ellipse at 30% 70%, var(--color-accent-glow) 0%, transparent 60%)',
+    background: 'radial-gradient(ellipse at 30% 70%, var(--color-hero-glow) 0%, transparent 60%)',
     pointerEvents: 'none',
   },
   card: {
@@ -54,16 +57,16 @@ const s = {
   iconWrap: { position: 'relative', width: 72, height: 72, margin: '0 auto 22px' },
   iconRing: {
     position: 'absolute', inset: -6, borderRadius: '50%',
-    border: '2px solid var(--color-accent)', opacity: 0.5,
+    border: '2px solid var(--color-highlight)', opacity: 0.5,
   },
   icon: {
     width: 72, height: 72,
-    background: 'var(--color-brand)',
-    color: 'var(--color-on-brand)', borderRadius: '50%', fontSize: 30, fontWeight: 900,
+    background: 'var(--color-highlight)',
+    color: 'var(--color-on-highlight)', borderRadius: '50%', fontSize: 30, fontWeight: 900,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     boxShadow: 'var(--shadow-raised)',
   },
-  title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: 'var(--color-brand-dark)', marginBottom: 10, lineHeight: 1.2 },
+  title: { fontFamily: 'Inter, sans-serif', fontSize: 24, fontWeight: 700, color: 'var(--color-heading)', marginBottom: 10, lineHeight: 1.2 },
   msg: { color: 'var(--color-text-muted)', fontSize: 15, lineHeight: 1.7, marginBottom: 26, fontWeight: 600 },
   // Colores en Encuesta.css (.encuesta-btn-primary)
   btn: {
