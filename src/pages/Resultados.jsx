@@ -37,6 +37,12 @@ const RANKING_GROUPS = [
     encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto', 'contratistas-friopacking-septiembre'],
   },
   {
+    key: 'operaciones-soporte',
+    titulo: 'Áreas de soporte evaluadas por Operaciones',
+    modo: 'seccion',
+    encuestaIds: ['operaciones-areas-soporte-octubre'],
+  },
+  {
     key: 'contratistas',
     titulo: 'Contratistas evaluados por SSOMA',
     modo: 'campo',
@@ -45,7 +51,7 @@ const RANKING_GROUPS = [
   },
 ]
 
-const MES_ORDEN = ['Septiembre', 'Agosto', 'Julio', 'Junio']
+const MES_ORDEN = ['Octubre', 'Septiembre', 'Agosto', 'Julio', 'Junio']
 
 function agruparEncuestasPorMes(lista) {
   const grupos = new Map()
