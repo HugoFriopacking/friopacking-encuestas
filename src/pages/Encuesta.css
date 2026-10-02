@@ -286,17 +286,24 @@
 }
 /* Reacción táctil al pulsar */
 .escala-btn:active { transform: scale(0.94); }
-/* Seleccionado: igual para todas las notas (no se premian las altas) + ✓ para no depender del color */
+/* Color de cada nota (solo se ve al marcarla): 1 rojo fuerte → 10 verde fuerte (turquesa en noche) */
+.escala-btn[data-valor="1"]  { --nota: var(--scale-1);  --nota-text: var(--scale-1-text); }
+.escala-btn[data-valor="2"]  { --nota: var(--scale-2);  --nota-text: var(--scale-2-text); }
+.escala-btn[data-valor="3"]  { --nota: var(--scale-3);  --nota-text: var(--scale-3-text); }
+.escala-btn[data-valor="4"]  { --nota: var(--scale-4);  --nota-text: var(--scale-4-text); }
+.escala-btn[data-valor="5"]  { --nota: var(--scale-5);  --nota-text: var(--scale-5-text); }
+.escala-btn[data-valor="6"]  { --nota: var(--scale-6);  --nota-text: var(--scale-6-text); }
+.escala-btn[data-valor="7"]  { --nota: var(--scale-7);  --nota-text: var(--scale-7-text); }
+.escala-btn[data-valor="8"]  { --nota: var(--scale-8);  --nota-text: var(--scale-8-text); }
+.escala-btn[data-valor="9"]  { --nota: var(--scale-9);  --nota-text: var(--scale-9-text); }
+.escala-btn[data-valor="10"] { --nota: var(--scale-10); --nota-text: var(--scale-10-text); }
+
+/* Seleccionado: relleno con el color de la nota + anillo exterior, que lo distingue sin depender del color */
 .escala-btn[aria-checked="true"] {
-  background: var(--color-highlight);
-  border-color: var(--color-highlight-strong);
-  color: var(--color-on-highlight);
-  box-shadow: var(--shadow-raised);
-}
-.escala-btn[aria-checked="true"]::after {
-  content: "✓";
-  margin-left: 2px;
-  font-size: 11px;
+  background: var(--nota, var(--color-highlight));
+  border-color: var(--nota, var(--color-highlight));
+  color: var(--nota-text, var(--color-on-highlight));
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-heading);
 }
 
 .enc-scale-ends {

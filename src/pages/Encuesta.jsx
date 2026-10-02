@@ -70,6 +70,13 @@ function hayRespuestas(respuestas) {
   return Object.values(respuestas).some((v) => (Array.isArray(v) ? v.length > 0 : v !== '' && v != null))
 }
 
+// La casilla de la leyenda toma el color de la primera nota de su rango ("5–6" → 5).
+function colorLeyenda(rango) {
+  const n = parseInt(rango, 10)
+  if (!(n >= 1 && n <= 10)) return undefined
+  return { background: `var(--scale-${n})`, color: `var(--scale-${n}-text)`, borderColor: `var(--scale-${n})` }
+}
+
 function LeyendaEscala({ encuesta }) {
   if (!encuesta.leyendaTiers && !encuesta.leyenda) return null
   const tiers = encuesta.leyendaTiers || [
@@ -83,7 +90,7 @@ function LeyendaEscala({ encuesta }) {
       <div className="enc-legend-items">
         {tiers.map((t) => (
           <div key={t.rango} className="enc-legend-item">
-            <span className="enc-legend-badge">{t.rango}</span>
+            <span className="enc-legend-badge" style={colorLeyenda(t.rango)}>{t.rango}</span>
             {t.texto}
           </div>
         ))}

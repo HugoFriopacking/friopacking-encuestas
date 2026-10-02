@@ -78,6 +78,19 @@
   --color-hero-from:        #1E3A5F;   /* fondo de la pantalla final */
   --color-hero-to:          #376B9E;
   --color-hero-glow:        rgba(255, 255, 255, 0.1);
+
+  /* ── Escala 1–10: color de la nota marcada (rojo fuerte → verde fuerte) ──
+     Cada par fondo/texto cumple 4.5:1. */
+  --scale-1:  #B91C1C;  --scale-1-text:  #FFFFFF;
+  --scale-2:  #DC2626;  --scale-2-text:  #FFFFFF;
+  --scale-3:  #C2410C;  --scale-3-text:  #FFFFFF;
+  --scale-4:  #F97316;  --scale-4-text:  #1E293B;
+  --scale-5:  #F59E0B;  --scale-5-text:  #1E293B;
+  --scale-6:  #EAB308;  --scale-6-text:  #1E293B;
+  --scale-7:  #A3C514;  --scale-7-text:  #1E293B;
+  --scale-8:  #4CAF26;  --scale-8-text:  #1E293B;
+  --scale-9:  #15803D;  --scale-9-text:  #FFFFFF;
+  --scale-10: #166534;  --scale-10-text: #FFFFFF;
 }
 
 /* ── Modo noche de la encuesta: sigue la preferencia del sistema operativo.
@@ -114,6 +127,17 @@
     --color-hero-from:        #07111F;
     --color-hero-to:          #14304F;
     --color-hero-glow:        rgba(62, 198, 172, 0.14);
+    /* Escala en noche: del rojo al turquesa de la marca (sin verde) */
+    --scale-1:  #DC2626;  --scale-1-text:  #FFFFFF;
+    --scale-2:  #EF4444;  --scale-2-text:  #0B1A2E;
+    --scale-3:  #F97316;  --scale-3-text:  #0B1A2E;
+    --scale-4:  #FB923C;  --scale-4-text:  #0B1A2E;
+    --scale-5:  #F59E0B;  --scale-5-text:  #0B1A2E;
+    --scale-6:  #EAB308;  --scale-6-text:  #0B1A2E;
+    --scale-7:  #B4C46A;  --scale-7-text:  #0B1A2E;
+    --scale-8:  #7CC5A2;  --scale-8-text:  #0B1A2E;
+    --scale-9:  #58C6A8;  --scale-9-text:  #0B1A2E;
+    --scale-10: #3EC6AC;  --scale-10-text: #0B1A2E;
     --color-required:         #F87171;
     --color-error-text:       #FCA5A5;
     --color-error-bg:         rgba(248, 113, 113, 0.1);
