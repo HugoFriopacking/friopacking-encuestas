@@ -1,10 +1,10 @@
 const encuesta = {
   id: 'logistica-operaciones-octubre',
-  titulo: 'Logística a Operaciones (Octubre)',
-  descripcion: 'Conocer la percepción actual de Logística sobre el desempeño de Operaciones y la coordinación entre ambas áreas, para identificar fortalezas y oportunidades de mejora. Responde según tu percepción actual y tu experiencia de trabajo con Operaciones.',
+  titulo: 'Del almacén a la obra',
+  descripcion: 'Logística evalúa su trabajo con Operaciones: qué funciona y qué podemos mejorar juntos. Responde según tu experiencia actual; es anónima y toma unos 5 minutos.',
   respondedor: 'interno',
   activa: true,
-  mes: 'Octubre',
+  mes: 'Septiembre',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'Planificación y organización', icono: 'operaciones' },

@@ -66,11 +66,11 @@ const escala = (id, texto, etiquetas) => ({ id, tipo: 'escala', texto, requerida
 
 const encuesta = {
   id: 'operaciones-areas-soporte-octubre',
-  titulo: 'Operaciones a áreas de soporte (Octubre)',
-  descripcion: 'Esta encuesta busca conocer cómo percibes hoy el servicio que Operaciones recibe de las áreas de soporte de Grupo Friopacking. Es anónima y toma unos 10 minutos. Tus respuestas se usarán para definir planes de mejora en cada área.',
+  titulo: 'El soporte que Operaciones merece',
+  descripcion: 'Califica el servicio que recibes de PMO, Logística, Capital Humano, SSOMA, Ingeniería y Comercial. Es anónima, toma unos 10 minutos y servirá para definir mejoras en cada área.',
   respondedor: 'interno',
   activa: true,
-  mes: 'Octubre',
+  mes: 'Septiembre',
   leyendaTiers: [
     { rango: '1', texto: 'Totalmente en desacuerdo / Muy insatisfecho', bg: 'var(--color-score-low)', color: 'var(--color-on-score)' },
     { rango: '5–6', texto: 'Neutral', bg: 'var(--color-score-mid)', color: 'var(--color-text)' },
