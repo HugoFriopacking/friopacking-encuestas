@@ -1,4 +1,4 @@
-// Operaciones (cliente interno) evalúa a las 6 áreas de soporte. Anónima: no pide datos del evaluador.
+// Operaciones (cliente interno) evalúa a las 5 áreas de soporte. Anónima: no pide datos del evaluador.
 // Cada área repite las 6 preguntas comunes (A1–A6), redactadas con el nombre del área,
 // para poder compararlas entre sí, más sus preguntas específicas (B1–B13).
 
@@ -37,13 +37,6 @@ const AREAS = [
     ],
   },
   {
-    clave: 'ssoma', nombre: 'SSOMA', corto: 'SSOMA', icono: 'operaciones',
-    especificas: [
-      { n: 'b7', texto: 'Los requisitos de seguridad de SSOMA son claros y aplicables a la realidad de campo.' },
-      { n: 'b8', texto: 'SSOMA gestiona las inducciones, autorizaciones y permisos de trabajo sin retrasar la operación.' },
-    ],
-  },
-  {
     clave: 'ingenieria', nombre: 'Ingeniería', corto: 'Ingeniería', icono: 'ingenieria',
     especificas: [
       { n: 'b9', texto: 'Los diseños, planos y especificaciones de Ingeniería llegan completos y son ejecutables en campo.' },
@@ -65,7 +58,7 @@ const escala = (id, texto) => ({ id, tipo: 'escala', texto, requerida: true, min
 const encuesta = {
   id: 'operaciones-areas-soporte-octubre',
   titulo: 'El soporte que Operaciones merece',
-  descripcion: 'Califica el servicio que recibes de PMO, Logística, Capital Humano, SSOMA, Ingeniería y Comercial. Es anónima, toma unos 10 minutos y servirá para definir mejoras en cada área.',
+  descripcion: 'Califica el servicio que recibes de PMO, Logística, Capital Humano, Ingeniería y Comercial. Es anónima, toma unos 8 minutos y servirá para definir mejoras en cada área.',
   respondedor: 'interno',
   activa: true,
   mes: 'Septiembre',
