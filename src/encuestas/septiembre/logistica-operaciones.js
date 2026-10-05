@@ -10,7 +10,7 @@ const encuesta = {
     { id: 's1', tipo: 'seccion', texto: 'Planificación y organización', icono: 'operaciones' },
     { id: 'p1', tipo: 'escala', texto: '¿Cómo calificas la anticipación con la que Operaciones comunica sus necesidades a Logística?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p2', tipo: 'escala', texto: '¿Cómo calificas la claridad de los requerimientos enviados por Operaciones?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
-    { id: 'p3', tipo: 'escala', texto: '¿Qué tan completa es la información que Operaciones proporciona para atender sus requerimientos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
+    { id: 'p3', tipo: 'escala', texto: '¿Qué tan completa es la información que Operaciones proporciona para generar códigos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p4', tipo: 'escala', texto: '¿Qué tan bien coordina Operaciones con Logística la viabilidad de los plazos antes de asumir compromisos?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
     { id: 'p5', tipo: 'escala', texto: '¿Qué tan adecuada es la priorización de las solicitudes de Operaciones según su urgencia e impacto?', requerida: true, min: 1, max: 10, etiquetas: { 1: 'Muy malo', 10: 'Muy bueno' } },
 
