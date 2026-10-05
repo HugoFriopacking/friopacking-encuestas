@@ -1,6 +1,6 @@
 const encuesta = {
   id: 'logistica-operaciones-octubre',
-  titulo: 'Del almacén a la obra',
+  titulo: 'Logística y Operaciones: ¿vamos al mismo ritmo?',
   descripcion: 'Logística evalúa su trabajo con Operaciones: qué funciona y qué podemos mejorar juntos. Responde según tu experiencia actual; es anónima y toma unos 5 minutos.',
   respondedor: 'interno',
   activa: true,
