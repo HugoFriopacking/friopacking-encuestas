@@ -15,7 +15,7 @@ const encuesta = {
     { id: 'nombre', tipo: 'texto', texto: 'Nombre y apellido', requerida: true },
     {
       id: 'empresa', tipo: 'lista_desplegable', texto: 'Empresa', requerida: true,
-      opciones: ['Friopacking Perú', 'Frioteam', 'Hermética', 'Smartcold', 'Friopacking Colombia', 'Friopacking México', 'Otra'],
+      opciones: ['Grupo Friopacking', 'Friopacking Perú', 'Frioteam', 'Hermética', 'Smartcold', 'Friomamut', 'Friopacking Colombia', 'Friopacking México', 'Otra'],
     },
     {
       id: 'frecuencia_ia', tipo: 'opcion_multiple', texto: '¿Con qué frecuencia usas herramientas de IA en tu trabajo?', requerida: true,
@@ -24,10 +24,7 @@ const encuesta = {
     {
       id: 'herramientas', tipo: 'seleccion_multiple', texto: '¿Qué herramientas has usado? (Elección múltiple)', requerida: true,
       opciones: ['ChatGPT', 'Claude', 'Copilot', 'Gemini', 'Ninguna', 'Otra'],
-    },
-    {
-      id: 'licencia', tipo: 'opcion_multiple', texto: '¿Tienes licencia corporativa asignada?', requerida: true,
-      opciones: ['Sí, de Claude', 'Sí, de ChatGPT', 'Ambas', 'No', 'No sé'],
+      opcionConTexto: 'Otra', // al marcarla se pide escribir cuál (se guarda en herramientas_otro)
     },
     {
       id: 'nivel_ia', tipo: 'escala', texto: '¿Cómo calificas tu nivel con IA?', requerida: true,

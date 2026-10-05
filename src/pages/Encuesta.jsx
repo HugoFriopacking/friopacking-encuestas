@@ -694,19 +694,37 @@ export default function Encuesta() {
         )}
 
         {pregunta.tipo === 'seleccion_multiple' && (
-          <div className="enc-options" role="group" aria-labelledby={labelId}>
-            {pregunta.opciones.map((op) => {
-              const seleccionado = Array.isArray(respuestas[pregunta.id]) && respuestas[pregunta.id].includes(op)
-              return (
-                <label key={op} className="enc-option" data-selected={seleccionado || undefined}>
-                  <input type="checkbox" name={pregunta.id} value={op}
-                    checked={seleccionado}
-                    onChange={() => handleToggleMulti(pregunta.id, op)}
-                  />
-                  <span className="enc-option-text">{op}</span>
-                </label>
-              )
-            })}
+          <div>
+            <div className="enc-options" role="group" aria-labelledby={labelId}>
+              {pregunta.opciones.map((op) => {
+                const seleccionado = Array.isArray(respuestas[pregunta.id]) && respuestas[pregunta.id].includes(op)
+                return (
+                  <label key={op} className="enc-option" data-selected={seleccionado || undefined}>
+                    <input type="checkbox" name={pregunta.id} value={op}
+                      checked={seleccionado}
+                      onChange={() => {
+                        handleToggleMulti(pregunta.id, op)
+                        // Al desmarcar la opción "otro" se borra lo que se había escrito.
+                        if (seleccionado && op === pregunta.opcionConTexto && respuestas[`${pregunta.id}_otro`]) {
+                          handleChange(`${pregunta.id}_otro`, '')
+                        }
+                      }}
+                    />
+                    <span className="enc-option-text">{op}</span>
+                  </label>
+                )
+              })}
+            </div>
+            {/* Si la pregunta define `opcionConTexto`, al marcar esa opción se pide escribir cuál (se guarda en `<id>_otro`). */}
+            {pregunta.opcionConTexto && Array.isArray(respuestas[pregunta.id]) && respuestas[pregunta.id].includes(pregunta.opcionConTexto) && (
+              <input type="text" style={{ marginTop: 10 }} className="encuesta-input"
+                aria-label={`${pregunta.opcionConTexto}: ¿cuál?`}
+                value={respuestas[`${pregunta.id}_otro`] || ''}
+                onChange={(e) => handleChange(`${pregunta.id}_otro`, e.target.value)}
+                placeholder="¿Cuál? Escríbelo aquí..."
+                autoComplete="off" autoCorrect="off" spellCheck="false"
+              />
+            )}
           </div>
         )}
 
