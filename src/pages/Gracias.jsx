@@ -20,11 +20,12 @@ export default function Gracias() {
           <div style={s.iconRing} />
           <div style={s.icon}>✓</div>
         </div>
-        <h1 style={s.title}>¡Gracias por tu tiempo!</h1>
+        {/* Una encuesta puede definir su propio cierre con `gracias: { titulo, mensaje }`. */}
+        <h1 style={s.title}>{encuesta?.gracias?.titulo || '¡Gracias por tu tiempo!'}</h1>
         <p style={s.msg}>
-          {anonima
+          {encuesta?.gracias?.mensaje || (anonima
             ? 'Tus respuestas son anónimas y nos ayudarán a mejorar el servicio entre áreas.'
-            : 'Tus respuestas nos ayudarán a mejorar.'}
+            : 'Tus respuestas nos ayudarán a mejorar.')}
         </p>
         <button onClick={() => navigate('/')} style={s.btn} className="encuesta-nav-btn encuesta-btn-primary">Volver al inicio</button>
       </main>
