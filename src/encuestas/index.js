@@ -17,6 +17,7 @@ import contratistasFriopackingSeptiembre from './septiembre/contratistas-friopac
 import operacionesAreasSoporte from './septiembre/operaciones-areas-soporte.js'
 import logisticaOperaciones from './septiembre/logistica-operaciones.js'
 import capitalHumanoSeptiembre from './septiembre/capital-humano-septiembre.js'
+import ingenieriaOperaciones from './septiembre/ingenieria-operaciones.js'
 import despegaConIa from './octubre/despega-con-ia.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
@@ -40,6 +41,7 @@ const encuestas = [
   operacionesAreasSoporte,
   logisticaOperaciones,
   capitalHumanoSeptiembre,
+  ingenieriaOperaciones,
   despegaConIa,
 ]
 
