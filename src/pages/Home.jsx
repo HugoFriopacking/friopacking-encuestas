@@ -127,8 +127,11 @@ export default function Home() {
                   contador++
                   const num = contador
                   const tag = tagColors[enc.respondedor] || tagColors.ambos
+                  // Se muestran todas las preguntas (no solo las de escala) para que una encuesta sin escala
+                  // no aparezca como "Próximamente"; la duración se sigue estimando con las de escala.
+                  const totalPreguntas = enc.preguntas.filter(p => p.tipo !== 'seccion').length
                   const escalaCount = enc.preguntas.filter(p => p.tipo === 'escala').length
-                  const duracion = estimarDuracion(escalaCount)
+                  const duracion = totalPreguntas > 0 ? estimarDuracion(Math.max(escalaCount, 1)) : null
                   return (
                     <Link key={enc.id} to={`/encuesta/${enc.id}`} style={s.cardLink} className="home-card home-card-link">
                       <div style={s.cardTop}>
@@ -143,7 +146,7 @@ export default function Home() {
                         : <div style={{ flex: 1 }} />}
                       <div style={s.cardFooter}>
                         <span style={s.cardMeta}>
-                          {escalaCount > 0 ? `${escalaCount} preguntas${duracion ? ` · ${duracion}` : ''}` : 'Próximamente'}
+                          {totalPreguntas > 0 ? `${totalPreguntas} preguntas${duracion ? ` · ${duracion}` : ''}` : 'Próximamente'}
                         </span>
                         <div style={s.cardCta} className="home-card-cta">
                           Iniciar evaluación
