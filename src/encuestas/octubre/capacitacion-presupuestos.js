@@ -26,8 +26,8 @@ const encuesta = {
       opciones: ['Materiales y metrados', 'Mano de obra', 'Costos indirectos', 'Márgenes y precios de venta', 'Presentación final'],
     },
     {
-      id: 'utilidad', tipo: 'opcion_multiple', texto: '¿Qué tan útil fue la capacitación para tus actividades laborales?', requerida: true,
-      opciones: ['Bueno', 'Regular', 'Malo'],
+      id: 'utilidad', tipo: 'escala', texto: 'Del 1 al 10, ¿qué tan útil fue la capacitación para tus actividades laborales?', requerida: true,
+      min: 1, max: 10, etiquetas: { 1: 'Nada útil', 10: 'Muy útil' },
     },
     {
       id: 'recomendaciones', tipo: 'texto', texto: '¿Qué recomendarías para mejorar la elaboración de los presupuestos?', requerida: false,
