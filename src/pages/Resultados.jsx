@@ -34,7 +34,7 @@ const RANKING_GROUPS = [
     key: 'friopacking',
     titulo: 'Grupo Friopacking (por área)',
     modo: 'seccion',
-    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto', 'contratistas-friopacking-septiembre'],
+    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto', 'contratistas-friopacking-septiembre', 'contratistas-friopacking-octubre'],
   },
   {
     key: 'operaciones-soporte',
@@ -76,7 +76,8 @@ function construirMapaSeccion(encuesta) {
   let actual = null
   encuesta.preguntas.forEach((p) => {
     if (p.tipo === 'seccion') actual = p.texto
-    else if (p.tipo === 'escala' && actual) mapa[p.id] = actual
+    // Si la pregunta indica su `area`, manda sobre la sección (secciones por tema que mezclan áreas).
+    else if (p.tipo === 'escala' && (p.area || actual)) mapa[p.id] = p.area || actual
   })
   return mapa
 }

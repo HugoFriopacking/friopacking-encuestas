@@ -22,6 +22,7 @@ import despegaConIa from './octubre/despega-con-ia.js'
 import capacitacionPresupuestos from './octubre/capacitacion-presupuestos.js'
 import contratistasSsomaOctubre from './octubre/contratistas-ssoma-octubre.js'
 import contratistasSupervisoresOctubre from './octubre/contratistas-supervisores-octubre.js'
+import contratistasFriopackingOctubre from './octubre/contratistas-friopacking-octubre.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -49,6 +50,7 @@ const encuestas = [
   capacitacionPresupuestos,
   contratistasSsomaOctubre,
   contratistasSupervisoresOctubre,
+  contratistasFriopackingOctubre,
 ]
 
 // Solo exporta las activas para mostrar en la home
