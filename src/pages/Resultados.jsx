@@ -28,7 +28,7 @@ const RANKING_GROUPS = [
     titulo: 'Supervisores SSOMA',
     modo: 'campo',
     campo: 'supervisor',
-    encuestaIds: ['contratistas-ssoma', 'contratistas-ssoma-julio', 'contratistas-ssoma-agosto', 'contratistas-ssoma-septiembre'],
+    encuestaIds: ['contratistas-ssoma', 'contratistas-ssoma-julio', 'contratistas-ssoma-agosto', 'contratistas-ssoma-septiembre', 'contratistas-ssoma-octubre'],
   },
   {
     key: 'friopacking',

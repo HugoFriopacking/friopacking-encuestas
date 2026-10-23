@@ -20,6 +20,7 @@ import capitalHumanoSeptiembre from './septiembre/capital-humano-septiembre.js'
 import ingenieriaOperaciones from './septiembre/ingenieria-operaciones.js'
 import despegaConIa from './octubre/despega-con-ia.js'
 import capacitacionPresupuestos from './octubre/capacitacion-presupuestos.js'
+import contratistasSsomaOctubre from './octubre/contratistas-ssoma-octubre.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -45,6 +46,7 @@ const encuestas = [
   ingenieriaOperaciones,
   despegaConIa,
   capacitacionPresupuestos,
+  contratistasSsomaOctubre,
 ]
 
 // Solo exporta las activas para mostrar en la home
