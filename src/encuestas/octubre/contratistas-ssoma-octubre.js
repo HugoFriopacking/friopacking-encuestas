@@ -7,7 +7,7 @@ const escala = (id, texto) => ({ id, tipo: 'escala', texto, requerida: true, min
 
 const encuesta = {
   id: 'contratistas-ssoma-octubre',
-  titulo: 'Construyendo Juntos | Supervisores',
+  titulo: 'Construyendo Juntos | SSOMA',
   descripcion: 'Evalúa el desempeño de los supervisores SSOMA desde tu experiencia como contratista. Indica qué tan de acuerdo estás con cada afirmación.',
   respondedor: 'externo',
   activa: true,
