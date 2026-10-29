@@ -1,4 +1,6 @@
-// Fotos de obra para la portada de cada encuesta y la pantalla final.
+import { temaDe } from '../encuestas/temas.js'
+
+// Fotos de obra para la portada principal, las encuestas de obra y su pantalla final.
 // Están en public/obra en dos tamaños WebP: obra-NN.webp (hasta 1600 px) y obra-NN-800.webp.
 // `ancho` es el ancho real del archivo grande y `pos` el encuadre cuando la franja recorta la foto.
 export const FOTOS_OBRA = [
@@ -12,6 +14,14 @@ export const FOTOS_OBRA = [
   { n: '08', ancho: 1445, pos: '50% 45%' },  // condensadores en techo
   { n: '09', ancho: 1447, pos: '50% 38%' },  // izaje con grúa
 ]
+
+// Solo las encuestas ligadas a la obra llevan foto: las que responden contratistas y las de
+// Operaciones, SSOMA y supervisores. Las de finanzas, Capital Humano, capacitación, etc. no.
+const TEMAS_DE_OBRA = ['Operaciones', 'Áreas de soporte', 'SSOMA', 'Supervisores de obra', 'Contratistas']
+
+export function usaFotoObra(encuesta) {
+  return encuesta.respondedor === 'externo' || TEMAS_DE_OBRA.includes(temaDe(encuesta))
+}
 
 export function fotoAleatoria() {
   return FOTOS_OBRA[Math.floor(Math.random() * FOTOS_OBRA.length)]

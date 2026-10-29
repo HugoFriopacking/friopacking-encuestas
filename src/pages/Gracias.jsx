@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import encuestas from '../encuestas/index.js'
-import { atributosFoto, fotoAleatoria, fotoPorNumero } from '../lib/fotosObra.js'
+import { atributosFoto, fotoPorNumero } from '../lib/fotosObra.js'
 
 export default function Gracias() {
   const location = useLocation()
@@ -9,13 +8,15 @@ export default function Gracias() {
   const encuesta = encuestas.find((e) => e.titulo === location.state?.titulo)
   // Solo se afirma el anonimato si la encuesta no pide el nombre de quien responde.
   const anonima = encuesta ? !encuesta.preguntas.some((p) => p.id === 'nombre') : false
-  // La misma foto de obra que se vio al abrir la encuesta, de fondo y velada por el degradado de marca
-  const [foto] = useState(() => fotoPorNumero(location.state?.foto) || fotoAleatoria())
+  // La misma foto de obra que se vio al abrir la encuesta (solo en las de obra), velada por el degradado de marca
+  const foto = fotoPorNumero(location.state?.foto)
 
   return (
     <div style={s.page} className="encuesta-page">
-      <img {...atributosFoto(foto, '100vw')} style={{ ...s.foto, objectPosition: foto.pos }} />
-      <div style={s.velo} />
+      {foto && <>
+        <img {...atributosFoto(foto, '100vw')} style={{ ...s.foto, objectPosition: foto.pos }} />
+        <div style={s.velo} />
+      </>}
       <div style={s.bg} />
       <main style={s.card}>
         <picture>
