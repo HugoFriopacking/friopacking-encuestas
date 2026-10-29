@@ -16,7 +16,7 @@ const encuesta = {
   ],
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'Planificación y coordinación', icono: 'operaciones' },
-    escala('p1', '¿Operaciones entrega sus requerimientos de materiales, equipos y servicios con la anticipación necesaria para gestionarlos?'),
+    escala('p1', '¿Operaciones entrega sus requerimientos de materiales y equipos con la anticipación necesaria para gestionarlos?'),
     escala('p2', '¿Operaciones planifica sus necesidades según el cronograma del proyecto, evitando pedidos de urgencia?'),
     escala('p3', '¿Operaciones coordina con anticipación las fechas, lugar y condiciones de entrega en obra?'),
     escala('p4', '¿Operaciones comunica la programación de despachos y traslados con tiempo suficiente para asignar transporte?'),
