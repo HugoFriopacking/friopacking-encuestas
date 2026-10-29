@@ -32,9 +32,9 @@ const encuesta = {
 
     { id: 's3', tipo: 'seccion', texto: 'Calidad y cumplimiento', icono: 'ingenieria' },
     escala('p9', 'En el período evaluado, ¿mis remuneraciones y beneficios se abonaron en las fechas informadas y sin errores pendientes de regularización?'),
-    escala('p10', '¿Capital Humano gestiona las renovaciones de contratos y coberturas del personal dentro de los plazos establecidos, cuando recibe oportunamente la información y las aprobaciones requeridas?', 'Solo responsables con acceso a los registros del proceso. Si no es tu caso, marca «No aplica».'),
+    escala('p10', '¿Capital Humano me informa con anticipación sobre la renovación o el vencimiento de mi contrato?'),
     escala('p11', '¿Los candidatos presentados por Capital Humano cumplen los requisitos del perfil acordado con el área solicitante?', 'Solo jefaturas que utilizaron este servicio. Si no es tu caso, marca «No aplica».'),
-    escala('p12', '¿Capital Humano emite boletas, certificados y constancias correctos y a tiempo?'),
+    escala('p12', '¿Los documentos que solicito a Capital Humano me llegan sin errores y en el plazo informado?'),
 
     { id: 's4', tipo: 'seccion', texto: 'Solución de problemas y toma de decisiones', icono: 'ingenieria' },
     escala('p13', 'Cuando he solicitado su intervención en un conflicto laboral, ¿Capital Humano ha escuchado mi versión y explicado los pasos de atención?', 'Solo si participaste en el caso o proceso. Si no es tu caso, marca «No aplica».'),
@@ -46,7 +46,7 @@ const encuesta = {
     escala('p17', '¿Capital Humano trata a los colaboradores con respeto y empatía?'),
     escala('p18', 'En mis gestiones con Capital Humano, ¿la información personal o sensible se ha tratado mediante canales privados y con las personas necesarias para atender el caso?'),
     escala('p19', '¿Capital Humano es accesible y cercano para los colaboradores de todas las empresas y sedes?'),
-    escala('p20', '¿Capital Humano comunica las acciones acordadas a partir de las evaluaciones de clima laboral y reporta su avance?', 'Solo si participaste en el caso o proceso. Si no es tu caso, marca «No aplica».'),
+    escala('p20', '¿Capital Humano realiza acciones concretas para mejorar el clima laboral en mi área?'),
   ],
 }
 
