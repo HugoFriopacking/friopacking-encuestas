@@ -104,6 +104,34 @@
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
 }
+.enc-intro { overflow: hidden; }
+
+/* Foto de obra: sangra hasta los bordes de la tarjeta de inicio */
+.enc-cover {
+  position: relative;
+  height: 148px;
+  margin: -18px -16px 16px;
+  background: var(--color-area-bg);
+}
+.enc-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 -1px 0 var(--color-border);
+  pointer-events: none;
+}
+.enc-cover-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: encCoverIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes encCoverIn {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 .enc-tag {
   display: inline-block;
   margin-bottom: 10px;
@@ -524,6 +552,7 @@ select.encuesta-input {
   .enc-logo { height: 28px; }
   .enc-main { padding: 24px 20px 64px; }
   .enc-intro { padding: 24px 24px; margin-bottom: 20px; }
+  .enc-cover { height: 200px; margin: -24px -24px 20px; }
   .enc-title { font-size: 26px; }
   .enc-q { padding: 22px 22px; }
   .enc-q-head { flex-direction: row; align-items: flex-start; gap: 12px; }
@@ -531,7 +560,7 @@ select.encuesta-input {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pregunta-card-anim { animation: none; }
+  .pregunta-card-anim, .enc-cover-img { animation: none; }
   .encuesta-page *,
   .encuesta-page *::after { transition-duration: 0.01ms !important; }
   .escala-btn:active,
@@ -539,4 +568,9 @@ select.encuesta-input {
   .enc-sino-btn:active,
   .encuesta-btn-primary:active,
   .encuesta-btn-secondary:active { transform: none; }
+}
+
+/* De noche la foto baja un poco el brillo para no encandilar junto al fondo oscuro */
+@media (prefers-color-scheme: dark) {
+  .enc-cover-img { filter: brightness(0.85); }
 }

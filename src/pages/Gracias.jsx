@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import encuestas from '../encuestas/index.js'
+import { atributosFoto, fotoAleatoria, fotoPorNumero } from '../lib/fotosObra.js'
 
 export default function Gracias() {
   const location = useLocation()
@@ -7,9 +9,13 @@ export default function Gracias() {
   const encuesta = encuestas.find((e) => e.titulo === location.state?.titulo)
   // Solo se afirma el anonimato si la encuesta no pide el nombre de quien responde.
   const anonima = encuesta ? !encuesta.preguntas.some((p) => p.id === 'nombre') : false
+  // La misma foto de obra que se vio al abrir la encuesta, de fondo y velada por el degradado de marca
+  const [foto] = useState(() => fotoPorNumero(location.state?.foto) || fotoAleatoria())
 
   return (
     <div style={s.page} className="encuesta-page">
+      <img {...atributosFoto(foto, '100vw')} style={{ ...s.foto, objectPosition: foto.pos }} />
+      <div style={s.velo} />
       <div style={s.bg} />
       <main style={s.card}>
         <picture>
@@ -42,6 +48,13 @@ const s = {
     position: 'relative', overflow: 'hidden',
     paddingTop: 'calc(24px + env(safe-area-inset-top))',
     paddingBottom: 'calc(24px + env(safe-area-inset-bottom))',
+  },
+  foto: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' },
+  // Degradado de marca encima de la foto: la tarjeta blanca sigue siendo lo que se lee
+  velo: {
+    position: 'absolute', inset: 0,
+    background: 'linear-gradient(135deg, var(--color-hero-from) 0%, var(--color-hero-to) 100%)',
+    opacity: 0.82,
   },
   bg: {
     position: 'absolute', inset: 0,

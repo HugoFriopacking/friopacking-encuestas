@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import encuestas from '../encuestas/index.js'
 import { supabase } from '../lib/supabase.js'
+import { atributosFoto, fotoAleatoria } from '../lib/fotosObra.js'
 import './Encuesta.css'
 
 const ICONOS = {
@@ -200,6 +201,16 @@ function NotaPregunta({ pregunta }) {
   return pregunta.nota ? <p className="enc-q-note">{pregunta.nota}</p> : null
 }
 
+// Franja con una foto de obra al inicio de la encuesta. Es decorativa (alt vacío).
+function FotoPortada({ foto }) {
+  return (
+    <div className="enc-cover">
+      <img className="enc-cover-img" {...atributosFoto(foto, '(min-width: 760px) 736px, 100vw')}
+        fetchPriority="high" />
+    </div>
+  )
+}
+
 function Asterisco() {
   return <span className="enc-req" aria-hidden="true"> *</span>
 }
@@ -247,6 +258,8 @@ export default function Encuesta() {
   const [comboOpen, setComboOpen] = useState({})
   const [pagina, setPagina] = useState(0)
   const [pendientes, setPendientes] = useState([])
+  // Una foto al azar cada vez que se abre la encuesta; la pantalla final reutiliza la misma.
+  const [foto] = useState(fotoAleatoria)
 
   useEffect(() => {
     // "instant" para que el CSS global (scroll-behavior: smooth) no anime el salto entre áreas.
@@ -333,7 +346,7 @@ export default function Encuesta() {
         enviado_en: new Date().toISOString(),
       })
       if (sbError) throw sbError
-      navigate('/gracias', { state: { titulo: encuesta.titulo } })
+      navigate('/gracias', { state: { titulo: encuesta.titulo, foto: foto.n } })
     } catch (err) {
       setError('Error al enviar. Intenta de nuevo.')
       console.error(err)
@@ -388,6 +401,7 @@ export default function Encuesta() {
 
         <main className="enc-main">
           <div className="enc-intro">
+            <FotoPortada foto={foto} />
             <span className="enc-tag">Contratistas</span>
             <h1 className="enc-title">{encuesta.titulo}</h1>
             {encuesta.descripcion && <p className="enc-desc">{encuesta.descripcion}</p>}
@@ -793,6 +807,7 @@ export default function Encuesta() {
 
       <main className="enc-main">
         <div className="enc-intro">
+          {pagina === 0 && <FotoPortada foto={foto} />}
           <span className="enc-tag">
             {encuesta.respondedor === 'interno' ? 'Personal interno' : 'Contratistas'}
           </span>
