@@ -191,7 +191,7 @@ export default function Resultados() {
       const ranking = calcularRankingGrupo(grupoSeleccionado, filas)
       const comentarios = filas
         .flatMap((f) => Object.entries(f.respuestas || {})
-          .filter(([k, v]) => typeof v === 'string' && v.trim() && !CAMPOS_IDENTIFICADORES.includes(k))
+          .filter(([k, v]) => typeof v === 'string' && v.trim() && v !== 'No aplica' && !CAMPOS_IDENTIFICADORES.includes(k))
           .map(([, v]) => ({
             valor: v.trim(),
             evaluado: grupoSeleccionado.modo === 'campo' ? f.respuestas?.[grupoSeleccionado.campo] : null,

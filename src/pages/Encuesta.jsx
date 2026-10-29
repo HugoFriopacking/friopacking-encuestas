@@ -182,6 +182,24 @@ function EtiquetasEscala({ pregunta }) {
   )
 }
 
+// Respuesta que guarda el botón "No aplica" de las escalas con `noAplica: true`.
+// Resultados solo promedia valores numéricos, así que no afecta las notas.
+const NO_APLICA = 'No aplica'
+
+function BotonNoAplica({ pregunta, valor, onSelect }) {
+  if (!pregunta.noAplica) return null
+  return (
+    <button type="button" className="enc-na-btn" aria-pressed={valor === NO_APLICA}
+      onClick={() => onSelect(NO_APLICA)}>
+      {NO_APLICA}
+    </button>
+  )
+}
+
+function NotaPregunta({ pregunta }) {
+  return pregunta.nota ? <p className="enc-q-note">{pregunta.nota}</p> : null
+}
+
 function Asterisco() {
   return <span className="enc-req" aria-hidden="true"> *</span>
 }
@@ -197,9 +215,12 @@ function PreguntaEscala({ pregunta, num, respuestas, handleChange }) {
           {pregunta.requerida && <Asterisco />}
         </div>
       </div>
+      <NotaPregunta pregunta={pregunta} />
       <BotonesEscala pregunta={pregunta} valor={respuestas[pregunta.id]} labelId={labelId}
         onSelect={(val) => handleChange(pregunta.id, val)} />
       <EtiquetasEscala pregunta={pregunta} />
+      <BotonNoAplica pregunta={pregunta} valor={respuestas[pregunta.id]}
+        onSelect={(val) => handleChange(pregunta.id, val)} />
     </div>
   )
 }
@@ -531,6 +552,7 @@ export default function Encuesta() {
             {pregunta.requerida && <Asterisco />}
           </div>
         </div>
+        <NotaPregunta pregunta={pregunta} />
 
         {pregunta.tipo === 'texto' && (
           <input type="text" className="encuesta-input"
@@ -547,6 +569,8 @@ export default function Encuesta() {
             <BotonesEscala pregunta={pregunta} valor={respuestas[pregunta.id]} labelId={labelId}
               onSelect={(val) => handleChange(pregunta.id, val)} />
             <EtiquetasEscala pregunta={pregunta} />
+            <BotonNoAplica pregunta={pregunta} valor={respuestas[pregunta.id]}
+              onSelect={(val) => handleChange(pregunta.id, val)} />
           </div>
         )}
 

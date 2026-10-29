@@ -23,6 +23,13 @@ import capacitacionPresupuestos from './octubre/capacitacion-presupuestos.js'
 import contratistasSsomaOctubre from './octubre/contratistas-ssoma-octubre.js'
 import contratistasSupervisoresOctubre from './octubre/contratistas-supervisores-octubre.js'
 import contratistasFriopackingOctubre from './octubre/contratistas-friopacking-octubre.js'
+import ssomaOperaciones from './octubre/ssoma-operaciones.js'
+import logisticaOperacionesCadena from './octubre/logistica-operaciones-cadena.js'
+import ingenieriaOperacionesOctubre from './octubre/ingenieria-operaciones-octubre.js'
+import comercialOperaciones from './octubre/comercial-operaciones.js'
+import pmoFinanzas from './octubre/pmo-finanzas.js'
+import logisticaFinanzas from './octubre/logistica-finanzas.js'
+import grupoCapitalHumano from './octubre/grupo-capital-humano.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -51,6 +58,13 @@ const encuestas = [
   contratistasSsomaOctubre,
   contratistasSupervisoresOctubre,
   contratistasFriopackingOctubre,
+  ssomaOperaciones,
+  logisticaOperacionesCadena,
+  ingenieriaOperacionesOctubre,
+  comercialOperaciones,
+  pmoFinanzas,
+  logisticaFinanzas,
+  grupoCapitalHumano,
 ]
 
 // Solo exporta las activas para mostrar en la home

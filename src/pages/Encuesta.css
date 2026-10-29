@@ -242,6 +242,13 @@
   color: var(--color-text);
 }
 .enc-req { color: var(--color-required); font-weight: 900; }
+.enc-q-note {
+  margin: -6px 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
 .enc-pendiente-msg {
   margin-top: 10px;
   font-size: 13px;
@@ -318,6 +325,32 @@
 }
 .enc-scale-ends span { max-width: 48%; }
 .enc-scale-ends span:last-child { text-align: right; }
+
+/* "No aplica": opción aparte de la escala, mismo lenguaje que las opciones de lista */
+.enc-na-btn {
+  margin-top: 12px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.enc-na-btn:active { transform: scale(0.97); }
+.enc-na-btn:focus-visible { outline: 2px solid var(--color-highlight); outline-offset: 2px; }
+.enc-na-btn[aria-pressed="true"] {
+  background: var(--color-text-muted);
+  border-color: var(--color-text-muted);
+  color: var(--color-surface);
+}
+@media (hover: hover) {
+  .enc-na-btn:hover { border-color: var(--color-highlight); }
+}
 
 /* ── Campos de texto y listas ────────────────────────────────── */
 .encuesta-input {
