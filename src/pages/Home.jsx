@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { encuestasActivas } from '../encuestas/index.js'
+import { temaDe, TEMAS_ORDEN } from '../encuestas/temas.js'
 import './Home.css'
 
 // Cambia este PIN cuando quieras
@@ -37,6 +38,39 @@ function agruparPorMes(encuestas) {
   ]
   return ordenadas.map((mes) => ({ mes, encuestas: grupos[mes] }))
 }
+
+// Filtros de la portada. Viven en la URL (?q=&resp=&area=&mes=) para poder compartir un enlace filtrado,
+// y se copian en sessionStorage para recuperarlos al volver desde una encuesta con el botón Inicio.
+const FILTROS_VACIOS = { q: '', resp: '', area: '', mes: '' }
+const CLAVE_FILTROS = 'fp_filtros'
+
+const RESPONDE = [
+  { valor: '', label: 'Todas' },
+  { valor: 'interno', label: 'Personal interno', corto: 'Internas' },
+  { valor: 'externo', label: 'Contratistas' },
+]
+
+// Sin tildes ni mayúsculas: "logistica" encuentra "Logística"
+function normalizar(texto) {
+  return (texto || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+}
+
+const textoBusqueda = new Map(encuestasActivas.map((enc) => [
+  enc.id, normalizar(`${enc.titulo} ${enc.descripcion || ''} ${temaDe(enc)} ${enc.mes || ''}`),
+]))
+
+function filtrar(encuestas, filtros) {
+  const palabras = normalizar(filtros.q).split(/\s+/).filter(Boolean)
+  return encuestas.filter((enc) =>
+    (!filtros.resp || enc.respondedor === filtros.resp) &&
+    (!filtros.area || temaDe(enc) === filtros.area) &&
+    (!filtros.mes || (enc.mes || 'Otras') === filtros.mes) &&
+    palabras.every((p) => textoBusqueda.get(enc.id).includes(p)),
+  )
+}
+
+const TEMAS = TEMAS_ORDEN.filter((t) => encuestasActivas.some((enc) => temaDe(enc) === t))
+const MESES = agruparPorMes(encuestasActivas).map((g) => g.mes)
 
 export default function Home() {
   const [pin, setPin] = useState('')
@@ -87,6 +121,35 @@ export default function Home() {
     )
   }
 
+  return <Portada />
+}
+
+function Portada() {
+  const [params, setParams] = useSearchParams()
+  const filtros = Object.fromEntries(Object.keys(FILTROS_VACIOS).map((k) => [k, params.get(k) || '']))
+  const hayFiltros = Object.values(filtros).some(Boolean)
+  const visibles = filtrar(encuestasActivas, filtros)
+
+  useEffect(() => {
+    if (params.toString()) return
+    try {
+      const guardados = sessionStorage.getItem(CLAVE_FILTROS)
+      if (guardados) setParams(new URLSearchParams(guardados), { replace: true })
+    } catch { /* sin sessionStorage se empieza sin filtros */ }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function aplicar(nuevos) {
+    const limpios = new URLSearchParams()
+    Object.entries(nuevos).forEach(([k, v]) => { if (v) limpios.set(k, v) })
+    setParams(limpios, { replace: true })
+    try { sessionStorage.setItem(CLAVE_FILTROS, limpios.toString()) } catch { /* opcional */ }
+  }
+
+  const cambiarFiltro = (clave, valor) => aplicar({ ...filtros, [clave]: valor })
+  const limpiarFiltros = () => aplicar(FILTROS_VACIOS)
+  // Cuántas encuestas quedarían al elegir esa opción, con el resto de filtros como están
+  const conteo = (clave, valor) => filtrar(encuestasActivas, { ...filtros, [clave]: valor }).length
+
   return (
     <div style={s.pageLight}>
       <header style={s.header}>
@@ -112,20 +175,100 @@ export default function Home() {
         </div>
       </div>
 
+      <div className="home-toolbar">
+        <div className="home-toolbar-inner">
+          <div className="home-search">
+            <svg className="home-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+            </svg>
+            <input
+              type="search" className="home-search-input"
+              aria-label="Buscar evaluación"
+              placeholder="Buscar por nombre o área…"
+              value={filtros.q}
+              onChange={(e) => cambiarFiltro('q', e.target.value)}
+              autoComplete="off" spellCheck="false"
+            />
+            {filtros.q && (
+              <button type="button" className="home-search-clear" aria-label="Borrar búsqueda"
+                onClick={() => cambiarFiltro('q', '')}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          <div className="home-filtros">
+            <div className="home-seg" role="group" aria-label="Quién responde">
+              {RESPONDE.map((op) => (
+                <button key={op.valor} type="button" className="home-seg-btn"
+                  aria-pressed={filtros.resp === op.valor}
+                  onClick={() => cambiarFiltro('resp', op.valor)}>
+                  {op.corto
+                    ? <><span className="home-seg-largo">{op.label}</span><span className="home-seg-corto">{op.corto}</span></>
+                    : op.label}
+                  <span className="home-seg-count">{conteo('resp', op.valor)}</span>
+                </button>
+              ))}
+            </div>
+
+            <label className="home-select">
+              <span className="home-select-label">Área evaluada</span>
+              <select value={filtros.area} onChange={(e) => cambiarFiltro('area', e.target.value)}>
+                <option value="">Todas</option>
+                {TEMAS.map((t) => (
+                  <option key={t} value={t}>{t} ({conteo('area', t)})</option>
+                ))}
+              </select>
+            </label>
+
+            <label className="home-select">
+              <span className="home-select-label">Mes</span>
+              <select value={filtros.mes} onChange={(e) => cambiarFiltro('mes', e.target.value)}>
+                <option value="">Todos</option>
+                {MESES.map((m) => (
+                  <option key={m} value={m}>{m} ({conteo('mes', m)})</option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
       <main className="home-main">
+        <div className="home-resumen" aria-live="polite">
+          <span>
+            {hayFiltros
+              ? `${visibles.length} de ${encuestasActivas.length} evaluaciones`
+              : `${encuestasActivas.length} evaluaciones`}
+          </span>
+          {hayFiltros && (
+            <button type="button" className="home-limpiar" onClick={limpiarFiltros}>Limpiar filtros</button>
+          )}
+        </div>
+
+        {visibles.length === 0 && (
+          <div className="home-empty">
+            <p className="home-empty-title">Ninguna evaluación coincide</p>
+            <p className="home-empty-text">
+              {filtros.q ? `No encontramos “${filtros.q}” con los filtros elegidos. ` : ''}
+              Prueba con otra palabra o quita algún filtro.
+            </p>
+            <button type="button" className="home-empty-btn" onClick={limpiarFiltros}>Ver todas las evaluaciones</button>
+          </div>
+        )}
+
         {(() => {
-          const grupos = agruparPorMes(encuestasActivas)
-          let contador = 0
+          const grupos = agruparPorMes(visibles)
           return grupos.map(({ mes, encuestas }) => (
-            <section key={mes} className="home-mes-section">
+            <section key={mes} className="home-mes-section" aria-labelledby={`mes-${mes}`}>
               <div className="home-mes-heading">
-                <span style={s.mesBadge} className="home-mes-badge">{mes}</span>
-                <span style={s.mesCount}>{encuestas.length} evaluación{encuestas.length !== 1 ? 'es' : ''}</span>
+                <h2 id={`mes-${mes}`} style={s.mesBadge} className="home-mes-badge">{mes}</h2>
+                <span style={s.mesCount}>{encuestas.length} {encuestas.length === 1 ? 'evaluación' : 'evaluaciones'}</span>
               </div>
               <div className="home-grid">
                 {encuestas.map((enc) => {
-                  contador++
-                  const num = contador
                   const tag = tagColors[enc.respondedor] || tagColors.ambos
                   // Se muestran todas las preguntas (no solo las de escala) para que una encuesta sin escala
                   // no aparezca como "Próximamente"; la duración se sigue estimando con las de escala.
@@ -138,9 +281,9 @@ export default function Home() {
                         <span style={{ ...s.cardTag, background: tag.bg, color: tag.color }}>
                           {enc.respondedor === 'interno' ? 'Personal interno' : enc.respondedor === 'externo' ? 'Contratistas' : 'Ambos'}
                         </span>
-                        <span style={s.cardNum}>#{String(num).padStart(2,'0')}</span>
+                        <span className="home-card-tema">{temaDe(enc)}</span>
                       </div>
-                      <h2 style={s.cardTitle} className="home-card-title">{enc.titulo}</h2>
+                      <h3 style={s.cardTitle} className="home-card-title">{enc.titulo}</h3>
                       {enc.descripcion
                         ? <p style={s.cardDesc} className="home-card-desc">{enc.descripcion}</p>
                         : <div style={{ flex: 1 }} />}
@@ -265,7 +408,6 @@ const s = {
   },
   cardTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
   cardTag: { fontSize: 11, fontWeight: 800, padding: '4px 10px', borderRadius: 20 },
-  cardNum: { fontSize: 11, fontWeight: 800, color: '#9AA5B1' },
   cardTitle: { fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#376B9E', marginBottom: 6, lineHeight: 1.3 },
   cardDesc: { color: '#4D6478', fontWeight: 600, lineHeight: 1.55, flex: 1 },
   cardFooter: { display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 10, marginTop: 6 },
