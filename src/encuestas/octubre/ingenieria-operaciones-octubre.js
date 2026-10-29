@@ -17,8 +17,8 @@ const encuesta = {
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'Planificación y coordinación', icono: 'operaciones' },
     escala('p1', '¿Operaciones participa en las revisiones de ingeniería antes de iniciar la ejecución?'),
-    escala('p2', '¿Operaciones planifica la ejecución sobre la ingeniería aprobada y en su última revisión?'),
-    escala('p3', '¿Operaciones coordina con anticipación las visitas o el soporte técnico de Ingeniería en campo?'),
+    escala('p2', '¿Operaciones verifica que cuenta con la versión vigente de planos y especificaciones antes de iniciar cada frente de trabajo?'),
+    escala('p3', '¿Operaciones comparte con Ingeniería su cronograma de ejecución para alinear la entrega de planos y especificaciones?'),
     escala('p4', '¿Operaciones cumple los plazos acordados para entregar información de campo (levantamientos, mediciones)?'),
 
     { id: 's2', tipo: 'seccion', texto: 'Comunicación', icono: 'operaciones' },
