@@ -7,6 +7,7 @@ const encuesta = {
   respondedor: 'externo',
   activa: true,
   mes: 'Agosto',
+  publicada: '2026-08-20T10:42',  // fecha en que se subió al portal (orden en la portada)
   campoEvaluado: 'supervisor',
   leyendaTiers: [
     { rango: '1-3', texto: 'Deficiente / Muy malo', bg: '#fef2f2', color: '#dc2626' },

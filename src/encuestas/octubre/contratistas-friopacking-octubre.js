@@ -20,6 +20,7 @@ const encuesta = {
   respondedor: 'externo',
   activa: true,
   mes: 'Octubre',
+  publicada: '2026-10-23T11:09',  // fecha en que se subió al portal (orden en la portada)
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'Planificación y coordinación', icono: 'operaciones' },

@@ -4,6 +4,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Septiembre',
+  publicada: '2026-09-10T16:35',  // fecha en que se subió al portal (orden en la portada)
   preguntas: [
     { id: 'nombre', tipo: 'texto', texto: 'Nombre completo', requerida: true },
     {

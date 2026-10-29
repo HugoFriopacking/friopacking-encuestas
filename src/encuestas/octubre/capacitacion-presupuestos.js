@@ -6,6 +6,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Octubre',
+  publicada: '2026-10-19T17:17',  // fecha en que se subió al portal (orden en la portada)
   gracias: {
     titulo: '¡Gracias por tu opinión!',
     mensaje: 'Tus respuestas son anónimas y nos ayudarán a mejorar las próximas capacitaciones y la elaboración de presupuestos.',

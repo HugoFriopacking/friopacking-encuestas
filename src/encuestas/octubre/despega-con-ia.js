@@ -7,6 +7,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Octubre',
+  publicada: '2026-10-05T12:12',  // fecha en que se subió al portal (orden en la portada)
   gracias: {
     titulo: '¡Listo, tu cupo está reservado!',
     mensaje: 'Gracias por inscribirte en Despega con IA. Te enviaremos la fecha y los detalles de la capacitación.',

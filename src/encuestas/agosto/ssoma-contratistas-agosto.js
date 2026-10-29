@@ -5,6 +5,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Agosto',
+  publicada: '2026-09-04T18:01',  // fecha en que se subió al portal (orden en la portada)
   campoEvaluado: 'contratista',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [

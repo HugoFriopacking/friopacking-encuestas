@@ -7,6 +7,7 @@ const encuesta = {
   respondedor: 'externo',
   activa: true,
   mes: 'Julio',
+  publicada: '2026-07-22T13:10',  // fecha en que se subió al portal (orden en la portada)
   campoEvaluado: 'supervisor',
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [

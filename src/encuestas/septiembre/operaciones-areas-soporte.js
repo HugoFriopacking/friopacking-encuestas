@@ -62,6 +62,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Septiembre',
+  publicada: '2026-10-01T19:00',  // fecha en que se subió al portal (orden en la portada)
   leyendaTiers: [
     { rango: '1', texto: 'Totalmente en desacuerdo' },
     { rango: '5–6', texto: 'Neutral' },

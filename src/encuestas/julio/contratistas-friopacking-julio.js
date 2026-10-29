@@ -5,6 +5,7 @@ const encuesta = {
   respondedor: 'externo',
   activa: true,
   mes: 'Julio',
+  publicada: '2026-07-30T15:19',  // fecha en que se subió al portal (orden en la portada)
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'Gerencia de Operaciones y PMO', icono: 'operaciones' },

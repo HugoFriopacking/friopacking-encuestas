@@ -37,7 +37,17 @@ function agruparPorMes(encuestas) {
     ...MES_ORDEN.filter((m) => grupos[m]),
     ...Object.keys(grupos).filter((m) => !MES_ORDEN.includes(m)),
   ]
-  return ordenadas.map((mes) => ({ mes, encuestas: grupos[mes] }))
+  // Dentro de cada mes, la última subida va primero (las subidas juntas conservan su orden)
+  return ordenadas.map((mes) => ({
+    mes,
+    encuestas: [...grupos[mes]].sort((a, b) => (b.publicada || '').localeCompare(a.publicada || '')),
+  }))
+}
+
+const formatoFecha = new Intl.DateTimeFormat('es-PE', { day: 'numeric', month: 'short' })
+
+function fechaSubida(enc) {
+  return enc.publicada ? formatoFecha.format(new Date(enc.publicada)).replace('.', '') : null
 }
 
 // Filtros de la portada. Viven en la URL (?q=&resp=&area=&mes=) para poder compartir un enlace filtrado,
@@ -295,6 +305,7 @@ function Portada() {
                       <div style={s.cardFooter}>
                         <span style={s.cardMeta}>
                           {totalPreguntas > 0 ? `${totalPreguntas} preguntas${duracion ? ` · ${duracion}` : ''}` : 'Próximamente'}
+                          {fechaSubida(enc) && ` · Subida el ${fechaSubida(enc)}`}
                         </span>
                         <div style={s.cardCta} className="home-card-cta">
                           Iniciar evaluación

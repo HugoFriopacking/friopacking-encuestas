@@ -5,6 +5,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Septiembre',
+  publicada: '2026-10-01T19:00',  // fecha en que se subió al portal (orden en la portada)
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'Planificación y organización', icono: 'operaciones' },

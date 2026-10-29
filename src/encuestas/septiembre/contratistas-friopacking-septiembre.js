@@ -5,6 +5,7 @@ const encuesta = {
   respondedor: 'externo',
   activa: true,
   mes: 'Septiembre',
+  publicada: '2026-09-29T17:41',  // fecha en que se subió al portal (orden en la portada)
   leyenda: '1 = Muy malo · 5 = Regular · 10 = Muy bueno',
   preguntas: [
     { id: 's1', tipo: 'seccion', texto: 'PMO / Gestión de Proyectos', icono: 'operaciones' },

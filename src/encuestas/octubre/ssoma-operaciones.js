@@ -9,6 +9,7 @@ const encuesta = {
   respondedor: 'interno',
   activa: true,
   mes: 'Octubre',
+  publicada: '2026-10-29T12:54',  // fecha en que se subió al portal (orden en la portada)
   leyendaTiers: [
     { rango: '1', texto: 'Muy deficiente' },
     { rango: '10', texto: 'Excelente' },

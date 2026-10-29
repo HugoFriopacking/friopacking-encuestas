@@ -12,6 +12,7 @@ const encuesta = {
   respondedor: 'externo',
   activa: true,
   mes: 'Octubre',
+  publicada: '2026-10-23T10:37',  // fecha en que se subió al portal (orden en la portada)
   campoEvaluado: 'supervisor',
   leyendaTiers: [
     { rango: '1', texto: 'Totalmente en desacuerdo' },
