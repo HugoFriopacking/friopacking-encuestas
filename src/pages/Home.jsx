@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { encuestasActivas } from '../encuestas/index.js'
 import { temaDe, TEMAS_ORDEN } from '../encuestas/temas.js'
+import { atributosFoto, fotoAleatoria } from '../lib/fotosObra.js'
 import './Home.css'
 
 // Cambia este PIN cuando quieras
@@ -126,6 +127,8 @@ export default function Home() {
 
 function Portada() {
   const [params, setParams] = useSearchParams()
+  // Foto de obra al azar en el encabezado; cambia en cada visita
+  const [foto] = useState(fotoAleatoria)
   const filtros = Object.fromEntries(Object.keys(FILTROS_VACIOS).map((k) => [k, params.get(k) || '']))
   const hayFiltros = Object.values(filtros).some(Boolean)
   const visibles = filtrar(encuestasActivas, filtros)
@@ -164,7 +167,9 @@ function Portada() {
         </div>
       </header>
 
-      <div style={s.hero}>
+      <div style={s.hero} className="home-hero">
+        <img className="home-hero-foto" {...atributosFoto(foto, '100vw')} fetchPriority="high" />
+        <div className="home-hero-velo" />
         <div className="home-hero-inner">
           <h1 style={s.heroTitle} className="home-hero-title">Evaluaciones</h1>
           <p style={s.heroSub} className="home-hero-sub">Selecciona una evaluación para comenzar. Tus respuestas son confidenciales.</p>

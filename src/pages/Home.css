@@ -44,10 +44,43 @@
   padding: 0 6px;
 }
 
+/* Encabezado con foto de obra: el velo azul va más denso a la izquierda, donde está el texto */
+.home-hero {
+  position: relative;
+  overflow: hidden;
+}
+.home-hero-foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: homeHeroFoto 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.home-hero-velo {
+  position: absolute;
+  inset: 0;
+  /* Móvil: el texto ocupa todo el ancho, así que el velo es parejo (blanco sobre él ≥ 4.5:1) */
+  background: linear-gradient(180deg, rgba(30, 58, 95, 0.82) 0%, rgba(37, 73, 107, 0.74) 100%);
+}
+@media (min-width: 768px) {
+  .home-hero-velo {
+    background: linear-gradient(100deg, rgba(30, 58, 95, 0.94) 0%, rgba(37, 73, 107, 0.86) 45%, rgba(55, 107, 158, 0.55) 100%);
+  }
+}
+@keyframes homeHeroFoto {
+  from { opacity: 0; transform: scale(1.05); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-foto { animation: none; }
+}
+
 .home-hero-inner {
+  position: relative;
   max-width: 1040px;
   margin: 0 auto;
-  padding: 16px 16px 18px;
+  padding: 22px 16px 24px;
 }
 
 .home-hero-title {
@@ -140,7 +173,7 @@
     display: inline-block;
   }
   .home-hero-inner {
-    padding: 30px 20px 36px;
+    padding: 40px 20px 44px;
   }
   .home-hero-title {
     font-size: 32px;
