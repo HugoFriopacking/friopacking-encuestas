@@ -28,7 +28,7 @@ const encuesta = {
     escala('p8', '¿Adm. y Finanzas responde con rapidez las consultas sobre el estado de las facturas?'),
 
     { id: 's3', tipo: 'seccion', texto: 'Calidad y cumplimiento', icono: 'ingenieria' },
-    escala('p9', '¿Adm. y Finanzas registra correctamente las facturas y órdenes de compra?'),
+    escala('p9', '¿Adm. y Finanzas aprueba las órdenes de compra en el plazo acordado?'),
     escala('p10', 'Cuando una observación tributaria afecta un pago, ¿Adm. y Finanzas indica a Logística qué debe corregirse y quién debe gestionarlo?'),
     escala('p11', '¿Adm. y Finanzas gestiona a tiempo los pagos vinculados a importaciones (fletes, aduanas, cartas de crédito)?'),
     escala('p12', '¿Adm. y Finanzas aplica las políticas de pago de forma consistente y transparente?'),
