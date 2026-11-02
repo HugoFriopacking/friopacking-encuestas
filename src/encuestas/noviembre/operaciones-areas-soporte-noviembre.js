@@ -1,6 +1,5 @@
 // Operaciones evalúa a las áreas y empresas de Grupo Friopacking. Anónima: no pide datos del evaluador.
-// Cada área empieza con "¿Interactúas con esta área?": con "No" se ocultan sus preguntas y no se exigen
-// (ver `mostrarSi` en Encuesta.jsx). `area` agrupa las preguntas en el ranking de Resultados.
+// Una página por área; `area` agrupa las preguntas en el ranking de Resultados.
 const ETIQUETAS = { 1: 'Muy deficiente', 10: 'Excelente' }
 
 const AREAS = [
@@ -107,25 +106,17 @@ const AREAS = [
 
 // Las preguntas se numeran p1–p49 de corrido, como en el documento original.
 let n = 0
-const preguntas = AREAS.flatMap((a, i) => {
-  const filtro = `s${i + 1}_interactua`
-  return [
-    { id: `s${i + 1}`, tipo: 'seccion', texto: a.nombre, icono: a.icono },
-    {
-      id: filtro, tipo: 'si_no', texto: '¿Interactúas con esta área?', requerida: true, filtro: true,
-      nota: 'Si respondes «No», esta área se salta y pasas a la siguiente.',
-    },
-    ...a.preguntas.map((texto) => ({
-      id: `p${++n}`, tipo: 'escala', area: a.area, texto, requerida: true, min: 1, max: 10, etiquetas: ETIQUETAS,
-      mostrarSi: { pregunta: filtro, valor: 'Sí' },
-    })),
-  ]
-})
+const preguntas = AREAS.flatMap((a, i) => [
+  { id: `s${i + 1}`, tipo: 'seccion', texto: a.nombre, icono: a.icono },
+  ...a.preguntas.map((texto) => ({
+    id: `p${++n}`, tipo: 'escala', area: a.area, texto, requerida: true, min: 1, max: 10, etiquetas: ETIQUETAS,
+  })),
+])
 
 const encuesta = {
   id: 'operaciones-areas-soporte-noviembre',
   titulo: 'El soporte que Operaciones merece',
-  descripcion: 'Operaciones evalúa a las áreas y empresas de Grupo Friopacking. En cada área te preguntamos primero si trabajas con ella: si no, la saltas. Es anónima.',
+  descripcion: 'Operaciones evalúa a las áreas y empresas de Grupo Friopacking: SSOMA, Logística, Ingeniería, PMO, Comercial, Adm. y Finanzas, Frioteam, Hermética, Smartcold y Servicios. Es anónima.',
   respondedor: 'interno',
   activa: true,
   mes: 'Noviembre',
