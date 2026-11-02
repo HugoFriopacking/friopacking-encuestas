@@ -15,7 +15,7 @@ const tagColors = {
 }
 
 // Orden de aparición de los grupos por mes (más reciente primero)
-const MES_ORDEN = ['Octubre', 'Septiembre', 'Agosto', 'Julio', 'Junio']
+const MES_ORDEN = ['Noviembre', 'Octubre', 'Septiembre', 'Agosto', 'Julio', 'Junio']
 
 // Duración estimada solo visual (no viene de la base de datos): ~15s por pregunta de escala.
 function estimarDuracion(escalaCount) {
@@ -287,7 +287,7 @@ function Portada() {
                   const tag = tagColors[enc.respondedor] || tagColors.ambos
                   // Se muestran todas las preguntas (no solo las de escala) para que una encuesta sin escala
                   // no aparezca como "Próximamente"; la duración se sigue estimando con las de escala.
-                  const totalPreguntas = enc.preguntas.filter(p => p.tipo !== 'seccion').length
+                  const totalPreguntas = enc.preguntas.filter(p => p.tipo !== 'seccion' && !p.filtro).length
                   const escalaCount = enc.preguntas.filter(p => p.tipo === 'escala').length
                   const duracion = totalPreguntas > 0 ? estimarDuracion(Math.max(escalaCount, 1)) : null
                   return (

@@ -30,6 +30,7 @@ import comercialOperaciones from './octubre/comercial-operaciones.js'
 import pmoFinanzas from './octubre/pmo-finanzas.js'
 import logisticaFinanzas from './octubre/logistica-finanzas.js'
 import grupoCapitalHumano from './octubre/grupo-capital-humano.js'
+import operacionesAreasSoporteNoviembre from './noviembre/operaciones-areas-soporte-noviembre.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -65,6 +66,7 @@ const encuestas = [
   pmoFinanzas,
   logisticaFinanzas,
   grupoCapitalHumano,
+  operacionesAreasSoporteNoviembre,
 ]
 
 // Solo exporta las activas para mostrar en la home

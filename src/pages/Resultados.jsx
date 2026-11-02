@@ -43,6 +43,12 @@ const RANKING_GROUPS = [
     encuestaIds: ['operaciones-areas-soporte-octubre'],
   },
   {
+    key: 'operaciones-grupo',
+    titulo: 'Grupo Friopacking evaluado por Operaciones',
+    modo: 'seccion',
+    encuestaIds: ['operaciones-areas-soporte-noviembre'],
+  },
+  {
     key: 'contratistas',
     titulo: 'Contratistas evaluados por SSOMA',
     modo: 'campo',
@@ -51,7 +57,7 @@ const RANKING_GROUPS = [
   },
 ]
 
-const MES_ORDEN = ['Octubre', 'Septiembre', 'Agosto', 'Julio', 'Junio']
+const MES_ORDEN = ['Noviembre', 'Octubre', 'Septiembre', 'Agosto', 'Julio', 'Junio']
 
 function agruparEncuestasPorMes(lista) {
   const grupos = new Map()
@@ -191,7 +197,7 @@ export default function Resultados() {
       const ranking = calcularRankingGrupo(grupoSeleccionado, filas)
       const comentarios = filas
         .flatMap((f) => Object.entries(f.respuestas || {})
-          .filter(([k, v]) => typeof v === 'string' && v.trim() && v !== 'No aplica' && !CAMPOS_IDENTIFICADORES.includes(k))
+          .filter(([k, v]) => typeof v === 'string' && v.trim() && v !== 'No aplica' && !k.endsWith('_interactua') && !CAMPOS_IDENTIFICADORES.includes(k))
           .map(([, v]) => ({
             valor: v.trim(),
             evaluado: grupoSeleccionado.modo === 'campo' ? f.respuestas?.[grupoSeleccionado.campo] : null,

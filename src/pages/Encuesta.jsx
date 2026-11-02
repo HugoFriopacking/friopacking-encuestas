@@ -328,21 +328,30 @@ export default function Encuesta() {
     return !!respuestas[p.id]
   }
 
+  // Una pregunta con `mostrarSi` solo aparece (y solo se exige) cuando otra tiene cierto valor,
+  // p. ej. las de un área cuando "¿Interactúas con esta área?" es "Sí".
+  function preguntaVisible(p) {
+    return !p.mostrarSi || respuestas[p.mostrarSi.pregunta] === p.mostrarSi.valor
+  }
+
   async function handleSubmit(e) {
     if (e && e.preventDefault) e.preventDefault()
     setError(null)
-    const faltantes = encuesta.preguntas.filter((p) => p.requerida && !preguntaRespondida(p))
+    const faltantes = encuesta.preguntas.filter((p) => p.requerida && preguntaVisible(p) && !preguntaRespondida(p))
     if (faltantes.length > 0) {
       setError(`Faltan ${faltantes.length} campo${faltantes.length > 1 ? 's' : ''} obligatorio${faltantes.length > 1 ? 's' : ''} por completar.`)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
+    // No se guardan respuestas de preguntas que quedaron ocultas (p. ej. un área que luego se marcó "No")
+    const ocultas = new Set(encuesta.preguntas.filter((p) => !preguntaVisible(p)).map((p) => p.id))
+    const enviadas = Object.fromEntries(Object.entries(respuestas).filter(([id]) => !ocultas.has(id)))
     setEnviando(true)
     try {
       const { error: sbError } = await supabase.from('respuestas').insert({
         encuesta_id: encuesta.id,
         encuesta_titulo: encuesta.titulo,
-        respuestas,
+        respuestas: enviadas,
         enviado_en: new Date().toISOString(),
       })
       if (sbError) throw sbError
@@ -503,14 +512,19 @@ export default function Encuesta() {
   const tieneAreas = paginas[0].seccion !== null
   const paginaActual = paginas[Math.min(pagina, paginas.length - 1)]
   const esUltima = pagina >= paginas.length - 1
-  const preguntasPagina = [...paginaActual.preambulo, ...paginaActual.preguntas]
+  const preguntasVisibles = paginaActual.preguntas.filter(preguntaVisible)
+  const preguntasPagina = [...paginaActual.preambulo, ...preguntasVisibles]
   const faltantesPagina = preguntasPagina.filter((p) => p.requerida && !preguntaRespondida(p))
 
   const numeros = {}
-  encuesta.preguntas.filter((p) => p.tipo !== 'seccion').forEach((p, i) => { numeros[p.id] = i + 1 })
+  // Las preguntas filtro ("¿Interactúas con esta área?") no llevan número
+  encuesta.preguntas.filter((p) => p.tipo !== 'seccion' && !p.filtro).forEach((p, i) => { numeros[p.id] = i + 1 })
 
-  const totalPreguntas = encuesta.preguntas.filter(p => p.tipo !== 'seccion').length
-  const respondidas = encuesta.preguntas.filter(p => p.tipo !== 'seccion' && preguntaRespondida(p)).length
+  // Para el progreso, una pregunta condicional cuenta mientras su filtro no se haya respondido en contra
+  // (así el porcentaje no salta al marcar "Sí" en un área).
+  const descartada = (p) => p.mostrarSi && respuestas[p.mostrarSi.pregunta] && !preguntaVisible(p)
+  const totalPreguntas = encuesta.preguntas.filter(p => p.tipo !== 'seccion' && !descartada(p)).length
+  const respondidas = encuesta.preguntas.filter(p => p.tipo !== 'seccion' && !descartada(p) && preguntaRespondida(p)).length
   const progreso = totalPreguntas > 0 ? Math.round((respondidas / totalPreguntas) * 100) : 0
 
   function marcarPendientes() {
@@ -560,7 +574,7 @@ export default function Encuesta() {
           animationDelay: `${Math.min(idx, 8) * 0.03}s`,
         }}>
         <div className="enc-q-head">
-          <div className="enc-q-num">{num}</div>
+          {num && <div className="enc-q-num">{num}</div>}
           <div className="enc-q-label" id={labelId}>
             {pregunta.texto}
             {pregunta.requerida && <Asterisco />}
@@ -821,7 +835,7 @@ export default function Encuesta() {
         <form onSubmit={(e) => e.preventDefault()} noValidate>
           {paginaActual.preambulo.map(renderPregunta)}
           {paginaActual.seccion && <EncabezadoArea seccion={paginaActual.seccion} />}
-          {paginaActual.preguntas.map(renderPregunta)}
+          {preguntasVisibles.map(renderPregunta)}
 
           {errorEnvio && (
             <div className="enc-alert" role="alert">
