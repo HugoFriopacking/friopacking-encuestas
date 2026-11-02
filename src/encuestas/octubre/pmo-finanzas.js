@@ -1,11 +1,14 @@
-// EV-05 · PMO evalúa a Adm. y Finanzas. Anónima: no pide datos del evaluador.
+// EV-05 · PMO evalúa a Adm. y Finanzas en dos partes: Servicios (OS y facturas) y Adm. y Finanzas. Anónima: no pide datos del evaluador.
+// `area` separa las dos partes en Resultados.
 const ETIQUETAS = { 1: 'Muy deficiente', 10: 'Excelente' }
-const escala = (id, texto) => ({ id, tipo: 'escala', texto, requerida: true, min: 1, max: 10, etiquetas: ETIQUETAS })
+const escala = (area) => (id, texto) => ({ id, tipo: 'escala', area, texto, requerida: true, min: 1, max: 10, etiquetas: ETIQUETAS })
+const servicios = escala('Servicios')
+const finanzas = escala('Adm. y Finanzas')
 
 const encuesta = {
   id: 'pmo-finanzas-octubre',
   titulo: 'Finanzas que impulsan proyectos: la mirada de PMO',
-  descripcion: 'PMO evalúa a Administración y Finanzas: pagos, fondos, costos y soporte a los proyectos. Responde según tu experiencia; es anónima y toma unos 5 minutos.',
+  descripcion: 'PMO evalúa a Servicios (órdenes de servicio y facturas) y a Administración y Finanzas (pagos, fondos y soporte a los proyectos). Responde según tu experiencia; es anónima y toma unos 5 minutos.',
   respondedor: 'interno',
   activa: true,
   mes: 'Octubre',
@@ -15,35 +18,46 @@ const encuesta = {
     { rango: '10', texto: 'Excelente' },
   ],
   preguntas: [
-    { id: 's1', tipo: 'seccion', texto: 'Planificación y coordinación', icono: 'operaciones' },
-    escala('p1', '¿Adm. y Finanzas programa los pagos de acuerdo con el cronograma y flujo de caja de los proyectos?'),
-    escala('p2', '¿Adm. y Finanzas asigna a tiempo los fondos (anticipos, caja chica, entregas a rendir) que requieren los proyectos?'),
-    escala('p3', '¿Adm. y Finanzas coordina con PMO el presupuesto y la apertura de centros de costo de cada proyecto?'),
-    escala('p4', '¿Adm. y Finanzas cumple los plazos acordados para pagar a proveedores y contratistas de proyectos?'),
+    // Parte A · Servicios
+    { id: 's1', tipo: 'seccion', texto: 'Servicios · Planificación y coordinación', icono: 'finanzas' },
+    servicios('p1', '¿Servicios emite las órdenes de servicio dentro del plazo acordado, una vez recibido el requerimiento completo y aprobado?'),
+    servicios('p2', '¿Servicios procesa las facturas de contratistas a tiempo para que entren en la programación de pagos?'),
 
-    { id: 's2', tipo: 'seccion', texto: 'Comunicación', icono: 'operaciones' },
-    escala('p5', '¿Adm. y Finanzas comunica con claridad los requisitos y plazos para pagos, rendiciones y facturación?'),
-    escala('p6', '¿Adm. y Finanzas avisa oportunamente los retrasos o restricciones de caja que afectan a los proyectos?'),
-    escala('p7', '¿Adm. y Finanzas responde a tiempo las consultas de PMO sobre estados de pago, saldos y facturas?'),
-    escala('p8', '¿Adm. y Finanzas comparte oportunamente información de costos reales por proyecto?'),
+    { id: 's2', tipo: 'seccion', texto: 'Servicios · Comunicación', icono: 'finanzas' },
+    servicios('p3', '¿Servicios informa con claridad los requisitos para emitir una OS y para procesar una factura (conformidad, valorización, documentos)?'),
+    servicios('p4', '¿Servicios mantiene informado a PMO sobre el estado de las OS y facturas en trámite?'),
 
-    { id: 's3', tipo: 'seccion', texto: 'Calidad y cumplimiento', icono: 'ingenieria' },
-    escala('p9', '¿Los reportes de costos y ejecución presupuestal de proyectos son confiables y precisos?'),
-    escala('p10', '¿Adm. y Finanzas registra los gastos en el centro de costo o proyecto que corresponde?'),
-    escala('p11', '¿Adm. y Finanzas aplica sus políticas y procedimientos de forma consistente en todos los proyectos?'),
-    escala('p12', '¿Adm. y Finanzas emite la facturación de hitos a tiempo una vez recibida la conformidad del cliente?'),
+    { id: 's3', tipo: 'seccion', texto: 'Servicios · Calidad y cumplimiento', icono: 'finanzas' },
+    servicios('p5', '¿Las órdenes de servicio se emiten sin errores (alcance, montos, condiciones, proveedor) respecto al requerimiento?'),
+    servicios('p6', '¿Los reportes de costos de servicios por proyecto que emite Servicios llegan a tiempo y son confiables?'),
 
-    { id: 's4', tipo: 'seccion', texto: 'Solución de problemas y toma de decisiones', icono: 'ingenieria' },
-    escala('p13', '¿Adm. y Finanzas atiende con agilidad los pagos urgentes debidamente justificados?'),
-    escala('p14', '¿Adm. y Finanzas propone alternativas (priorización, financiamiento, adelantos) ante restricciones de caja?'),
-    escala('p15', '¿Adm. y Finanzas resuelve con rapidez las observaciones a documentos y rendiciones?'),
-    escala('p16', '¿Adm. y Finanzas decide con criterio, equilibrando el control con la continuidad de los proyectos?'),
+    { id: 's4', tipo: 'seccion', texto: 'Servicios · Solución de problemas y toma de decisiones', icono: 'finanzas' },
+    servicios('p7', 'Cuando una factura u OS es observada, ¿Servicios indica con rapidez qué se debe corregir y quién debe gestionarlo?'),
+    servicios('p8', '¿Servicios atiende con agilidad las OS urgentes debidamente justificadas?'),
 
-    { id: 's5', tipo: 'seccion', texto: 'Relación profesional y soporte', icono: 'operaciones' },
-    escala('p17', '¿Adm. y Finanzas trata al personal de PMO con respeto y cordialidad?'),
-    escala('p18', '¿Adm. y Finanzas está disponible cuando PMO necesita resolver un tema financiero?'),
-    escala('p19', '¿Adm. y Finanzas entiende la dinámica y las urgencias propias de los proyectos?'),
-    escala('p20', '¿Adm. y Finanzas actúa como socio estratégico de PMO y no solo como área de control?'),
+    { id: 's5', tipo: 'seccion', texto: 'Servicios · Relación profesional y soporte', icono: 'finanzas' },
+    servicios('p9', '¿Servicios trata con respeto y cordialidad al personal de PMO y a los supervisores?'),
+    servicios('p10', '¿Servicios está disponible para orientar a PMO y supervisores en la gestión de OS y facturas?'),
+
+    // Parte B · Adm. y Finanzas
+    { id: 's6', tipo: 'seccion', texto: 'Adm. y Finanzas · Planificación y coordinación', icono: 'operaciones' },
+    finanzas('p11', '¿Adm. y Finanzas programa los pagos de acuerdo con el cronograma y flujo de caja de los proyectos?'),
+    finanzas('p12', '¿Adm. y Finanzas asigna a tiempo los fondos (anticipos, caja chica, entregas a rendir) que requieren los proyectos?'),
+
+    { id: 's7', tipo: 'seccion', texto: 'Adm. y Finanzas · Comunicación', icono: 'operaciones' },
+    finanzas('p13', '¿Adm. y Finanzas avisa oportunamente los retrasos o restricciones de caja que afectan a los proyectos?'),
+    finanzas('p14', '¿Adm. y Finanzas responde a tiempo las consultas de PMO sobre estados de pago y saldos?'),
+
+    { id: 's8', tipo: 'seccion', texto: 'Adm. y Finanzas · Calidad y cumplimiento', icono: 'ingenieria' },
+    finanzas('p15', '¿Adm. y Finanzas ejecuta los pagos en las fechas confirmadas a PMO?'),
+
+    { id: 's9', tipo: 'seccion', texto: 'Adm. y Finanzas · Solución de problemas y toma de decisiones', icono: 'ingenieria' },
+    finanzas('p16', '¿Adm. y Finanzas atiende con agilidad los pagos urgentes debidamente justificados?'),
+    finanzas('p17', '¿Adm. y Finanzas resuelve con rapidez las observaciones a rendiciones de gastos?'),
+
+    { id: 's10', tipo: 'seccion', texto: 'Adm. y Finanzas · Relación profesional y soporte', icono: 'operaciones' },
+    finanzas('p18', '¿Adm. y Finanzas trata al personal de PMO con respeto y cordialidad?'),
+    finanzas('p19', '¿Adm. y Finanzas entiende la dinámica y las urgencias propias de los proyectos?'),
   ],
 }
 
