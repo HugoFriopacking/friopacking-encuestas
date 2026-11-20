@@ -21,7 +21,7 @@ const RANKING_GROUPS = [
     titulo: 'Supervisores de obra',
     modo: 'campo',
     campo: 'supervisor',
-    encuestaIds: ['contratistas-supervisores', 'contratistas-supervisores-julio', 'contratistas-supervisores-agosto', 'contratistas-supervisores-septiembre', 'contratistas-supervisores-octubre'],
+    encuestaIds: ['contratistas-supervisores', 'contratistas-supervisores-julio', 'contratistas-supervisores-agosto', 'contratistas-supervisores-septiembre', 'contratistas-supervisores-octubre', 'contratistas-supervisores-noviembre'],
   },
   {
     key: 'ssoma',
