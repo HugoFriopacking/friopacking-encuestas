@@ -28,13 +28,13 @@ const RANKING_GROUPS = [
     titulo: 'Supervisores SSOMA',
     modo: 'campo',
     campo: 'supervisor',
-    encuestaIds: ['contratistas-ssoma', 'contratistas-ssoma-julio', 'contratistas-ssoma-agosto', 'contratistas-ssoma-septiembre', 'contratistas-ssoma-octubre'],
+    encuestaIds: ['contratistas-ssoma', 'contratistas-ssoma-julio', 'contratistas-ssoma-agosto', 'contratistas-ssoma-septiembre', 'contratistas-ssoma-octubre', 'contratistas-ssoma-noviembre'],
   },
   {
     key: 'friopacking',
     titulo: 'Grupo Friopacking (por área)',
     modo: 'seccion',
-    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto', 'contratistas-friopacking-septiembre', 'contratistas-friopacking-octubre'],
+    encuestaIds: ['contratistas-friopacking', 'contratistas-friopacking-julio', 'contratistas-friopacking-agosto', 'contratistas-friopacking-septiembre', 'contratistas-friopacking-octubre', 'contratistas-friopacking-noviembre'],
   },
   {
     key: 'operaciones-soporte',

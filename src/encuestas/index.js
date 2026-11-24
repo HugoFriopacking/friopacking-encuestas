@@ -32,6 +32,8 @@ import logisticaFinanzas from './octubre/logistica-finanzas.js'
 import grupoCapitalHumano from './octubre/grupo-capital-humano.js'
 import operacionesAreasSoporteNoviembre from './noviembre/operaciones-areas-soporte-noviembre.js'
 import contratistasSupervisoresNoviembre from './noviembre/contratistas-supervisores-noviembre.js'
+import contratistasSsomaNoviembre from './noviembre/contratistas-ssoma-noviembre.js'
+import contratistasFriopackingNoviembre from './noviembre/contratistas-friopacking-noviembre.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -69,6 +71,8 @@ const encuestas = [
   grupoCapitalHumano,
   operacionesAreasSoporteNoviembre,
   contratistasSupervisoresNoviembre,
+  contratistasSsomaNoviembre,
+  contratistasFriopackingNoviembre,
 ]
 
 // Solo exporta las activas para mostrar en la home
