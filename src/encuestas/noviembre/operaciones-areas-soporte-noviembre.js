@@ -1,4 +1,4 @@
-// Operaciones evalúa a las áreas y empresas de Grupo Friopacking. Anónima: no pide datos del evaluador.
+// Los supervisores de Operaciones evalúan a las áreas y empresas de Grupo Friopacking. Anónima: no pide datos del evaluador.
 // Una página por área; `area` agrupa las preguntas en el ranking de Resultados.
 const ETIQUETAS = { 1: 'Muy deficiente', 10: 'Excelente' }
 
@@ -115,8 +115,8 @@ const preguntas = AREAS.flatMap((a, i) => [
 
 const encuesta = {
   id: 'operaciones-areas-soporte-noviembre',
-  titulo: 'El soporte que Operaciones merece',
-  descripcion: 'Operaciones evalúa a las áreas y empresas de Grupo Friopacking: SSOMA, Logística, Ingeniería, PMO, Comercial, Adm. y Finanzas, Frioteam, Hermética, Smartcold y Servicios. Es anónima.',
+  titulo: 'El soporte que Operaciones merece | Supervisores',
+  descripcion: 'Los supervisores de Operaciones evalúan a las áreas y empresas de Grupo Friopacking: SSOMA, Logística, Ingeniería, PMO, Comercial, Adm. y Finanzas, Frioteam, Hermética, Smartcold y Servicios. Es anónima.',
   respondedor: 'interno',
   activa: true,
   mes: 'Noviembre',

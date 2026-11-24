@@ -44,7 +44,7 @@ const RANKING_GROUPS = [
   },
   {
     key: 'operaciones-grupo',
-    titulo: 'Grupo Friopacking evaluado por Operaciones',
+    titulo: 'Grupo Friopacking evaluado por los Supervisores',
     modo: 'seccion',
     encuestaIds: ['operaciones-areas-soporte-noviembre'],
   },
