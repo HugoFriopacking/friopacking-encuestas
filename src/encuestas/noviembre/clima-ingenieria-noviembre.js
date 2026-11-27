@@ -1,22 +1,22 @@
-// Evaluación de clima laboral del área de Ingeniería. Escala de acuerdo 1–5 (Likert). Anónima: no pide datos del evaluador.
-const ETIQUETAS = { 1: 'Totalmente en desacuerdo', 5: 'Totalmente de acuerdo' }
-const escala = (id, texto) => ({ id, tipo: 'escala', texto, requerida: true, min: 1, max: 5, etiquetas: ETIQUETAS })
+// Evaluación de clima laboral del área de Ingeniería. Escala de acuerdo 1–10. Anónima: no pide datos del evaluador.
+const ETIQUETAS = { 1: 'Totalmente en desacuerdo', 10: 'Totalmente de acuerdo' }
+const escala = (id, texto) => ({ id, tipo: 'escala', texto, requerida: true, min: 1, max: 10, etiquetas: ETIQUETAS })
 
 const encuesta = {
   id: 'clima-ingenieria-noviembre',
   titulo: 'Evaluación de Clima - Ingeniería',
-  descripcion: 'Para las preguntas 1 a 9, indica qué tan de acuerdo estás con cada afirmación. Es anónima y toma unos 3 minutos.',
+  descripcion: 'Para las preguntas 1 a 9, indica qué tan de acuerdo estás con cada afirmación, del 1 (totalmente en desacuerdo) al 10 (totalmente de acuerdo). Es anónima y toma unos 3 minutos.',
   respondedor: 'interno',
   fotoObra: true,  // lleva foto de obra aunque no sea encuesta de campo (pedido 27-11)
   activa: true,
   mes: 'Noviembre',
   publicada: '2026-11-27T10:00',  // fecha en que se subió al portal (orden en la portada)
   leyendaTiers: [
-    { rango: '1', texto: 'Totalmente en desacuerdo' },
-    { rango: '2', texto: 'En desacuerdo' },
-    { rango: '3', texto: 'Ni de acuerdo ni en desacuerdo' },
-    { rango: '4', texto: 'De acuerdo' },
-    { rango: '5', texto: 'Totalmente de acuerdo' },
+    { rango: '1–2', texto: 'Totalmente en desacuerdo' },
+    { rango: '3–4', texto: 'En desacuerdo' },
+    { rango: '5–6', texto: 'Ni de acuerdo ni en desacuerdo' },
+    { rango: '7–8', texto: 'De acuerdo' },
+    { rango: '9–10', texto: 'Totalmente de acuerdo' },
   ],
   preguntas: [
     escala('p1', '¿Te sientes motivado para realizar tus actividades?'),
