@@ -296,7 +296,7 @@
   gap: 8px;
 }
 @media (min-width: 640px) {
-  .escala-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+  .escala-grid { grid-template-columns: repeat(var(--cols, 10), minmax(0, 1fr)); gap: 6px; }
 }
 
 .escala-btn {
@@ -322,16 +322,16 @@
 /* Reacción táctil al pulsar */
 .escala-btn:active { transform: scale(0.94); }
 /* Color de cada nota (solo se ve al marcarla): 1 rojo fuerte → 10 verde fuerte (turquesa en noche) */
-.escala-btn[data-valor="1"]  { --nota: var(--scale-1);  --nota-text: var(--scale-1-text); }
-.escala-btn[data-valor="2"]  { --nota: var(--scale-2);  --nota-text: var(--scale-2-text); }
-.escala-btn[data-valor="3"]  { --nota: var(--scale-3);  --nota-text: var(--scale-3-text); }
-.escala-btn[data-valor="4"]  { --nota: var(--scale-4);  --nota-text: var(--scale-4-text); }
-.escala-btn[data-valor="5"]  { --nota: var(--scale-5);  --nota-text: var(--scale-5-text); }
-.escala-btn[data-valor="6"]  { --nota: var(--scale-6);  --nota-text: var(--scale-6-text); }
-.escala-btn[data-valor="7"]  { --nota: var(--scale-7);  --nota-text: var(--scale-7-text); }
-.escala-btn[data-valor="8"]  { --nota: var(--scale-8);  --nota-text: var(--scale-8-text); }
-.escala-btn[data-valor="9"]  { --nota: var(--scale-9);  --nota-text: var(--scale-9-text); }
-.escala-btn[data-valor="10"] { --nota: var(--scale-10); --nota-text: var(--scale-10-text); }
+.escala-btn[data-nota="1"]  { --nota: var(--scale-1);  --nota-text: var(--scale-1-text); }
+.escala-btn[data-nota="2"]  { --nota: var(--scale-2);  --nota-text: var(--scale-2-text); }
+.escala-btn[data-nota="3"]  { --nota: var(--scale-3);  --nota-text: var(--scale-3-text); }
+.escala-btn[data-nota="4"]  { --nota: var(--scale-4);  --nota-text: var(--scale-4-text); }
+.escala-btn[data-nota="5"]  { --nota: var(--scale-5);  --nota-text: var(--scale-5-text); }
+.escala-btn[data-nota="6"]  { --nota: var(--scale-6);  --nota-text: var(--scale-6-text); }
+.escala-btn[data-nota="7"]  { --nota: var(--scale-7);  --nota-text: var(--scale-7-text); }
+.escala-btn[data-nota="8"]  { --nota: var(--scale-8);  --nota-text: var(--scale-8-text); }
+.escala-btn[data-nota="9"]  { --nota: var(--scale-9);  --nota-text: var(--scale-9-text); }
+.escala-btn[data-nota="10"] { --nota: var(--scale-10); --nota-text: var(--scale-10-text); }
 
 /* Seleccionado: relleno con el color de la nota + anillo exterior, que lo distingue sin depender del color */
 .escala-btn[aria-checked="true"] {
@@ -403,6 +403,7 @@ select.encuesta-input {
   background-size: 6px 6px;
   background-repeat: no-repeat;
 }
+.encuesta-textarea { resize: vertical; line-height: 1.5; font-weight: 500; }
 .encuesta-input:focus { border-color: var(--color-highlight); }
 .encuesta-input::placeholder { color: var(--color-text-muted); opacity: 1; }
 

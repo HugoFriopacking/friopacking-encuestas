@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import encuestas from '../encuestas/index.js'
 import { supabase } from '../lib/supabase.js'
-import { scaleColor } from '../lib/escalaColor.js'
+import { notaEn10, scaleColor } from '../lib/escalaColor.js'
 
 const NOMBRE_CAMPO = {
   supervisor: 'supervisores',
@@ -71,6 +71,24 @@ function agruparEncuestasPorMes(lista) {
     ...Array.from(grupos.keys()).filter((m) => !MES_ORDEN.includes(m)),
   ]
   return ordenados.map((mes) => [mes, grupos.get(mes)])
+}
+
+// Preguntas de escala que no son 1–10 (p. ej. clima laboral 1–5), por encuesta.
+const ESCALAS_NO_10 = new Map(encuestas.map((e) => [
+  e.id,
+  e.preguntas.filter((p) => p.tipo === 'escala' && (p.min !== 1 || p.max !== 10)),
+]).filter(([, lista]) => lista.length > 0))
+
+// Lleva esas respuestas a su equivalente 1–10 al cargarlas, para que promedios,
+// puntajes /100 y colores sigan valiendo igual para todas las encuestas.
+function normalizarFila(fila) {
+  const escalas = ESCALAS_NO_10.get(fila.encuesta_id)
+  if (!escalas || !fila.respuestas) return fila
+  const respuestas = { ...fila.respuestas }
+  escalas.forEach((p) => {
+    if (typeof respuestas[p.id] === 'number') respuestas[p.id] = notaEn10(respuestas[p.id], p.min, p.max)
+  })
+  return { ...fila, respuestas }
 }
 
 function score100(promedio) {
@@ -175,7 +193,7 @@ export default function Resultados() {
         setError('No se pudieron cargar los resultados.')
         setFilas([])
       } else {
-        setFilas(data || [])
+        setFilas((data || []).map(normalizarFila))
       }
       setLoading(false)
     })

@@ -38,6 +38,7 @@ import ssomaOperacionesNoviembre from './noviembre/ssoma-operaciones-noviembre.j
 import logisticaOperacionesCadenaNoviembre from './noviembre/logistica-operaciones-cadena-noviembre.js'
 import ingenieriaOperacionesNoviembre from './noviembre/ingenieria-operaciones-noviembre.js'
 import comercialOperacionesNoviembre from './noviembre/comercial-operaciones-noviembre.js'
+import climaIngenieriaNoviembre from './noviembre/clima-ingenieria-noviembre.js'
 
 // Para activar/desactivar una encuesta cambia activa: true/false en su archivo
 const encuestas = [
@@ -81,6 +82,7 @@ const encuestas = [
   logisticaOperacionesCadenaNoviembre,
   ingenieriaOperacionesNoviembre,
   comercialOperacionesNoviembre,
+  climaIngenieriaNoviembre,
 ]
 
 // Solo exporta las activas para mostrar en la home

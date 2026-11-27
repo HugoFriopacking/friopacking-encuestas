@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import encuestas from '../encuestas/index.js'
 import { supabase } from '../lib/supabase.js'
 import { atributosFoto, fotoAleatoria, usaFotoObra } from '../lib/fotosObra.js'
+import { notaEn10 } from '../lib/escalaColor.js'
 import './Encuesta.css'
 
 const ICONOS = {
@@ -71,15 +72,18 @@ function hayRespuestas(respuestas) {
   return Object.values(respuestas).some((v) => (Array.isArray(v) ? v.length > 0 : v !== '' && v != null))
 }
 
-// La casilla de la leyenda toma el color de la primera nota de su rango ("5–6" → 5).
-function colorLeyenda(rango) {
-  const n = parseInt(rango, 10)
+// La casilla de la leyenda toma el color de la primera nota de su rango ("5–6" → 5),
+// llevada a 1–10 si la escala es otra (en una de 1–5, el 5 es verde).
+function colorLeyenda(rango, min, max) {
+  const n = Math.round(notaEn10(parseInt(rango, 10), min, max))
   if (!(n >= 1 && n <= 10)) return undefined
   return { background: `var(--scale-${n})`, color: `var(--scale-${n}-text)`, borderColor: `var(--scale-${n})` }
 }
 
 function LeyendaEscala({ encuesta }) {
   if (!encuesta.leyendaTiers && !encuesta.leyenda) return null
+  const primeraEscala = encuesta.preguntas.find((p) => p.tipo === 'escala')
+  const [min, max] = primeraEscala ? [primeraEscala.min, primeraEscala.max] : [1, 10]
   const tiers = encuesta.leyendaTiers || [
     { rango: '1', texto: 'Muy malo', bg: 'var(--color-score-low)', color: 'var(--color-on-score)' },
     { rango: '5–6', texto: 'Regular', bg: 'var(--color-score-mid)', color: 'var(--color-text)' },
@@ -91,7 +95,7 @@ function LeyendaEscala({ encuesta }) {
       <div className="enc-legend-items">
         {tiers.map((t) => (
           <div key={t.rango} className="enc-legend-item">
-            <span className="enc-legend-badge" style={colorLeyenda(t.rango)}>{t.rango}</span>
+            <span className="enc-legend-badge" style={colorLeyenda(t.rango, min, max)}>{t.rango}</span>
             {t.texto}
           </div>
         ))}
@@ -154,7 +158,7 @@ function BotonesEscala({ pregunta, valor, onSelect, labelId }) {
   }
 
   return (
-    <div className="escala-grid" role="radiogroup" aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}>
+    <div className="escala-grid" style={{ '--cols': valores.length }} role="radiogroup" aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}>
       {valores.map((val) => {
         const activo = valor === val
         const extremo = val === pregunta.min || val === pregunta.max ? pregunta.etiquetas?.[val] : null
@@ -162,7 +166,7 @@ function BotonesEscala({ pregunta, valor, onSelect, labelId }) {
           <button key={val} type="button" role="radio" aria-checked={activo}
             aria-label={extremo ? `${val}, ${extremo}` : String(val)}
             tabIndex={activo || (!tieneValor && val === pregunta.min) ? 0 : -1}
-            className="escala-btn" data-valor={val}
+            className="escala-btn" data-valor={val} data-nota={Math.round(notaEn10(val, pregunta.min, pregunta.max))}
             onClick={() => onSelect(val)}
             onKeyDown={(e) => onKeyDown(e, val)}
           >
@@ -582,7 +586,16 @@ export default function Encuesta() {
         </div>
         <NotaPregunta pregunta={pregunta} />
 
-        {pregunta.tipo === 'texto' && (
+        {pregunta.tipo === 'texto' && pregunta.multilinea && (
+          <textarea className="encuesta-input encuesta-textarea" rows={4}
+            aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}
+            value={respuestas[pregunta.id] || ''}
+            onChange={(e) => handleChange(pregunta.id, e.target.value)}
+            placeholder={pregunta.placeholder || 'Escribe aquí...'}
+          />
+        )}
+
+        {pregunta.tipo === 'texto' && !pregunta.multilinea && (
           <input type="text" className="encuesta-input"
             aria-labelledby={labelId} aria-required={pregunta.requerida || undefined}
             value={respuestas[pregunta.id] || ''}

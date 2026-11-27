@@ -9,6 +9,7 @@ const REGLAS = [
   { tema: 'Operaciones', test: (id) => /-operaciones/.test(id) },
   { tema: 'Áreas de soporte', test: (id) => id.startsWith('operaciones-areas-soporte') },
   { tema: 'Adm. y Finanzas', test: (id) => id.endsWith('finanzas-octubre') || /-finanzas$/.test(id) },
+  { tema: 'Clima laboral', test: (id) => id.startsWith('clima-') },
   { tema: 'Capital Humano', test: (id) => id.includes('capital-humano') },
   { tema: 'Capacitación e IA', test: (id) => /(^|-)ia(-|$)|capacitacion/.test(id) },
 ]

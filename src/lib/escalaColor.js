@@ -1,3 +1,10 @@
+// Lleva una nota de cualquier escala (p. ej. 1–5) a su equivalente 1–10, para que los
+// colores, promedios y puntajes /100 sean comparables entre encuestas.
+export function notaEn10(val, min = 1, max = 10) {
+  if (min === 1 && max === 10) return val
+  return 1 + ((val - min) * 9) / (max - min)
+}
+
 // Transición de color para la escala 1-10: rojo (1-2) -> naranja/ámbar (3-4) -> amarillo (5-7) -> verde (8-10)
 export function scaleColor(val) {
   const v = Math.round(val)
