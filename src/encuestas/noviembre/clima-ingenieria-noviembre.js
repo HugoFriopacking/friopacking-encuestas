@@ -7,6 +7,7 @@ const encuesta = {
   titulo: 'Evaluación de Clima - Ingeniería',
   descripcion: 'Para las preguntas 1 a 9, indica qué tan de acuerdo estás con cada afirmación. Es anónima y toma unos 3 minutos.',
   respondedor: 'interno',
+  fotoObra: true,  // lleva foto de obra aunque no sea encuesta de campo (pedido 27-11)
   activa: true,
   mes: 'Noviembre',
   publicada: '2026-11-27T10:00',  // fecha en que se subió al portal (orden en la portada)

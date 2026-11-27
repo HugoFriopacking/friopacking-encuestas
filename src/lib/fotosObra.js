@@ -17,10 +17,11 @@ export const FOTOS_OBRA = [
 
 // Solo las encuestas ligadas a la obra llevan foto: las que responden contratistas y las de
 // Operaciones, SSOMA y supervisores. Las de finanzas, Capital Humano, capacitación, etc. no.
+// Una encuesta puede pedirla igual con `fotoObra: true` (p. ej. Clima - Ingeniería).
 const TEMAS_DE_OBRA = ['Operaciones', 'Áreas de soporte', 'SSOMA', 'Supervisores de obra', 'Contratistas']
 
 export function usaFotoObra(encuesta) {
-  return encuesta.respondedor === 'externo' || TEMAS_DE_OBRA.includes(temaDe(encuesta))
+  return encuesta.fotoObra === true || encuesta.respondedor === 'externo' || TEMAS_DE_OBRA.includes(temaDe(encuesta))
 }
 
 export function fotoAleatoria() {
